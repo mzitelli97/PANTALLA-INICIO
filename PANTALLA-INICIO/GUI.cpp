@@ -37,18 +37,24 @@ void GUI::atachController(BurgleBrosController* Controller)
     this->Controller->attachNetworkInterface(&networkingInterface);
 }
 
-void GUI::getNameAndIp(string userName, string ipToConnect)
+void GUI::getNameAndIp(string userName, string ipToConnect, string ipToListen)
 {
     this->userName=userName;
     this->ipToConnect=ipToConnect;
+    this->ipToListen=ipToListen;
 }
 bool GUI::connect()
 {
     bool retVal = false;
-    if(networkingInterface.standardConnectionStart(ipToConnect));
+    if(networkingInterface.standardConnectionStart(ipToConnect,ipToListen))
     {
         Controller->setCommunicationRoleNThisPlayerName(networkingInterface.getCommunicationRole(), userName);
         retVal = true;
+    }
+    if(networkingInterface.checkError())    //Si hubo un error tratando de hacer la connection start:
+    {
+        cout<<networkingInterface.getErrorMsg();
+        quit=true;
     }
     return retVal;
 }

@@ -4,48 +4,48 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosBoard.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosCard.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosController.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosDices.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosFloor.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosGuard.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosLoots.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosModel.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosPlayer.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosSound.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosTokens.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosView.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/CView.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/Controller.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/EventData.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GUI.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicButton.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicEDices.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicGDie.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicGuard.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicGuardCards.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicItem.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicLoot.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicMenuItem.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicPlayer.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicPlayerCard.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicTile.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicToken.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicWall.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/ImageLoader.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/KeyboardED.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/LibsInit.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/Model.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/MouseED.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/NetworkED.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/NetworkInterface.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/Networking.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/ProtocolFunctions.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/SoundManager.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/TextBox.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/View.h</itemPath>
-      <itemPath>../../PANTALLA-INICIO/cController.h</itemPath>
+      <itemPath>BurgleBrosBoard.h</itemPath>
+      <itemPath>BurgleBrosCard.h</itemPath>
+      <itemPath>BurgleBrosController.h</itemPath>
+      <itemPath>BurgleBrosDices.h</itemPath>
+      <itemPath>BurgleBrosFloor.h</itemPath>
+      <itemPath>BurgleBrosGuard.h</itemPath>
+      <itemPath>BurgleBrosLoots.h</itemPath>
+      <itemPath>BurgleBrosModel.h</itemPath>
+      <itemPath>BurgleBrosPlayer.h</itemPath>
+      <itemPath>BurgleBrosSound.h</itemPath>
+      <itemPath>BurgleBrosTokens.h</itemPath>
+      <itemPath>BurgleBrosView.h</itemPath>
+      <itemPath>CView.h</itemPath>
+      <itemPath>Controller.h</itemPath>
+      <itemPath>EventData.h</itemPath>
+      <itemPath>GUI.h</itemPath>
+      <itemPath>GraphicButton.h</itemPath>
+      <itemPath>GraphicEDices.h</itemPath>
+      <itemPath>GraphicGDie.h</itemPath>
+      <itemPath>GraphicGuard.h</itemPath>
+      <itemPath>GraphicGuardCards.h</itemPath>
+      <itemPath>GraphicItem.h</itemPath>
+      <itemPath>GraphicLoot.h</itemPath>
+      <itemPath>GraphicMenuItem.h</itemPath>
+      <itemPath>GraphicPlayer.h</itemPath>
+      <itemPath>GraphicPlayerCard.h</itemPath>
+      <itemPath>GraphicTile.h</itemPath>
+      <itemPath>GraphicToken.h</itemPath>
+      <itemPath>GraphicWall.h</itemPath>
+      <itemPath>ImageLoader.h</itemPath>
+      <itemPath>KeyboardED.h</itemPath>
+      <itemPath>LibsInit.h</itemPath>
+      <itemPath>Model.h</itemPath>
+      <itemPath>MouseED.h</itemPath>
+      <itemPath>NetworkED.h</itemPath>
+      <itemPath>NetworkInterface.h</itemPath>
+      <itemPath>Networking.h</itemPath>
+      <itemPath>ProtocolFunctions.h</itemPath>
+      <itemPath>SoundManager.h</itemPath>
+      <itemPath>TextBox.h</itemPath>
+      <itemPath>View.h</itemPath>
+      <itemPath>cController.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -54,49 +54,49 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosBoard.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosCard.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosController.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosDices.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosFloor.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosGuard.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosLoots.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosModel.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosPlayer.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosSound.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosTokens.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/BurgleBrosView.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/CView.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/Controller.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/EventData.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GUI.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicButton.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicEDices.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicGDie.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicGuard.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicGuardCards.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicItem.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicLoot.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicMenuItem.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicPlayer.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicPlayerCard.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicTile.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicToken.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/GraphicWall.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/ImageLoader.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/KeyboardED.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/LibsInit.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/Model.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/MouseED.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/NetworkED.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/NetworkInterface.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/Networking.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/ProtocolFunctions.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/SoundManager.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/TextBox.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/View.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/cController.cpp</itemPath>
-      <itemPath>../../PANTALLA-INICIO/main.cpp</itemPath>
+      <itemPath>BurgleBrosBoard.cpp</itemPath>
+      <itemPath>BurgleBrosCard.cpp</itemPath>
+      <itemPath>BurgleBrosController.cpp</itemPath>
+      <itemPath>BurgleBrosDices.cpp</itemPath>
+      <itemPath>BurgleBrosFloor.cpp</itemPath>
+      <itemPath>BurgleBrosGuard.cpp</itemPath>
+      <itemPath>BurgleBrosLoots.cpp</itemPath>
+      <itemPath>BurgleBrosModel.cpp</itemPath>
+      <itemPath>BurgleBrosPlayer.cpp</itemPath>
+      <itemPath>BurgleBrosSound.cpp</itemPath>
+      <itemPath>BurgleBrosTokens.cpp</itemPath>
+      <itemPath>BurgleBrosView.cpp</itemPath>
+      <itemPath>CView.cpp</itemPath>
+      <itemPath>Controller.cpp</itemPath>
+      <itemPath>EventData.cpp</itemPath>
+      <itemPath>GUI.cpp</itemPath>
+      <itemPath>GraphicButton.cpp</itemPath>
+      <itemPath>GraphicEDices.cpp</itemPath>
+      <itemPath>GraphicGDie.cpp</itemPath>
+      <itemPath>GraphicGuard.cpp</itemPath>
+      <itemPath>GraphicGuardCards.cpp</itemPath>
+      <itemPath>GraphicItem.cpp</itemPath>
+      <itemPath>GraphicLoot.cpp</itemPath>
+      <itemPath>GraphicMenuItem.cpp</itemPath>
+      <itemPath>GraphicPlayer.cpp</itemPath>
+      <itemPath>GraphicPlayerCard.cpp</itemPath>
+      <itemPath>GraphicTile.cpp</itemPath>
+      <itemPath>GraphicToken.cpp</itemPath>
+      <itemPath>GraphicWall.cpp</itemPath>
+      <itemPath>ImageLoader.cpp</itemPath>
+      <itemPath>KeyboardED.cpp</itemPath>
+      <itemPath>LibsInit.cpp</itemPath>
+      <itemPath>Model.cpp</itemPath>
+      <itemPath>MouseED.cpp</itemPath>
+      <itemPath>NetworkED.cpp</itemPath>
+      <itemPath>NetworkInterface.cpp</itemPath>
+      <itemPath>Networking.cpp</itemPath>
+      <itemPath>ProtocolFunctions.cpp</itemPath>
+      <itemPath>SoundManager.cpp</itemPath>
+      <itemPath>TextBox.cpp</itemPath>
+      <itemPath>View.cpp</itemPath>
+      <itemPath>cController.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -119,371 +119,196 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <standard>8</standard>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs allegro-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_acodec-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_audio-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_color-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_dialog-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_font-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_image-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_main-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_memfile-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_physfs-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_primitives-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_ttf-5.0`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs apr-1`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
-      <item path="../../PANTALLA-INICIO/BurgleBrosBoard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosBoard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosCard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosCard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosController.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosController.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosDices.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosDices.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosFloor.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosFloor.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosGuard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosGuard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosLoots.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosLoots.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosModel.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosModel.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosPlayer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosPlayer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosSound.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosSound.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosTokens.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosTokens.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosView.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosView.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/CView.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/CView.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Controller.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Controller.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/EventData.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/EventData.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GUI.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GUI.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicButton.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicButton.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicEDices.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicEDices.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGDie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGDie.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuardCards.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuardCards.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicItem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicItem.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicLoot.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicLoot.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicMenuItem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicMenuItem.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayerCard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayerCard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicTile.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicTile.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicToken.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicToken.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicWall.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicWall.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ImageLoader.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ImageLoader.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/KeyboardED.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/KeyboardED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/LibsInit.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/LibsInit.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Model.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Model.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/MouseED.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/MouseED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkED.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkInterface.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkInterface.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Networking.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Networking.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ProtocolFunctions.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ProtocolFunctions.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/SoundManager.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/SoundManager.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/TextBox.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/TextBox.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/View.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/View.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/cController.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/cController.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="BurgleBrosBoard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosBoard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosCard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosCard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosController.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosController.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosDices.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosDices.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosFloor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosFloor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosGuard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosGuard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosLoots.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosLoots.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosModel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosModel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosPlayer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosPlayer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosSound.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosSound.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosTokens.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosTokens.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosView.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosView.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CView.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CView.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Controller.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EventData.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EventData.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GUI.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GUI.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicButton.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicButton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicEDices.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicEDices.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicGDie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicGDie.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicGuard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicGuard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicGuardCards.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicGuardCards.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicLoot.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicLoot.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicMenuItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicMenuItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicPlayer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicPlayer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicPlayerCard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicPlayerCard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicToken.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicToken.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicWall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicWall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ImageLoader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ImageLoader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="KeyboardED.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="KeyboardED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LibsInit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LibsInit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Model.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Model.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MouseED.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MouseED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetworkED.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetworkED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetworkInterface.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetworkInterface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Networking.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Networking.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SoundManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SoundManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TextBox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TextBox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="View.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="View.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cController.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cController.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -506,370 +331,175 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="../../PANTALLA-INICIO/BurgleBrosBoard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosBoard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosCard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosCard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosController.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosController.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosDices.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosDices.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosFloor.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosFloor.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosGuard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosGuard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosLoots.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosLoots.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosModel.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosModel.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosPlayer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosPlayer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosSound.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosSound.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosTokens.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosTokens.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosView.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/BurgleBrosView.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/CView.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/CView.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Controller.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Controller.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/EventData.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/EventData.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GUI.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GUI.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicButton.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicButton.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicEDices.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicEDices.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGDie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGDie.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuardCards.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicGuardCards.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicItem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicItem.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicLoot.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicLoot.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicMenuItem.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicMenuItem.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayerCard.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicPlayerCard.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicTile.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicTile.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicToken.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicToken.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicWall.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/GraphicWall.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ImageLoader.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ImageLoader.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/KeyboardED.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/KeyboardED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/LibsInit.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/LibsInit.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Model.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Model.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/MouseED.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/MouseED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkED.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkInterface.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/NetworkInterface.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Networking.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/Networking.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ProtocolFunctions.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/ProtocolFunctions.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/SoundManager.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/SoundManager.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/TextBox.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/TextBox.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/View.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/View.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/cController.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/cController.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../PANTALLA-INICIO/main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="BurgleBrosBoard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosBoard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosCard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosCard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosController.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosController.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosDices.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosDices.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosFloor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosFloor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosGuard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosGuard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosLoots.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosLoots.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosModel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosModel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosPlayer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosPlayer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosSound.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosSound.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosTokens.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosTokens.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="BurgleBrosView.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosView.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CView.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CView.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Controller.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EventData.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EventData.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GUI.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GUI.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicButton.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicButton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicEDices.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicEDices.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicGDie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicGDie.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicGuard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicGuard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicGuardCards.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicGuardCards.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicLoot.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicLoot.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicMenuItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicMenuItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicPlayer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicPlayer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicPlayerCard.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicPlayerCard.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicTile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicTile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicToken.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicToken.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GraphicWall.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GraphicWall.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ImageLoader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ImageLoader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="KeyboardED.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="KeyboardED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LibsInit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LibsInit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Model.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Model.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MouseED.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MouseED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetworkED.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetworkED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetworkInterface.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetworkInterface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Networking.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Networking.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SoundManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SoundManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TextBox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TextBox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="View.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="View.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="cController.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="cController.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

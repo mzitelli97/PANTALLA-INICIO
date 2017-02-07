@@ -38,8 +38,9 @@ int main(int argc, char** argv) {
     while(1);
     string name=argv[1];
     string ipToConnect=argv[2];
+    string ipToListen=argv[3];
     
-    gui.getNameAndIp(name, ipToConnect);
+    gui.getNameAndIp(name, ipToConnect, ipToListen);
     while(!gui.connect() || !gui.userQuit())
     {
         if(gui.hayEvento())
