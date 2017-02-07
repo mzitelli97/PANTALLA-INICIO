@@ -1,0 +1,125 @@
+#include "CView.h"
+#include "TextBox.h"
+#include "GraphicButton.h"
+
+#define N_BOXES 4
+#define SCREEN_W 720
+#define SCREEN_H (SCREEN_W*9/16)
+#define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/50.0
+#define BOX_IP_WIDTH al_get_display_width(display)/18.0
+#define BOX_NAME_WIDTH BOX_IP_WIDTH * 7.0
+#define BOX_HEIGHT al_get_display_height(display)/20.0
+
+#define BOX_MIN_X al_get_display_width(display)/2.0
+#define BOX_MIN_Y al_get_display_height(display)/20.0
+#define SPACE_X al_get_display_width(display)/50.0
+#define SPACE_Y al_get_display_height(display)/30.0
+
+CView::CView()
+{
+    imageLoader.initImages();           //Falta checkear.
+#ifdef FULLSCREEN
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+#endif
+    display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
+    backScreen = al_load_bitmap("fondo.jpg");
+    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
+    al_set_window_title(display,"EDA Burgle Bros");
+    font = al_load_font("title.ttf",BOX_HEIGHT,0);
+    boxClicked = gList.begin();
+        
+    al_draw_text(font,al_map_rgb(0,0,0),0,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP");
+    al_draw_text(font,al_map_rgb(0,0,0),0,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP");
+    al_draw_text(font,al_map_rgb(0,0,0),0,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME");
+    
+    ALLEGRO_FONT * box_font = al_load_font("fonts.ttf",BOX_HEIGHT, 0);
+    //Creo las cajas de texto
+    for(int i = 0; i < 2*N_BOXES; i++)
+    {
+        TextBox * box = new TextBox(BOX_IP_WIDTH,BOX_HEIGHT,box_font);
+        box->setPosition(BOX_MIN_X + SPACE_X * (i%4) + (i%4) * BOX_IP_WIDTH, BOX_MIN_Y + SPACE_Y* (i/4) + (i/4) * BOX_HEIGHT);
+        gList.push_back((GraphicItem*) box);
+    }
+    TextBox * box = new TextBox(BOX_NAME_WIDTH,BOX_HEIGHT, box_font);
+    box->setPosition(BOX_MIN_X, BOX_MIN_Y + 3 * SPACE_Y + 2 * BOX_HEIGHT);
+    gList.push_back((GraphicItem*) box);
+    
+    //Creo los botones
+    /*El boton del volumen*/
+    GraphicButton * auxButton = new GraphicButton(imageLoader.getImageP(MUTE_BUTTON), imageLoader.getImageP(UNMUTE_BUTTON), MUTE_BUTTON, al_get_display_width(display), al_get_display_height(display));
+    gList.push_back(auxButton);
+    /*Los demas botones*/
+    for(int i = (int)HELP_BUTTON; i <= (int)QUIT_BUTTON; i++)
+    {
+        auxButton = new GraphicButton(imageLoader.getImageP((buttonAction)i), nullptr, (buttonAction)i, al_get_display_width(display), al_get_display_height(display));
+        gList.push_back(auxButton);
+    }
+    
+    al_destroy_font(font);
+}
+
+CView::CView(const CView& orig) {
+}
+
+CView::~CView()
+{
+    al_destroy_bitmap(backScreen);
+    al_destroy_display(display);
+}
+
+void CView::update(Model* model)
+{
+    list<GraphicItem *>::iterator it;
+    //Dibujo las cajas y los botones
+    for(it = gList.begin(); it != gList.end(); it++)
+    {
+        (*it)->draw();
+    }
+    //Dibujo los textos
+    al_flip_display();
+}
+
+
+ItemInfo CView::itemFromClick(Point point)
+{
+    ItemInfo retVal;
+    list<GraphicItem *>::iterator it;
+    for(it = gList.begin(); it != gList.end(); it++)
+    {
+        if((*it)->isPointIn(point))
+        {
+            retVal = (*it)->IAm();
+            boxClicked = it;
+            break;
+        }
+    }
+    return retVal;
+}
+
+void CView::getNameAndIps(string * name, string * myIp, string * Ip)
+{
+    name->clear();
+    myIp->clear();
+    Ip->clear();
+    list<GraphicItem*>::iterator it = gList.begin();;
+    for(int i = 0; i < N_BOXES; i++)
+    {
+        TextBox * box = dynamic_cast<TextBox*>(*it);
+        if(box != nullptr)
+            *myIp += box->getText();
+        it++;
+    }
+    for(int i = 0; i < N_BOXES; i++)
+    {
+        TextBox * box = dynamic_cast<TextBox*>(*it);
+        if(box != nullptr)
+            *Ip += box->getText();
+        it++;
+    }
+    TextBox * box = dynamic_cast<TextBox*>(*it);
+    if(box != nullptr)
+        *name += box->getText();
+}
+
+
+
