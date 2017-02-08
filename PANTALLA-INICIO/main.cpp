@@ -64,15 +64,14 @@ int main(int argc, char** argv) {
     
     
     
+    BurgleBrosController controller;
     BurgleBrosModel model;
     BurgleBrosView view;
-    BurgleBrosController controller;
     model.attachView(&view);
     model.attachController(&controller);
     model.attachSoundManager(&sound);
     controller.attachModel(&model);
     controller.attachView(&view);
-    gui.attachController(&controller);
     controller.attachNetworkInterface(&networkInterface);
     while(!connect(&quit,&networkInterface,&controller, ipToConnect, ipToListen, name) || quit)
     {
@@ -82,14 +81,6 @@ int main(int argc, char** argv) {
     gui.attachNetworkInterface(&networkInterface);
     if(!quit)
     {
-        BurgleBrosModel model;
-        BurgleBrosView view;
-        BurgleBrosController controller;
-        model.attachView(&view);
-        model.attachController(&controller);
-        model.attachSoundManager(&sound);
-        controller.attachModel(&model);
-        controller.attachView(&view);
         gui.attachController(&controller);
         while(gameStillPlaying(controller))
         {
