@@ -13,6 +13,7 @@
 
 #include <cstdlib>
 #include "BurgleBrosModel.h"
+#include "BurgleBrosController.h"
 #include "BurgleBrosView.h"
 #include "BurgleBrosSound.h"
 #include "LibsInit.h"
@@ -21,6 +22,9 @@
 #include "cController.h"
 using namespace std;
 
+/*Estas funciones luego pertenecerían a un wrapper que las une para simplificar el main.*/
+bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string ipToConnect, string ipToListen, string userName );
+bool gameStillPlaying(BurgleBrosController &controller);
 /*
  * 
  */
@@ -34,15 +38,31 @@ int main(int argc, char** argv) {
     CModel initModel;
     CView initView;
     cController initController;
+    NetworkInterface networkInterface;
+    bool quit=false;
+    
     initModel.attachView(&initView);
     initController.attachView(&initView);
     initController.attachModel(&initModel);
     initView.update(&initModel);
-    while(1);
+    string name;
+    string ipToConnect;
+    string ipToListen;
     
-    string name=argv[1];
-    string ipToConnect=argv[2];
-    string ipToListen=argv[3];
+    while(1);
+    /*
+     while(!initModel.IpsAndNameGotten() || quit)
+    {
+        if(gui.hayEvento())
+            gui.parseEvento();
+    }
+    if(!quit)  //SI no fue por un quit
+    {
+        name=initModel.getName();
+        ipToConnect=initModel.getipToConnect();
+        ipToListen=initModel.ipToListen();
+    }
+    */
     
     
     BurgleBrosModel model;
@@ -53,14 +73,14 @@ int main(int argc, char** argv) {
     model.attachSoundManager(&sound);
     controller.attachModel(&model);
     controller.attachView(&view);
-    gui.atachController(&controller);
-    gui.getNameAndIp(name, ipToConnect, ipToListen);
-    while(!gui.connect() || !gui.userQuit())
+    gui.attachController(&controller);
+    while(!connect(&quit,&networkInterface,&controller, ipToConnect, ipToListen, name) || quit)
     {
-        //if(gui.hayEvento())
-          //  gui.parseEvento();
+        if(gui.hayEvento())
+            gui.parseEvento();
     }
-    if(!gui.userQuit())
+    gui.attachNetworkInterface(&networkInterface);
+    if(!quit)
     {
         /*BurgleBrosModel model;
         BurgleBrosView view;
@@ -71,12 +91,33 @@ int main(int argc, char** argv) {
         controller.attachModel(&model);
         controller.attachView(&view);
         gui.atachController(&controller);*/
-        while(gui.gameStillPlaying())
+        while(gameStillPlaying(controller))
         {
             if(gui.hayEvento())
                 gui.parseEvento();
         }
     }
     return 0;
+}
+
+bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string ipToConnect, string ipToListen, string userName )
+{
+    bool retVal = false;
+    if(networkInterface->standardConnectionStart(ipToConnect,ipToListen))
+    {
+        Controller->setCommunicationRoleNThisPlayerName(networkInterface->getCommunicationRole(), userName);
+        retVal = true;
+    }
+    if(networkInterface->checkError())    //Si hubo un error tratando de hacer la connection start:
+    {
+        cout<<networkInterface->getErrorMsg();
+        *quit=true;
+    }
+    return retVal;
+}
+
+bool gameStillPlaying(BurgleBrosController &controller)
+{
+    return !(controller.checkIfGameFinished());
 }
 

@@ -27,49 +27,25 @@ GUI::GUI() {
         al_register_event_source(EventQueue,al_get_keyboard_event_source());
     }
     quit = false;
+    networkEventEnabled=false;
 }
 
 GUI::GUI(const GUI& orig) {
 }
 
-void GUI::atachController(BurgleBrosController* Controller)
+void GUI::attachController(Controller * Controller)
 {
-    this->Controller=Controller;
-    this->Controller->attachNetworkInterface(&networkingInterface);
+    this->controller=controller;
 }
-
-void GUI::getNameAndIp(string userName, string ipToConnect, string ipToListen)
+void GUI::attachNetworkInterface(NetworkInterface * networkingInterface)
 {
-    this->userName=userName;
-    this->ipToConnect=ipToConnect;
-    this->ipToListen=ipToListen;
-}
-bool GUI::connect()
-{
-    bool retVal = false;
-    if(networkingInterface.standardConnectionStart(ipToConnect,ipToListen))
-    {
-        Controller->setCommunicationRoleNThisPlayerName(networkingInterface.getCommunicationRole(), userName);
-        retVal = true;
-    }
-    if(networkingInterface.checkError())    //Si hubo un error tratando de hacer la connection start:
-    {
-        cout<<networkingInterface.getErrorMsg();
-        quit=true;
-    }
-    return retVal;
-}
-
-bool GUI::userQuit()
-{
-    return quit;
+    this->networkingInterface=networkingInterface;
+    networkEventEnabled=true;
 }
 
 
-bool GUI::gameStillPlaying()
-{
-    return !(Controller->checkIfGameFinished());
-}
+
+
 bool GUI::hayEvento()
 {
     ALLEGRO_EVENT rawEvent;
@@ -77,7 +53,7 @@ bool GUI::hayEvento()
     unsigned char auxBuffer[BUFSIZE];
     unsigned int len;
     PerezProtocolHeader header;
-    if(networkingInterface.recievePacket(&header,auxBuffer,&len))
+    if(networkEventEnabled && networkingInterface->recievePacket(&header,auxBuffer,&len))
     {
         NetworkED *auxData=new NetworkED(header,auxBuffer,len);
         if(auxData->isPacketOk())
@@ -127,12 +103,13 @@ void GUI::parseEvento(){
     switch(event)
     {
         case GUI_EVENT_MOUSE:
-            Controller->parseMouseEvent(eventData);
+            controller->parseMouseEvent(eventData);
             break;
         case GUI_EVENT_KEYBOARD:
+            controller->parseKeyboardEvent(eventData);
             break;
         case GUI_EVENT_NETWORKING:
-            Controller->parseNetworkEvent(eventData);
+            controller->parseNetworkEvent(eventData);
             break;
     }
     
