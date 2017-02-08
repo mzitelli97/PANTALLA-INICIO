@@ -15,7 +15,7 @@
 #define STANDARD_PORT 15251 
 
 //#define HOME_IP "192.168.1.111"
-#define HOME_IP "127.0.0.1"
+//#define HOME_IP "127.0.0.1"
 //#define HOME_IP "25.19.160.63"
 typedef enum{ACK=0x01, AGREE, DISAGREE, NAME=0x10, NAME_IS, I_AM, INITIAL_G_POS, START_INFO, YOU_START=0x20, I_START,
 			 PEEK=0x30, MOVE, SPENT_OK, ADD_TOKEN, USE_TOKEN, THROW_DICE, SAFE_OPENED, CREATE_ALARM, SPY_PATROL,
@@ -34,7 +34,7 @@ public:
 	bool prepareToConnect(std::string &ip);
 	bool tryToConnect();
 	void abortConnecting();
-	bool prepareToListen();
+	bool prepareToListen(std::string &myIp);
 	bool listen();
 	bool sendPacket(PerezProtocolHeader header, const char *packetInfo, unsigned int packetLength);
 	bool recievePacket(PerezProtocolHeader *header,char *buffer, unsigned int *length);					//buffer len >= BUFSIZE!!!

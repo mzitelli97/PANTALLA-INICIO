@@ -34,14 +34,16 @@ NetworkInterface::NetworkInterface(Networking &networking)
 	prevClock = currClock;
         error=false;
 }
-bool NetworkInterface::standardConnectionStart(string &ip)
+bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
 {
 	bool connected = false;
         double time;
 	if (firstTimeCalled == true)
 	{
 		firstTimeCalled = false;
-		p2networking->prepareToConnect(ip);
+		error=!(p2networking->prepareToConnect(ip));
+                if(error)
+                    errorMsg = "Ip to connect was forbidden, check ip entered. Example: 127.0.0.1";
 	}
 	switch (currentRole)
 	{
@@ -54,7 +56,9 @@ bool NetworkInterface::standardConnectionStart(string &ip)
 		{
 			currentRole = SERVER;
 			p2networking->abortConnecting();
-			p2networking->prepareToListen();
+			error=!(p2networking->prepareToListen(myIp));
+                        if(error)
+                            errorMsg = "Ip to listen was forbidden, check ip entered. Example: 127.0.0.1";
                         cout<<"YA SOY SERVER";
 		}
                break;
@@ -69,6 +73,16 @@ CommunicationRole NetworkInterface::getCommunicationRole()
 {
 	return currentRole;
 }
+
+bool NetworkInterface::checkError() {
+    return error;
+}
+
+string NetworkInterface::getErrorMsg() {
+    return errorMsg;
+}
+
+
 bool NetworkInterface::recievePacket(PerezProtocolHeader *header, unsigned char * msg, unsigned int *len)
 {
     return p2networking->recievePacket(header,(char *)msg,len);
