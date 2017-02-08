@@ -19,7 +19,7 @@
 TextBox::TextBox(double width, double height, ALLEGRO_FONT * font, textSelected id)
 {
     selected=false;
-    text="127.0.0.1";
+    text="";
     this->width = width;
     this->height = height;
     this->font = font;

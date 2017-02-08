@@ -4,7 +4,10 @@
 
 cController::cController()
 {
-    view=nullptr;
+    view = nullptr;
+    model = nullptr;
+    connecting = false;
+    quit = false;
 }
 
 cController::cController(const cController& orig) {
@@ -34,7 +37,11 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
                 break;
             case CONNECT_BUTTON_CLICK:
                 if(!connecting && !model->isAnEntryEmpty())                 //si se esta conectando no tomo el click en el boton connect
+                {
                     connecting = true;
+                    view->toggleConnectButton();
+                    view->update(model);
+                }
                 break;
             case VOL_BUTTON_CLICK:
                 /*modelPointer->toggleVol();
@@ -44,8 +51,7 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
             case HELP_BUTTON_CLICK:
                 break;
             case EXIT_BUTTON_CLICK:
-                //if(view->yesNoMessageBox(exitMsg)==1)
-                    quit = true;
+                quit = true;
                 break;
         }
 

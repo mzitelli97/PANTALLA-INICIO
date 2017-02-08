@@ -107,3 +107,13 @@ ItemInfo CView::itemFromClick(Point point)
     }
     return retVal;
 }
+
+void CView::toggleConnectButton()
+{
+    list<GraphicItem *>::iterator it = gList.begin();
+    advance(it,N_BOXES + 1);
+    GraphicButton * button;
+    button = dynamic_cast<GraphicButton *> (*it);
+    if(button != nullptr)
+            button->toggleMute();
+}
