@@ -24,7 +24,7 @@ CView::CView()
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 #endif
     display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
-    backScreen = al_load_bitmap("begin.png");
+    backScreen = al_load_bitmap("fondo.jpg");
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     al_set_window_title(display,"EDA Burgle Bros");
     font = al_load_font("title.ttf",BOX_HEIGHT,0);

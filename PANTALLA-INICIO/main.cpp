@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
 
     srand(time(NULL));
     allegro_startup();
+    bool quit=false;
     
     GUI gui;
     BurgleBrosSound sound;
@@ -39,7 +40,7 @@ int main(int argc, char** argv) {
     CView initView;
     cController initController;
     NetworkInterface networkInterface;
-    bool quit=false;
+    
     
     initModel.attachView(&initView);
     initController.attachView(&initView);
@@ -50,8 +51,9 @@ int main(int argc, char** argv) {
     string ipToListen;
    
     gui.attachController(&initController);
-    while(!initController.checkIfConnecting() || quit)
+    while(!initController.checkIfConnecting() && !quit)
     {
+        quit = initController.userQuit();
         if(gui.hayEvento())
             gui.parseEvento();
     }
@@ -60,34 +62,36 @@ int main(int argc, char** argv) {
         name=initModel.getInfo().entries[MY_NAME];
         ipToConnect=initModel.getInfo().entries[OTHER_IP];
         ipToListen=initModel.getInfo().entries[MY_IP];
-    }
+        
+        BurgleBrosController controller;
     
-    
-    
-    BurgleBrosController controller;
-    BurgleBrosModel model;
-    BurgleBrosView view;
-    model.attachView(&view);
-    model.attachController(&controller);
-    model.attachSoundManager(&sound);
-    controller.attachModel(&model);
-    controller.attachView(&view);
-    controller.attachNetworkInterface(&networkInterface);
-    while(!connect(&quit,&networkInterface,&controller, ipToConnect, ipToListen, name) || quit)
-    {
-        if(gui.hayEvento())
-            gui.parseEvento();
-    }
-    gui.attachNetworkInterface(&networkInterface);
-    if(!quit)
-    {
-        gui.attachController(&controller);
-        while(gameStillPlaying(controller))
+        controller.attachNetworkInterface(&networkInterface);
+        while(!connect(&quit,&networkInterface,&controller, ipToConnect, ipToListen, name) && !quit)
         {
+            quit = initController.userQuit();
             if(gui.hayEvento())
                 gui.parseEvento();
         }
+
+        gui.attachNetworkInterface(&networkInterface);
+        if(!quit)
+        {
+            BurgleBrosModel model;
+            BurgleBrosView view;
+            model.attachView(&view);
+            model.attachController(&controller);
+            model.attachSoundManager(&sound);
+            controller.attachModel(&model);
+            controller.attachView(&view);
+            gui.attachController(&controller);
+            while(gameStillPlaying(controller))
+            {
+                if(gui.hayEvento())
+                    gui.parseEvento();
+            }
+        }
     }
+    
     return 0;
 }
 

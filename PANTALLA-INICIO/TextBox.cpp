@@ -65,6 +65,8 @@ void TextBox::draw()
 void TextBox::setPosition(double x, double y)
 {
     this->min = {x,y};
+    max.x = min.x + width;
+    max.y = min.y + height;
 }
 
 

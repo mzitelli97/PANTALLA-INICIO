@@ -33,10 +33,10 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
         {
             case TEXT_BOX:
                 auxTextInfo = (textSelected*)temp.info;
-                model->selectText(*auxTextInfo);
+                if(!connecting) model->selectText(*auxTextInfo);
                 break;
             case CONNECT_BUTTON_CLICK:
-                if(!connecting && !model->isAnEntryEmpty())                 //si se esta conectando no tomo el click en el boton connect
+                if(!connecting && !model->isAnEntryEmpty())  //si se esta conectando no tomo el click en el boton connect
                 {
                     connecting = true;
                     view->toggleConnectButton();
@@ -64,20 +64,20 @@ void cController::parseKeyboardEvent(EventData* evData)
     if(p2KeyData != nullptr)
     {
         if(!p2KeyData->isASpecialKey())
-            model->write(p2KeyData->getKey());
+        {   if(!connecting) model->write(p2KeyData->getKey());}
         else 
         {
             SpecialKey key = p2KeyData->getSpecialKey();
             switch(key)
             {
                 case BACKSPACE_KEY:
-                    model->deleteOneChar();
+                    if(!connecting) model->deleteOneChar();
                     break;
                 case UP_KEY:
-                    model->selectText((textSelected)((int)(model->getInfo().selected)-1));
+                    if(!connecting) model->selectText((textSelected)((int)(model->getInfo().selected)-1));
                     break;
                 case DOWN_KEY:
-                    model->selectText((textSelected)((int)(model->getInfo().selected)+1));
+                    if(!connecting) model->selectText((textSelected)((int)(model->getInfo().selected)+1));
                     break;
                 case ESCAPE_KEY:
                     quit = true;

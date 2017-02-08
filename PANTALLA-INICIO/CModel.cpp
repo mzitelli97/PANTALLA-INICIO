@@ -45,7 +45,7 @@ void CModel::write(char key)
 
 void CModel::deleteOneChar()
 {
-    if(data.selected != NONE_SELECTED)
+    if(data.selected != NONE_SELECTED && !data.entries[data.selected].empty())
         data.entries[data.selected].pop_back();
     view->update(this);
 }

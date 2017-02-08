@@ -33,7 +33,7 @@ GUI::GUI() {
 GUI::GUI(const GUI& orig) {
 }
 
-void GUI::attachController(Controller * Controller)
+void GUI::attachController(Controller * controller)
 {
     this->controller=controller;
 }
@@ -78,10 +78,15 @@ bool GUI::hayEvento()
         else if(rawEvent.type == ALLEGRO_EVENT_KEY_UP)
         {
             KeyboardED *auxData;
+            retVal=true;
             if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_A && rawEvent.keyboard.keycode <= ALLEGRO_KEY_Z)
                 auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'A');
             else if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_0 && rawEvent.keyboard.keycode <= ALLEGRO_KEY_9)
-                auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'0');
+                auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_0+'0');
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_FULLSTOP)
+                auxData= new KeyboardED('.');
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_SPACE)
+                auxData= new KeyboardED(' ');
             else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
                 auxData= new KeyboardED(ESCAPE_KEY);
             else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
@@ -90,9 +95,9 @@ bool GUI::hayEvento()
                 auxData= new KeyboardED(DOWN_KEY);
             else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_UP)
                 auxData= new KeyboardED(UP_KEY);
+            else retVal = false;                    //si no es ninguna de las teclas que tomamos, no genera evento
             eventData=(EventData *) auxData;
             event=GUI_EVENT_KEYBOARD;
-            retVal=true;
         }
     }
     return retVal;
