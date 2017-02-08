@@ -48,9 +48,8 @@ int main(int argc, char** argv) {
     string name;
     string ipToConnect;
     string ipToListen;
-    
-    while(1);
-    
+   
+    gui.attachController(&initController);
     while(!initController.checkIfConnecting() || quit)
     {
         if(gui.hayEvento())
@@ -74,6 +73,7 @@ int main(int argc, char** argv) {
     controller.attachModel(&model);
     controller.attachView(&view);
     gui.attachController(&controller);
+    controller.attachNetworkInterface(&networkInterface);
     while(!connect(&quit,&networkInterface,&controller, ipToConnect, ipToListen, name) || quit)
     {
         if(gui.hayEvento())
