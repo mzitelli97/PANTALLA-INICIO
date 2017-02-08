@@ -50,8 +50,8 @@ int main(int argc, char** argv) {
     string ipToListen;
     
     while(1);
-    /*
-     while(!initController.checkIfConnecting() || quit)
+    
+    while(!initController.checkIfConnecting() || quit)
     {
         if(gui.hayEvento())
             gui.parseEvento();
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
         ipToConnect=initModel.getInfo().entries[OTHER_IP];
         ipToListen=initModel.getInfo().entries[MY_IP];
     }
-    */
+    
     
     
     BurgleBrosModel model;
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
     gui.attachNetworkInterface(&networkInterface);
     if(!quit)
     {
-        /*BurgleBrosModel model;
+        BurgleBrosModel model;
         BurgleBrosView view;
         BurgleBrosController controller;
         model.attachView(&view);
@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
         model.attachSoundManager(&sound);
         controller.attachModel(&model);
         controller.attachView(&view);
-        gui.atachController(&controller);*/
+        gui.attachController(&controller);
         while(gameStillPlaying(controller))
         {
             if(gui.hayEvento())
