@@ -26,7 +26,6 @@ BurgleBrosController::BurgleBrosController(const BurgleBrosController& orig)
 {
 }
 
-
 void BurgleBrosController::attachNetworkInterface(NetworkInterface * p2NetworkInterface)
 {
     this->networkInterface=p2NetworkInterface;

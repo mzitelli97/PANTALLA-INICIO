@@ -48,10 +48,9 @@ int main(int argc, char** argv) {
     string name;
     string ipToConnect;
     string ipToListen;
-    
-    while(1);
-    /*
-     while(!initController.checkIfConnecting() || quit)
+   
+    gui.attachController(&initController);
+    while(!initController.checkIfConnecting() || quit)
     {
         if(gui.hayEvento())
             gui.parseEvento();
@@ -62,18 +61,18 @@ int main(int argc, char** argv) {
         ipToConnect=initModel.getInfo().entries[OTHER_IP];
         ipToListen=initModel.getInfo().entries[MY_IP];
     }
-    */
     
     
+    
+    BurgleBrosController controller;
     BurgleBrosModel model;
     BurgleBrosView view;
-    BurgleBrosController controller;
     model.attachView(&view);
     model.attachController(&controller);
     model.attachSoundManager(&sound);
     controller.attachModel(&model);
     controller.attachView(&view);
-    gui.attachController(&controller);
+    controller.attachNetworkInterface(&networkInterface);
     while(!connect(&quit,&networkInterface,&controller, ipToConnect, ipToListen, name) || quit)
     {
         if(gui.hayEvento())
@@ -82,15 +81,7 @@ int main(int argc, char** argv) {
     gui.attachNetworkInterface(&networkInterface);
     if(!quit)
     {
-        /*BurgleBrosModel model;
-        BurgleBrosView view;
-        BurgleBrosController controller;
-        model.attachView(&view);
-        model.attachController(&controller);
-        model.attachSoundManager(&sound);
-        controller.attachModel(&model);
-        controller.attachView(&view);
-        gui.atachController(&controller);*/
+        gui.attachController(&controller);
         while(gameStillPlaying(controller))
         {
             if(gui.hayEvento())
