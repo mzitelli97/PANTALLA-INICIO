@@ -23,7 +23,7 @@
 using namespace std;
 
 /*Estas funciones luego pertenecerían a un wrapper que las une para simplificar el main.*/
-bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string ipToConnect, string ipToListen, string userName );
+bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string &ipToConnect, string &ipToListen, string &userName );
 bool gameStillPlaying(BurgleBrosController &controller);
 /*
  * 
@@ -51,16 +51,16 @@ int main(int argc, char** argv) {
     
     while(1);
     /*
-     while(!initModel.IpsAndNameGotten() || quit)
+     while(!initController.checkIfConnecting() || quit)
     {
         if(gui.hayEvento())
             gui.parseEvento();
     }
     if(!quit)  //SI no fue por un quit
     {
-        name=initModel.getName();
-        ipToConnect=initModel.getipToConnect();
-        ipToListen=initModel.ipToListen();
+        name=initModel.getInfo().entries[MY_NAME];
+        ipToConnect=initModel.getInfo().entries[OTHER_IP];
+        ipToListen=initModel.getInfo().entries[MY_IP];
     }
     */
     
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string ipToConnect, string ipToListen, string userName )
+bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string &ipToConnect, string &ipToListen, string &userName )
 {
     bool retVal = false;
     if(networkInterface->standardConnectionStart(ipToConnect,ipToListen))
