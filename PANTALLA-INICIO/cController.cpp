@@ -19,6 +19,23 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
         ItemInfo temp;
         Point aux = {(double)p2MouseData->getX(),(double)p2MouseData->getY()};
         temp=view->itemFromClick(aux);
+        switch(temp.type)
+        {
+            case TEXT_BOX:
+                model->selectText(NONE_SELECTED);
+                break;
+            case VOL_BUTTON_CLICK:
+                /*modelPointer->toggleVol();
+                view->toggleVolButton();
+                view->update(modelPointer);*/
+                break;
+            case HELP_BUTTON_CLICK:
+                break;
+            case EXIT_BUTTON_CLICK:
+                //if(view->yesNoMessageBox(exitMsg)==1)
+                    quit = true;
+                break;
+        }
 
     }    
 }
@@ -28,7 +45,27 @@ void cController::parseKeyboardEvent(EventData* evData)
     KeyboardED *p2KeyData = dynamic_cast<KeyboardED *>(evData);
     if(p2KeyData != nullptr)
     {
-        
+        if(!p2KeyData->isASpecialKey())
+            model->write(p2KeyData->getKey());
+        else 
+        {
+            SpecialKey key = p2KeyData->getSpecialKey();
+            switch(key)
+            {
+                case BACKSPACE_KEY:
+                    model->deleteOneChar();
+                    break;
+                case UP_KEY:
+                    model->selectText((textSelected)((int)(model->getInfo().selected)-1));
+                    break;
+                case DOWN_KEY:
+                    model->selectText((textSelected)((int)(model->getInfo().selected)+1));
+                    break;
+                case ESCAPE_KEY:
+                    quit = true;
+                    break;
+            }
+        }
     }
 }
 
@@ -41,8 +78,17 @@ string cController::askForSpentOK(vector<string>& message) {
 
 }
 
+void cController::attachModel(CModel* model)
+{
+    this->model = model;
+}
 
-
-void cController::attachView(CView* view) {
+void cController::attachView(CView* view)
+{
     this->view=view;
+}
+
+bool cController::userQuit()
+{
+    return quit;
 }

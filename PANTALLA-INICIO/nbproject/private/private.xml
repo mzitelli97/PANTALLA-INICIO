@@ -4,4 +4,28 @@
         <activeConfTypeElem>1</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/cController.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/GUI.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/CView.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/CModel.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/TextBox.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/View.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/TextBox.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/GUI.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/GraphicButton.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/KeyboardED.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/BurgleBrosController.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/KeyboardED.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/CModel.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/CView.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/cController.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/BurgleBrosView.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/BurgleBrosController.h</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/main.cpp</file>
+            <file>file:/home/maxi/NetBeansProjects/PANTALLA-INICIO-GIT/PANTALLA-INICIO/Networking.h</file>
+        </group>
+    </open-files>
 </project-private>

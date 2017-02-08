@@ -35,49 +35,50 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosBoard.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosCard.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosController.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosDices.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosFloor.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosGuard.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosLoots.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosModel.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosPlayer.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosSound.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosTokens.o \
-	${OBJECTDIR}/_ext/548587b/BurgleBrosView.o \
-	${OBJECTDIR}/_ext/548587b/CView.o \
-	${OBJECTDIR}/_ext/548587b/Controller.o \
-	${OBJECTDIR}/_ext/548587b/EventData.o \
-	${OBJECTDIR}/_ext/548587b/GUI.o \
-	${OBJECTDIR}/_ext/548587b/GraphicButton.o \
-	${OBJECTDIR}/_ext/548587b/GraphicEDices.o \
-	${OBJECTDIR}/_ext/548587b/GraphicGDie.o \
-	${OBJECTDIR}/_ext/548587b/GraphicGuard.o \
-	${OBJECTDIR}/_ext/548587b/GraphicGuardCards.o \
-	${OBJECTDIR}/_ext/548587b/GraphicItem.o \
-	${OBJECTDIR}/_ext/548587b/GraphicLoot.o \
-	${OBJECTDIR}/_ext/548587b/GraphicMenuItem.o \
-	${OBJECTDIR}/_ext/548587b/GraphicPlayer.o \
-	${OBJECTDIR}/_ext/548587b/GraphicPlayerCard.o \
-	${OBJECTDIR}/_ext/548587b/GraphicTile.o \
-	${OBJECTDIR}/_ext/548587b/GraphicToken.o \
-	${OBJECTDIR}/_ext/548587b/GraphicWall.o \
-	${OBJECTDIR}/_ext/548587b/ImageLoader.o \
-	${OBJECTDIR}/_ext/548587b/KeyboardED.o \
-	${OBJECTDIR}/_ext/548587b/LibsInit.o \
-	${OBJECTDIR}/_ext/548587b/Model.o \
-	${OBJECTDIR}/_ext/548587b/MouseED.o \
-	${OBJECTDIR}/_ext/548587b/NetworkED.o \
-	${OBJECTDIR}/_ext/548587b/NetworkInterface.o \
-	${OBJECTDIR}/_ext/548587b/Networking.o \
-	${OBJECTDIR}/_ext/548587b/ProtocolFunctions.o \
-	${OBJECTDIR}/_ext/548587b/SoundManager.o \
-	${OBJECTDIR}/_ext/548587b/TextBox.o \
-	${OBJECTDIR}/_ext/548587b/View.o \
-	${OBJECTDIR}/_ext/548587b/cController.o \
-	${OBJECTDIR}/_ext/548587b/main.o
+	${OBJECTDIR}/BurgleBrosBoard.o \
+	${OBJECTDIR}/BurgleBrosCard.o \
+	${OBJECTDIR}/BurgleBrosController.o \
+	${OBJECTDIR}/BurgleBrosDices.o \
+	${OBJECTDIR}/BurgleBrosFloor.o \
+	${OBJECTDIR}/BurgleBrosGuard.o \
+	${OBJECTDIR}/BurgleBrosLoots.o \
+	${OBJECTDIR}/BurgleBrosModel.o \
+	${OBJECTDIR}/BurgleBrosPlayer.o \
+	${OBJECTDIR}/BurgleBrosSound.o \
+	${OBJECTDIR}/BurgleBrosTokens.o \
+	${OBJECTDIR}/BurgleBrosView.o \
+	${OBJECTDIR}/CModel.o \
+	${OBJECTDIR}/CView.o \
+	${OBJECTDIR}/Controller.o \
+	${OBJECTDIR}/EventData.o \
+	${OBJECTDIR}/GUI.o \
+	${OBJECTDIR}/GraphicButton.o \
+	${OBJECTDIR}/GraphicEDices.o \
+	${OBJECTDIR}/GraphicGDie.o \
+	${OBJECTDIR}/GraphicGuard.o \
+	${OBJECTDIR}/GraphicGuardCards.o \
+	${OBJECTDIR}/GraphicItem.o \
+	${OBJECTDIR}/GraphicLoot.o \
+	${OBJECTDIR}/GraphicMenuItem.o \
+	${OBJECTDIR}/GraphicPlayer.o \
+	${OBJECTDIR}/GraphicPlayerCard.o \
+	${OBJECTDIR}/GraphicTile.o \
+	${OBJECTDIR}/GraphicToken.o \
+	${OBJECTDIR}/GraphicWall.o \
+	${OBJECTDIR}/ImageLoader.o \
+	${OBJECTDIR}/KeyboardED.o \
+	${OBJECTDIR}/LibsInit.o \
+	${OBJECTDIR}/Model.o \
+	${OBJECTDIR}/MouseED.o \
+	${OBJECTDIR}/NetworkED.o \
+	${OBJECTDIR}/NetworkInterface.o \
+	${OBJECTDIR}/Networking.o \
+	${OBJECTDIR}/ProtocolFunctions.o \
+	${OBJECTDIR}/SoundManager.o \
+	${OBJECTDIR}/TextBox.o \
+	${OBJECTDIR}/View.o \
+	${OBJECTDIR}/cController.o \
+	${OBJECTDIR}/main.o
 
 
 # C Compiler Flags
@@ -94,7 +95,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=`pkg-config --libs allegro-5.0` `pkg-config --libs allegro_acodec-5.0` `pkg-config --libs allegro_audio-5.0` `pkg-config --libs allegro_color-5.0` `pkg-config --libs allegro_dialog-5.0` `pkg-config --libs allegro_font-5.0` `pkg-config --libs allegro_image-5.0` `pkg-config --libs allegro_main-5.0` `pkg-config --libs allegro_memfile-5.0` `pkg-config --libs allegro_physfs-5.0` `pkg-config --libs allegro_primitives-5.0` `pkg-config --libs allegro_ttf-5.0` `pkg-config --libs apr-1`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -104,220 +105,225 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pantalla-inicio: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pantalla-inicio ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosBoard.o: ../../PANTALLA-INICIO/BurgleBrosBoard.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosBoard.o: BurgleBrosBoard.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosBoard.o ../../PANTALLA-INICIO/BurgleBrosBoard.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosBoard.o BurgleBrosBoard.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosCard.o: ../../PANTALLA-INICIO/BurgleBrosCard.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosCard.o: BurgleBrosCard.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosCard.o ../../PANTALLA-INICIO/BurgleBrosCard.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosCard.o BurgleBrosCard.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosController.o: ../../PANTALLA-INICIO/BurgleBrosController.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosController.o: BurgleBrosController.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosController.o ../../PANTALLA-INICIO/BurgleBrosController.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosController.o BurgleBrosController.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosDices.o: ../../PANTALLA-INICIO/BurgleBrosDices.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosDices.o: BurgleBrosDices.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosDices.o ../../PANTALLA-INICIO/BurgleBrosDices.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosDices.o BurgleBrosDices.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosFloor.o: ../../PANTALLA-INICIO/BurgleBrosFloor.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosFloor.o: BurgleBrosFloor.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosFloor.o ../../PANTALLA-INICIO/BurgleBrosFloor.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosFloor.o BurgleBrosFloor.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosGuard.o: ../../PANTALLA-INICIO/BurgleBrosGuard.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosGuard.o: BurgleBrosGuard.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosGuard.o ../../PANTALLA-INICIO/BurgleBrosGuard.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosGuard.o BurgleBrosGuard.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosLoots.o: ../../PANTALLA-INICIO/BurgleBrosLoots.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosLoots.o: BurgleBrosLoots.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosLoots.o ../../PANTALLA-INICIO/BurgleBrosLoots.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosLoots.o BurgleBrosLoots.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosModel.o: ../../PANTALLA-INICIO/BurgleBrosModel.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosModel.o: BurgleBrosModel.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosModel.o ../../PANTALLA-INICIO/BurgleBrosModel.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosModel.o BurgleBrosModel.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosPlayer.o: ../../PANTALLA-INICIO/BurgleBrosPlayer.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosPlayer.o: BurgleBrosPlayer.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosPlayer.o ../../PANTALLA-INICIO/BurgleBrosPlayer.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosPlayer.o BurgleBrosPlayer.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosSound.o: ../../PANTALLA-INICIO/BurgleBrosSound.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosSound.o: BurgleBrosSound.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosSound.o ../../PANTALLA-INICIO/BurgleBrosSound.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosSound.o BurgleBrosSound.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosTokens.o: ../../PANTALLA-INICIO/BurgleBrosTokens.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosTokens.o: BurgleBrosTokens.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosTokens.o ../../PANTALLA-INICIO/BurgleBrosTokens.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosTokens.o BurgleBrosTokens.cpp
 
-${OBJECTDIR}/_ext/548587b/BurgleBrosView.o: ../../PANTALLA-INICIO/BurgleBrosView.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/BurgleBrosView.o: BurgleBrosView.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/BurgleBrosView.o ../../PANTALLA-INICIO/BurgleBrosView.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosView.o BurgleBrosView.cpp
 
-${OBJECTDIR}/_ext/548587b/CView.o: ../../PANTALLA-INICIO/CView.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/CModel.o: CModel.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/CView.o ../../PANTALLA-INICIO/CView.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CModel.o CModel.cpp
 
-${OBJECTDIR}/_ext/548587b/Controller.o: ../../PANTALLA-INICIO/Controller.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/CView.o: CView.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/Controller.o ../../PANTALLA-INICIO/Controller.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CView.o CView.cpp
 
-${OBJECTDIR}/_ext/548587b/EventData.o: ../../PANTALLA-INICIO/EventData.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/Controller.o: Controller.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/EventData.o ../../PANTALLA-INICIO/EventData.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Controller.o Controller.cpp
 
-${OBJECTDIR}/_ext/548587b/GUI.o: ../../PANTALLA-INICIO/GUI.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/EventData.o: EventData.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GUI.o ../../PANTALLA-INICIO/GUI.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EventData.o EventData.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicButton.o: ../../PANTALLA-INICIO/GraphicButton.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GUI.o: GUI.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicButton.o ../../PANTALLA-INICIO/GraphicButton.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GUI.o GUI.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicEDices.o: ../../PANTALLA-INICIO/GraphicEDices.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicButton.o: GraphicButton.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicEDices.o ../../PANTALLA-INICIO/GraphicEDices.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicButton.o GraphicButton.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicGDie.o: ../../PANTALLA-INICIO/GraphicGDie.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicEDices.o: GraphicEDices.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicGDie.o ../../PANTALLA-INICIO/GraphicGDie.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicEDices.o GraphicEDices.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicGuard.o: ../../PANTALLA-INICIO/GraphicGuard.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicGDie.o: GraphicGDie.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicGuard.o ../../PANTALLA-INICIO/GraphicGuard.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicGDie.o GraphicGDie.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicGuardCards.o: ../../PANTALLA-INICIO/GraphicGuardCards.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicGuard.o: GraphicGuard.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicGuardCards.o ../../PANTALLA-INICIO/GraphicGuardCards.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicGuard.o GraphicGuard.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicItem.o: ../../PANTALLA-INICIO/GraphicItem.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicGuardCards.o: GraphicGuardCards.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicItem.o ../../PANTALLA-INICIO/GraphicItem.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicGuardCards.o GraphicGuardCards.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicLoot.o: ../../PANTALLA-INICIO/GraphicLoot.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicItem.o: GraphicItem.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicLoot.o ../../PANTALLA-INICIO/GraphicLoot.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicItem.o GraphicItem.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicMenuItem.o: ../../PANTALLA-INICIO/GraphicMenuItem.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicLoot.o: GraphicLoot.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicMenuItem.o ../../PANTALLA-INICIO/GraphicMenuItem.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicLoot.o GraphicLoot.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicPlayer.o: ../../PANTALLA-INICIO/GraphicPlayer.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicMenuItem.o: GraphicMenuItem.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicPlayer.o ../../PANTALLA-INICIO/GraphicPlayer.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicMenuItem.o GraphicMenuItem.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicPlayerCard.o: ../../PANTALLA-INICIO/GraphicPlayerCard.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicPlayer.o: GraphicPlayer.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicPlayerCard.o ../../PANTALLA-INICIO/GraphicPlayerCard.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicPlayer.o GraphicPlayer.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicTile.o: ../../PANTALLA-INICIO/GraphicTile.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicPlayerCard.o: GraphicPlayerCard.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicTile.o ../../PANTALLA-INICIO/GraphicTile.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicPlayerCard.o GraphicPlayerCard.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicToken.o: ../../PANTALLA-INICIO/GraphicToken.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicTile.o: GraphicTile.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicToken.o ../../PANTALLA-INICIO/GraphicToken.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicTile.o GraphicTile.cpp
 
-${OBJECTDIR}/_ext/548587b/GraphicWall.o: ../../PANTALLA-INICIO/GraphicWall.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicToken.o: GraphicToken.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/GraphicWall.o ../../PANTALLA-INICIO/GraphicWall.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicToken.o GraphicToken.cpp
 
-${OBJECTDIR}/_ext/548587b/ImageLoader.o: ../../PANTALLA-INICIO/ImageLoader.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/GraphicWall.o: GraphicWall.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/ImageLoader.o ../../PANTALLA-INICIO/ImageLoader.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicWall.o GraphicWall.cpp
 
-${OBJECTDIR}/_ext/548587b/KeyboardED.o: ../../PANTALLA-INICIO/KeyboardED.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/ImageLoader.o: ImageLoader.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/KeyboardED.o ../../PANTALLA-INICIO/KeyboardED.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ImageLoader.o ImageLoader.cpp
 
-${OBJECTDIR}/_ext/548587b/LibsInit.o: ../../PANTALLA-INICIO/LibsInit.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/KeyboardED.o: KeyboardED.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/LibsInit.o ../../PANTALLA-INICIO/LibsInit.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/KeyboardED.o KeyboardED.cpp
 
-${OBJECTDIR}/_ext/548587b/Model.o: ../../PANTALLA-INICIO/Model.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/LibsInit.o: LibsInit.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/Model.o ../../PANTALLA-INICIO/Model.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LibsInit.o LibsInit.cpp
 
-${OBJECTDIR}/_ext/548587b/MouseED.o: ../../PANTALLA-INICIO/MouseED.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/Model.o: Model.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/MouseED.o ../../PANTALLA-INICIO/MouseED.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Model.o Model.cpp
 
-${OBJECTDIR}/_ext/548587b/NetworkED.o: ../../PANTALLA-INICIO/NetworkED.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/MouseED.o: MouseED.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/NetworkED.o ../../PANTALLA-INICIO/NetworkED.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MouseED.o MouseED.cpp
 
-${OBJECTDIR}/_ext/548587b/NetworkInterface.o: ../../PANTALLA-INICIO/NetworkInterface.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/NetworkED.o: NetworkED.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/NetworkInterface.o ../../PANTALLA-INICIO/NetworkInterface.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetworkED.o NetworkED.cpp
 
-${OBJECTDIR}/_ext/548587b/Networking.o: ../../PANTALLA-INICIO/Networking.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/NetworkInterface.o: NetworkInterface.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/Networking.o ../../PANTALLA-INICIO/Networking.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetworkInterface.o NetworkInterface.cpp
 
-${OBJECTDIR}/_ext/548587b/ProtocolFunctions.o: ../../PANTALLA-INICIO/ProtocolFunctions.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/Networking.o: Networking.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/ProtocolFunctions.o ../../PANTALLA-INICIO/ProtocolFunctions.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Networking.o Networking.cpp
 
-${OBJECTDIR}/_ext/548587b/SoundManager.o: ../../PANTALLA-INICIO/SoundManager.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/ProtocolFunctions.o: ProtocolFunctions.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/SoundManager.o ../../PANTALLA-INICIO/SoundManager.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ProtocolFunctions.o ProtocolFunctions.cpp
 
-${OBJECTDIR}/_ext/548587b/TextBox.o: ../../PANTALLA-INICIO/TextBox.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/SoundManager.o: SoundManager.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/TextBox.o ../../PANTALLA-INICIO/TextBox.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SoundManager.o SoundManager.cpp
 
-${OBJECTDIR}/_ext/548587b/View.o: ../../PANTALLA-INICIO/View.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/TextBox.o: TextBox.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/View.o ../../PANTALLA-INICIO/View.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TextBox.o TextBox.cpp
 
-${OBJECTDIR}/_ext/548587b/cController.o: ../../PANTALLA-INICIO/cController.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/View.o: View.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/cController.o ../../PANTALLA-INICIO/cController.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/View.o View.cpp
 
-${OBJECTDIR}/_ext/548587b/main.o: ../../PANTALLA-INICIO/main.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/548587b
+${OBJECTDIR}/cController.o: cController.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/548587b/main.o ../../PANTALLA-INICIO/main.cpp
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cController.o cController.cpp
+
+${OBJECTDIR}/main.o: main.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g `pkg-config --cflags allegro-5.0` `pkg-config --cflags allegro_acodec-5.0` `pkg-config --cflags allegro_audio-5.0` `pkg-config --cflags allegro_color-5.0` `pkg-config --cflags allegro_dialog-5.0` `pkg-config --cflags allegro_font-5.0` `pkg-config --cflags allegro_image-5.0` `pkg-config --cflags allegro_main-5.0` `pkg-config --cflags allegro_memfile-5.0` `pkg-config --cflags allegro_physfs-5.0` `pkg-config --cflags allegro_primitives-5.0` `pkg-config --cflags allegro_ttf-5.0` `pkg-config --cflags apr-1` -std=c++11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

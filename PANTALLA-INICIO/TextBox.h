@@ -35,7 +35,7 @@ public:
     void setPosition(double x, double y);
     
 private:
-    boxData data; 
+    boxData data;
     ALLEGRO_FONT * font;
 
 };

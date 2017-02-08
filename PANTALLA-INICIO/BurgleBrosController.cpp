@@ -4,6 +4,7 @@
 #include "GraphicGuardCards.h"
 #include "GUI.h"
 #include "NetworkED.h"
+#include "KeyboardED.h"
 #include <algorithm>
 
 using namespace std;
@@ -327,8 +328,26 @@ void BurgleBrosController::interpretAction(string action, CardLocation location)
     }
 }
 
-void BurgleBrosController::parseKeyboardEvent(EventData *mouseEvent) {
-
+void BurgleBrosController::parseKeyboardEvent(EventData *evData)
+{
+    KeyboardED *p2KeyData = dynamic_cast<KeyboardED *>(evData);
+    if(p2KeyData != nullptr)
+    {
+        if(p2KeyData->isASpecialKey()) 
+        {
+            SpecialKey key = p2KeyData->getSpecialKey();
+            vector<string> exitMsg={"Quit","Confirm quit", "You have pressed the quit button. Are you sure you want to quit?"};
+            if(key == ESCAPE_KEY)
+            {
+                if(view->yesNoMessageBox(exitMsg)==1)
+                {
+                    networkInterface->sendPacket(QUIT);
+                    waiting4QuitAck=true;
+                    quitCause=USER_QUIT;
+                }
+            }
+        }
+    }
 }
 
 void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)

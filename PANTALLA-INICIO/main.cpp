@@ -31,23 +31,36 @@ int main(int argc, char** argv) {
     
     GUI gui;
     BurgleBrosSound sound;
+    /*CModel initModel;
     CView initView;
     cController initController;
+    initModel.attachView(&initView);
     initController.attachView(&initView);
-    initView.update(nullptr);
-    while(1);
+    initController.attachModel(&initModel);
+    initView.update(&initModel);*/
+    //while(1);
     string name=argv[1];
     string ipToConnect=argv[2];
     
+    
+    BurgleBrosModel model;
+    BurgleBrosView view;
+    BurgleBrosController controller;
+    model.attachView(&view);
+    model.attachController(&controller);
+    model.attachSoundManager(&sound);
+    controller.attachModel(&model);
+    controller.attachView(&view);
+    gui.atachController(&controller);
     gui.getNameAndIp(name, ipToConnect);
     while(!gui.connect() || !gui.userQuit())
     {
-        if(gui.hayEvento())
-            gui.parseEvento();
+        //if(gui.hayEvento())
+          //  gui.parseEvento();
     }
     if(!gui.userQuit())
     {
-        BurgleBrosModel model;
+        /*BurgleBrosModel model;
         BurgleBrosView view;
         BurgleBrosController controller;
         model.attachView(&view);
@@ -55,7 +68,7 @@ int main(int argc, char** argv) {
         model.attachSoundManager(&sound);
         controller.attachModel(&model);
         controller.attachView(&view);
-        gui.atachController(&controller);
+        gui.atachController(&controller);*/
         while(gui.gameStillPlaying())
         {
             if(gui.hayEvento())

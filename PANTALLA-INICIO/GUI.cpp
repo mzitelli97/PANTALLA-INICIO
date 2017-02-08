@@ -16,6 +16,7 @@
 #include "GUI.h"
 #include "MouseED.h"
 #include "NetworkED.h"
+#include "KeyboardED.h"
 
 GUI::GUI() {
     
@@ -25,7 +26,7 @@ GUI::GUI() {
         al_register_event_source(EventQueue,al_get_mouse_event_source());
         al_register_event_source(EventQueue,al_get_keyboard_event_source());
     }
-    
+    quit = false;
 }
 
 GUI::GUI(const GUI& orig) {
@@ -45,7 +46,7 @@ void GUI::getNameAndIp(string userName, string ipToConnect)
 bool GUI::connect()
 {
     bool retVal = false;
-    if(networkingInterface.standardConnectionStart(ipToConnect));
+    if(networkingInterface.standardConnectionStart(ipToConnect))
     {
         Controller->setCommunicationRoleNThisPlayerName(networkingInterface.getCommunicationRole(), userName);
         retVal = true;
@@ -90,6 +91,25 @@ bool GUI::hayEvento()
             MouseED *auxData= new MouseED(true,rawEvent.mouse.x,rawEvent.mouse.y);
             eventData=(EventData *) auxData;
             event=GUI_EVENT_MOUSE;
+            retVal=true;
+        }
+        else if(rawEvent.type == ALLEGRO_EVENT_KEY_UP)
+        {
+            KeyboardED *auxData;
+            if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_A && rawEvent.keyboard.keycode <= ALLEGRO_KEY_Z)
+                auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'A');
+            else if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_0 && rawEvent.keyboard.keycode <= ALLEGRO_KEY_9)
+                auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'0');
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+                auxData= new KeyboardED(ESCAPE_KEY);
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
+                auxData= new KeyboardED(BACKSPACE_KEY);
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_DOWN)
+                auxData= new KeyboardED(DOWN_KEY);
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_UP)
+                auxData= new KeyboardED(UP_KEY);
+            eventData=(EventData *) auxData;
+            event=GUI_EVENT_KEYBOARD;
             retVal=true;
         }
     }

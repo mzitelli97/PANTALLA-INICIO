@@ -18,8 +18,8 @@
 
 TextBox::TextBox(double width, double height, ALLEGRO_FONT * font)
 {
-    data.selected=true;
-    data.text="000";
+    data.selected=false;
+    data.text="127.0.0.1";
     this->width = width;
     this->height = height;
     this->font = font;
@@ -32,7 +32,7 @@ TextBox::~TextBox() {
 }
 
 ItemInfo TextBox::IAm() {
-    ItemInfo info={TEXT_BOX,&data };
+    ItemInfo info={TEXT_BOX,&data};
     return info;
 }
 

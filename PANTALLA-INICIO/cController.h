@@ -17,6 +17,7 @@
 #include "Controller.h"
 #include "EventData.h"
 #include "CView.h"
+#include "CModel.h"
 
 
 class cController:public Controller {
@@ -28,11 +29,15 @@ public:
     string askForSpentOK(vector<string>& message) override;
 
     void attachView(CView* view);
+    void attachModel(CModel* model);
+    bool userQuit();
     cController(const cController& orig);
     virtual ~cController();
 private:
     bool connecting;
     CView* view;
+    CModel* model;
+    bool quit;
 
 };
 

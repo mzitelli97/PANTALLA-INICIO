@@ -1,13 +1,13 @@
 #include "CView.h"
 #include "TextBox.h"
 #include "GraphicButton.h"
+#include "CModel.h"
 
-#define N_BOXES 4
+#define N_BOXES 3
 #define SCREEN_W 720
 #define SCREEN_H (SCREEN_W*9/16)
 #define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/50.0
-#define BOX_IP_WIDTH al_get_display_width(display)/18.0
-#define BOX_NAME_WIDTH BOX_IP_WIDTH * 7.0
+#define BOX_WIDTH al_get_display_width(display)/3.0
 #define BOX_HEIGHT al_get_display_height(display)/20.0
 
 #define BOX_MIN_X al_get_display_width(display)/2.0
@@ -26,7 +26,7 @@ CView::CView()
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     al_set_window_title(display,"EDA Burgle Bros");
     font = al_load_font("title.ttf",BOX_HEIGHT,0);
-    boxClicked = gList.begin();
+    //boxClicked = gList.begin();
         
     al_draw_text(font,al_map_rgb(0,0,0),0,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP");
     al_draw_text(font,al_map_rgb(0,0,0),0,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP");
@@ -34,15 +34,12 @@ CView::CView()
     
     ALLEGRO_FONT * box_font = al_load_font("fonts.ttf",BOX_HEIGHT, 0);
     //Creo las cajas de texto
-    for(int i = 0; i < 2*N_BOXES; i++)
+    for(int i = 0; i < N_BOXES; i++)
     {
-        TextBox * box = new TextBox(BOX_IP_WIDTH,BOX_HEIGHT,box_font);
-        box->setPosition(BOX_MIN_X + SPACE_X * (i%4) + (i%4) * BOX_IP_WIDTH, BOX_MIN_Y + SPACE_Y* (i/4) + (i/4) * BOX_HEIGHT);
+        TextBox * box = new TextBox(BOX_WIDTH,BOX_HEIGHT,box_font);
+        box->setPosition(BOX_MIN_X, BOX_MIN_Y + SPACE_Y* (i%N_BOXES) + (i%N_BOXES) * BOX_HEIGHT);
         gList.push_back((GraphicItem*) box);
     }
-    TextBox * box = new TextBox(BOX_NAME_WIDTH,BOX_HEIGHT, box_font);
-    box->setPosition(BOX_MIN_X, BOX_MIN_Y + 3 * SPACE_Y + 2 * BOX_HEIGHT);
-    gList.push_back((GraphicItem*) box);
     
     //Creo los botones
     /*El boton del volumen*/
@@ -67,15 +64,26 @@ CView::~CView()
     al_destroy_display(display);
 }
 
-void CView::update(Model* model)
+void CView::update(Model* auxModel)
 {
-    list<GraphicItem *>::iterator it;
-    //Dibujo las cajas y los botones
-    for(it = gList.begin(); it != gList.end(); it++)
+    CModel * model = (CModel*) auxModel;
+    initInfo data = model->getInfo();
+    list<GraphicItem *>::iterator it = gList.begin();
+    //Update all the text boxes with the info of the model
+    for(int i = 0; i < NONE_SELECTED; i++, it++)
     {
-        (*it)->draw();
+        TextBox * box = dynamic_cast<TextBox*>(*it);
+        if(box != nullptr)
+        {
+            box->setText(data.entries[i]);
+            if(data.selected == i) box->select();
+            else box->unselect();
+        }
+            
     }
-    //Dibujo los textos
+    //Draw all the items
+    for(it = gList.begin(); it != gList.end(); it++)
+        (*it)->draw();
     al_flip_display();
 }
 
@@ -89,14 +97,14 @@ ItemInfo CView::itemFromClick(Point point)
         if((*it)->isPointIn(point))
         {
             retVal = (*it)->IAm();
-            boxClicked = it;
+            //boxClicked = it;
             break;
         }
     }
     return retVal;
 }
 
-void CView::getNameAndIps(string * name, string * myIp, string * Ip)
+/*void CView::getNameAndIps(string * name, string * myIp, string * Ip)
 {
     name->clear();
     myIp->clear();
@@ -119,7 +127,4 @@ void CView::getNameAndIps(string * name, string * myIp, string * Ip)
     TextBox * box = dynamic_cast<TextBox*>(*it);
     if(box != nullptr)
         *name += box->getText();
-}
-
-
-
+}*/
