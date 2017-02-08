@@ -14,16 +14,11 @@
 #ifndef TEXTBOX_H
 #define TEXTBOX_H
 #include "GraphicItem.h"
-
-typedef struct {
-    bool selected;
-    std:: string text;
-}boxData;
-
+#include "CModel.h"
 
 class TextBox: public GraphicItem  {
 public:
-    TextBox(double width, double height,ALLEGRO_FONT * font);
+    TextBox(double width, double height,ALLEGRO_FONT * font, textSelected id);
     TextBox(const TextBox& orig);
     virtual ~TextBox();
     virtual ItemInfo IAm();
@@ -35,7 +30,9 @@ public:
     void setPosition(double x, double y);
     
 private:
-    boxData data;
+    bool selected;
+    std::string text;
+    textSelected identifier;
     ALLEGRO_FONT * font;
 
 };

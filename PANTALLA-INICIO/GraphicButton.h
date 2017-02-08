@@ -23,7 +23,7 @@ class GraphicButton: public GraphicItem {
 public:
     GraphicButton();
     GraphicButton(const GraphicButton& orig);
-    GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * unMuteimage, buttonAction identifier, unsigned int width, unsigned int height);
+    GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * buttonImage2, buttonAction identifier, unsigned int width, unsigned int height);
     void setZoomFloor(unsigned int floor);
     buttonAction getButtonIdentifier();
     void toggleMute();

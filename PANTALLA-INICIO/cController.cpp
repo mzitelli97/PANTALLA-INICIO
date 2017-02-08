@@ -2,7 +2,8 @@
 #include "MouseED.h"
 #include "KeyboardED.h"
 
-cController::cController() {
+cController::cController()
+{
     view=nullptr;
 }
 
@@ -12,6 +13,11 @@ cController::cController(const cController& orig) {
 cController::~cController() {
 }
 
+bool cController::checkIfConnecting()
+{
+    return connecting;
+}
+
 void cController::parseMouseEvent(EventData* mouseEvent) {
     MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
     if( p2MouseData != nullptr)
@@ -19,10 +25,16 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
         ItemInfo temp;
         Point aux = {(double)p2MouseData->getX(),(double)p2MouseData->getY()};
         temp=view->itemFromClick(aux);
+        textSelected *auxTextInfo;
         switch(temp.type)
         {
             case TEXT_BOX:
-                model->selectText(NONE_SELECTED);
+                auxTextInfo = (textSelected*)temp.info;
+                model->selectText(*auxTextInfo);
+                break;
+            case CONNECT_BUTTON_CLICK:
+                if(!connecting && !model->isAnEntryEmpty())                 //si se esta conectando no tomo el click en el boton connect
+                    connecting = true;
                 break;
             case VOL_BUTTON_CLICK:
                 /*modelPointer->toggleVol();

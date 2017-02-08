@@ -15,6 +15,8 @@ string button2Str(buttonAction _button)
         case HELP_BUTTON: retVal = "Help"; break;
         case QUIT_BUTTON: retVal = "Quit"; break;
         case PASS_BUTTON: retVal = "Pass"; break;
+        case CONNECT_BUTTON: retVal = "Connect"; break;
+        case CONNECTING_BUTTON: retVal = "Connecting"; break;
     }
     
     return retVal;

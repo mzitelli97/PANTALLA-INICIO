@@ -12,7 +12,6 @@
  */
 
 #include "CModel.h"
-#include "Networking.h"
 
 CModel::CModel()
 {
@@ -58,6 +57,21 @@ void CModel::selectText(textSelected selected)
         this->data.selected = selected;
     view->update(this);
 }
+
+bool CModel::isAnEntryEmpty()
+{
+    bool retVal = false;
+    for(int i = 0; i < NONE_SELECTED; i++)
+    {
+        if(data.entries[i].empty())
+        {
+            retVal = true;
+            break;
+        }
+    }
+    return retVal;
+}
+
 
 /*textSelected operator++(const textSelected& text)
 {

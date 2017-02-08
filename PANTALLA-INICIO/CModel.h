@@ -38,13 +38,13 @@ public:
     initInfo getInfo();
     void write(char key);
     void deleteOneChar();
+    bool isAnEntryEmpty();
     void selectText(textSelected selected);
     
 private:
     View * view;
     initInfo data;
-    
-
+ 
 };
 
 #endif /* CMODEL_H */

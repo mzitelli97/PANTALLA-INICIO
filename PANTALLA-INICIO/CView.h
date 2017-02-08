@@ -26,10 +26,8 @@ public:
     virtual ~CView();
     void update(Model* model) override;
     ItemInfo itemFromClick(Point point);
-    //void getNameAndIps(string* name, string* myIp, string* Ip);
 private:
     std:: list<GraphicItem*> gList;
-    //std::list<GraphicItem *>::iterator boxClicked;
     ImageLoader imageLoader;
     ALLEGRO_BITMAP * backScreen;
     ALLEGRO_DISPLAY * display;

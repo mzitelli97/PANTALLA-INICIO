@@ -16,13 +16,14 @@
 #define TEXT_COLOR al_map_rgb(0,0,0)
 //#define CLICK_COLOR al_map_rgb
 
-TextBox::TextBox(double width, double height, ALLEGRO_FONT * font)
+TextBox::TextBox(double width, double height, ALLEGRO_FONT * font, textSelected id)
 {
-    data.selected=false;
-    data.text="127.0.0.1";
+    selected=false;
+    text="127.0.0.1";
     this->width = width;
     this->height = height;
     this->font = font;
+    identifier = id;
 }
 
 TextBox::TextBox(const TextBox& orig) {
@@ -32,33 +33,33 @@ TextBox::~TextBox() {
 }
 
 ItemInfo TextBox::IAm() {
-    ItemInfo info={TEXT_BOX,&data};
+    ItemInfo info={TEXT_BOX,&identifier};
     return info;
 }
 
 void TextBox::select() {
-    data.selected=true;
+    selected=true;
 }
 
 void TextBox::unselect() {
-    data.selected=false;
+    selected=false;
 }
 
 std::string TextBox::getText() {
-    return data.text;
+    return text;
 }
 
 void TextBox::setText(std::string text) {//ver si hay que hacer alguna validacion de width y eso
-    this->data.text=text;
+    this->text=text;
 }
 
 void TextBox::draw()
 {
     al_draw_filled_rectangle(min.x,min.y,min.x+width,min.y+height,BACK_COLOR);
     if(font != nullptr)
-        al_draw_text(font,TEXT_COLOR,min.x, min.y, ALLEGRO_ALIGN_LEFT, data.text.c_str());
-    if(data.selected)
-        al_draw_text(font,TEXT_COLOR,min.x+al_get_text_width(font,data.text.c_str()),min.y,0,"|");
+        al_draw_text(font,TEXT_COLOR,min.x, min.y, ALLEGRO_ALIGN_LEFT, text.c_str());
+    if(selected)
+        al_draw_text(font,TEXT_COLOR,min.x+al_get_text_width(font,text.c_str()),min.y,0,"|");
 }
 
 void TextBox::setPosition(double x, double y)

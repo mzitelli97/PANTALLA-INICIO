@@ -30,18 +30,23 @@
 #define PASS_WIDTH      (totalWidth/15)
 #define PASS_HEIGHT     (totalHeight/20)
 
+#define CONNECT_CENTER_X totalWidth/2.0
+#define CONNECT_CENTER_Y (5*(totalHeight/6.0))
+#define CONNECT_WIDTH    totalWidth/4.0
+#define CONNECT_HEIGHT   totalHeight/10.0
+
 GraphicButton::GraphicButton() {
 }
 
 GraphicButton::GraphicButton(const GraphicButton& orig) {
 }
 
-GraphicButton::GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * unMuteimage, buttonAction identifier, unsigned int width, unsigned int height)
+GraphicButton::GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * buttonImage2, buttonAction identifier, unsigned int width, unsigned int height)
 {
     this->info=nullptr;          //Por ahora dejo esto asi
     this->button=identifier;
     this->image=buttonImage;
-    this->image_2=unMuteimage;
+    this->image_2=buttonImage2;
     setScreenDimentions(width,height);
     switch(button)
     {
@@ -56,6 +61,12 @@ GraphicButton::GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * unMut
             center.y=PASS_CENTER_Y;
             this->width=PASS_WIDTH;
             this->height=PASS_HEIGHT; 
+            break;
+        case CONNECT_BUTTON:
+            center.x=CONNECT_CENTER_X;
+            center.y=CONNECT_CENTER_Y;
+            this->width=CONNECT_WIDTH;
+            this->height=CONNECT_HEIGHT; 
             break;
         case HELP_BUTTON:
             center.x = HELP_CENTER_X;
@@ -93,6 +104,8 @@ ItemInfo GraphicButton::IAm()
         return {EXIT_BUTTON_CLICK,nullptr};
     if(button == PASS_BUTTON)
         return {PASS_BUTTON_CLICK,nullptr};
+    if(button == CONNECT_BUTTON)    
+        return {CONNECT_BUTTON_CLICK,nullptr};
 }
 
 buttonAction GraphicButton::getButtonIdentifier()

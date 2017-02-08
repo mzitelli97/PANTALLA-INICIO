@@ -28,6 +28,7 @@ public:
     void parseKeyboardEvent(EventData *evData);
     string askForSpentOK(vector<string>& message) override;
 
+    bool checkIfConnecting();
     void attachView(CView* view);
     void attachModel(CModel* model);
     bool userQuit();
