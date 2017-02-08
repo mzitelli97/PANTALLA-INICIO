@@ -16,7 +16,7 @@
 #include <list>
 #include <allegro5/events.h>
 #include <allegro5/config.h>
-#include "BurgleBrosController.h"
+#include "Controller.h"
 #include "NetworkInterface.h"
 
 typedef enum{GUI_EVENT_MOUSE, GUI_EVENT_KEYBOARD,GUI_EVENT_NETWORKING,GUI_EVENT_NOEVENT} GuiEvent;
@@ -27,27 +27,21 @@ class GUI {
 public:
     GUI();
     GUI(const GUI& orig);
-    void getNameAndIp(string userName, string ipToConnect, string ipToListen);
-    bool connect();
-    bool userQuit();
     bool hayEvento(void);
     void parseEvento(void);
-    bool gameStillPlaying();
-    void atachController (BurgleBrosController * Controller);
+    void attachController (Controller * Controller);
+    void attachNetworkInterface(NetworkInterface * networkingInterface);
     virtual ~GUI();
     
 private:
-    BurgleBrosController * Controller;
-    string userName;
+    Controller *controller;
+    bool networkEventEnabled;
     bool error;
-    string ipToConnect;
-    string ipToListen;
-    CommunicationRole communicationRole;
     GuiEvent event;
     ALLEGRO_TIMER * timer;
     EventData *eventData;
     ALLEGRO_EVENT_QUEUE *EventQueue;     
-    NetworkInterface networkingInterface;
+    NetworkInterface * networkingInterface;
     bool quit;
 };
 
