@@ -57,6 +57,7 @@ CView::CView()
     }
     
     al_destroy_font(font);
+    //al_destroy_font(box_font);
 }
 
 CView::CView(const CView& orig) {
@@ -101,7 +102,6 @@ ItemInfo CView::itemFromClick(Point point)
         if((*it)->isPointIn(point))
         {
             retVal = (*it)->IAm();
-            //boxClicked = it;
             break;
         }
     }

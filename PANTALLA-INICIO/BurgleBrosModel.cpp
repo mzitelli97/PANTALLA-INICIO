@@ -1203,7 +1203,7 @@ bool BurgleBrosModel::isCreateAlarmPossible(PlayerId playerId, CardLocation tile
 {
     bool retVal=false;
     BurgleBrosPlayer* p=getP2Player(playerId);
-    if(p->isItsTurn() && p->getCharacter() == THE_JUICER && playerSpentFreeAction==false && board.adjacentCards(p->getPosition(),tile)&& status == WAITING_FOR_ACTION)
+    if(p->isItsTurn() && p->getCharacter() == THE_JUICER && playerSpentFreeAction==false && board.adjacentCards(p->getPosition(),tile)&& guards[tile.floor].getPosition()!=tile && status == WAITING_FOR_ACTION)
         retVal=true;
     return retVal;
 }
@@ -1700,9 +1700,12 @@ void BurgleBrosModel::handleChihuahuaMove(unsigned int die)
 
 void BurgleBrosModel::triggerAlarm(CardLocation tile)
 {
-    tokens.triggerAlarm(tile);
-    setGuardsNewPath(tile.floor);
-    soundManager->playSoundEffect(ALARM_TRIGGERED);
+    if(guards[tile.floor].getPosition() != tile)
+    {
+        tokens.triggerAlarm(tile);
+        setGuardsNewPath(tile.floor);
+        soundManager->playSoundEffect(ALARM_TRIGGERED);
+    }
 }
 
 void BurgleBrosModel::toggleVol()

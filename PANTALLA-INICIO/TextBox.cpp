@@ -45,10 +45,6 @@ void TextBox::unselect() {
     selected=false;
 }
 
-std::string TextBox::getText() {
-    return text;
-}
-
 void TextBox::setText(std::string text) {//ver si hay que hacer alguna validacion de width y eso
     this->text=text;
 }

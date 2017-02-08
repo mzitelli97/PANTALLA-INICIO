@@ -24,7 +24,6 @@ public:
     virtual ItemInfo IAm();
     virtual void draw();
     void setText(std::string text);
-    std::string getText();
     void select();
     void unselect();
     void setPosition(double x, double y);
