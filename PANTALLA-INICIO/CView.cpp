@@ -65,6 +65,9 @@ CView::CView(const CView& orig) {
 
 CView::~CView()
 {
+    list<GraphicItem*>::iterator it;
+    for(it = gList.begin(); it != gList.end(); it++)
+        if(*it != nullptr) delete *it;
     al_destroy_bitmap(backScreen);
     al_destroy_display(display);
 }

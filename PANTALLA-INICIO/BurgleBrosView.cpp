@@ -63,22 +63,33 @@ BurgleBrosView::BurgleBrosView() {
     al_destroy_bitmap(icon);
     #endif
     al_set_window_title(display,"EDA Burgle Bros");
+    al_flip_display();
 
 }
 
 
-BurgleBrosView::~BurgleBrosView() {
-}
-/*void BurgleBrosView::attachModel(BurgleBrosModel *model)
+BurgleBrosView::~BurgleBrosView()
 {
-    this->model=model;
-    board = model->getElements()->getBoard();
+    al_destroy_display(display);
+    al_destroy_bitmap(backScreen);
 }
-*/
 
 void BurgleBrosView::reset()
 {
-    this->graphicInterface.clear(); //Esto después se debería hacer con deletes.
+    list<list<list<GraphicItem *>>>::iterator it_layers;
+    list<list<GraphicItem *>>::iterator it_itemType;
+    list<GraphicItem *>::iterator it_items;
+    for( it_layers = graphicInterface.begin(); it_layers != graphicInterface.end(); it_layers++)
+    {
+        for( it_itemType = it_layers->begin(); it_itemType != it_layers->end(); it_itemType++)
+        {
+            for( it_items = it_itemType->begin(); it_items != it_itemType->end(); it_items++)
+                if(*it_items != nullptr) delete *it_items;
+            it_itemType->clear();
+        }
+        it_layers->clear();
+    }
+    graphicInterface.clear();
     onZoom = false;
     floorZoomed = NO_FLOOR_ZOOMED;
     guardZoomed = NO_GUARD_ZOOMED;
@@ -110,9 +121,7 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     /***************creo las capas y creo un iterador***/
     
     for(int i=0; i<INIT_QUANTITY_LAYERS;i++)
-    {
         graphicInterface.push_back(auxLayer);
-    }
     it_layers=graphicInterface.begin();
           
     /*********Inicializo la primera capa****************/
@@ -386,7 +395,7 @@ void BurgleBrosView::updateCharacters(BurgleBrosModel *model) {
     //First Player
     Info2DrawPlayer player = model->getInfo2DrawPlayer(THIS_PLAYER);
     GraphicPlayer* gPlayer = dynamic_cast<GraphicPlayer*> (*it); //ASUMI QUE EL PRIMERO ES THIS_PLAYER
-    if(gPlayer!=NULL)//VER EL ORDEN DE LAS COSAS, DEBERIA ANDAR IGUAL
+    if(gPlayer!=NULL)
     {
         if(onZoom && player.position.floor == floorZoomed) gPlayer->setZoom(true);
         else gPlayer->setZoom(false);
