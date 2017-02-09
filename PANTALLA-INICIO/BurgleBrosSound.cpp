@@ -23,7 +23,7 @@ BurgleBrosSound::BurgleBrosSound() {
     al_reserve_samples(3);              //para poder reproducir 3 sonidos a la vez(no va a haber mas)
     if(initOK)
          test=al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
-    cout<<(unsigned int)test;
+    //cout<<(unsigned int)test;
     onMute = false;
 }
 

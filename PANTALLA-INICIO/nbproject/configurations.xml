@@ -4,49 +4,59 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>BurgleBrosBoard.h</itemPath>
-      <itemPath>BurgleBrosCard.h</itemPath>
-      <itemPath>BurgleBrosController.h</itemPath>
-      <itemPath>BurgleBrosDices.h</itemPath>
-      <itemPath>BurgleBrosFloor.h</itemPath>
-      <itemPath>BurgleBrosGuard.h</itemPath>
-      <itemPath>BurgleBrosLoots.h</itemPath>
-      <itemPath>BurgleBrosModel.h</itemPath>
-      <itemPath>BurgleBrosPlayer.h</itemPath>
-      <itemPath>BurgleBrosSound.h</itemPath>
-      <itemPath>BurgleBrosTokens.h</itemPath>
-      <itemPath>BurgleBrosView.h</itemPath>
-      <itemPath>CModel.h</itemPath>
-      <itemPath>CView.h</itemPath>
+      <logicalFolder name="f1" displayName="BurgleBros" projectFiles="true">
+        <itemPath>BurgleBrosBoard.h</itemPath>
+        <itemPath>BurgleBrosCard.h</itemPath>
+        <itemPath>BurgleBrosController.h</itemPath>
+        <itemPath>BurgleBrosDices.h</itemPath>
+        <itemPath>BurgleBrosFloor.h</itemPath>
+        <itemPath>BurgleBrosGuard.h</itemPath>
+        <itemPath>BurgleBrosLoots.h</itemPath>
+        <itemPath>BurgleBrosModel.h</itemPath>
+        <itemPath>BurgleBrosPlayer.h</itemPath>
+        <itemPath>BurgleBrosSound.h</itemPath>
+        <itemPath>BurgleBrosTokens.h</itemPath>
+        <itemPath>BurgleBrosView.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="Events" projectFiles="true">
+        <itemPath>EventData.h</itemPath>
+        <itemPath>KeyboardED.h</itemPath>
+        <itemPath>MouseED.h</itemPath>
+        <itemPath>NetworkED.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Graphics" projectFiles="true">
+        <itemPath>GraphicButton.h</itemPath>
+        <itemPath>GraphicEDices.h</itemPath>
+        <itemPath>GraphicGDie.h</itemPath>
+        <itemPath>GraphicGuard.h</itemPath>
+        <itemPath>GraphicGuardCards.h</itemPath>
+        <itemPath>GraphicItem.h</itemPath>
+        <itemPath>GraphicLoot.h</itemPath>
+        <itemPath>GraphicMenuItem.h</itemPath>
+        <itemPath>GraphicPlayer.h</itemPath>
+        <itemPath>GraphicPlayerCard.h</itemPath>
+        <itemPath>GraphicTile.h</itemPath>
+        <itemPath>GraphicToken.h</itemPath>
+        <itemPath>GraphicWall.h</itemPath>
+        <itemPath>ImageLoader.h</itemPath>
+        <itemPath>TextBox.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="InitC" projectFiles="true">
+        <itemPath>CModel.h</itemPath>
+        <itemPath>CView.h</itemPath>
+        <itemPath>cController.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="Networking" projectFiles="true">
+        <itemPath>NetworkInterface.h</itemPath>
+        <itemPath>Networking.h</itemPath>
+        <itemPath>ProtocolFunctions.h</itemPath>
+      </logicalFolder>
       <itemPath>Controller.h</itemPath>
-      <itemPath>EventData.h</itemPath>
       <itemPath>GUI.h</itemPath>
-      <itemPath>GraphicButton.h</itemPath>
-      <itemPath>GraphicEDices.h</itemPath>
-      <itemPath>GraphicGDie.h</itemPath>
-      <itemPath>GraphicGuard.h</itemPath>
-      <itemPath>GraphicGuardCards.h</itemPath>
-      <itemPath>GraphicItem.h</itemPath>
-      <itemPath>GraphicLoot.h</itemPath>
-      <itemPath>GraphicMenuItem.h</itemPath>
-      <itemPath>GraphicPlayer.h</itemPath>
-      <itemPath>GraphicPlayerCard.h</itemPath>
-      <itemPath>GraphicTile.h</itemPath>
-      <itemPath>GraphicToken.h</itemPath>
-      <itemPath>GraphicWall.h</itemPath>
-      <itemPath>ImageLoader.h</itemPath>
-      <itemPath>KeyboardED.h</itemPath>
       <itemPath>LibsInit.h</itemPath>
       <itemPath>Model.h</itemPath>
-      <itemPath>MouseED.h</itemPath>
-      <itemPath>NetworkED.h</itemPath>
-      <itemPath>NetworkInterface.h</itemPath>
-      <itemPath>Networking.h</itemPath>
-      <itemPath>ProtocolFunctions.h</itemPath>
       <itemPath>SoundManager.h</itemPath>
-      <itemPath>TextBox.h</itemPath>
       <itemPath>View.h</itemPath>
-      <itemPath>cController.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -55,49 +65,59 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>BurgleBrosBoard.cpp</itemPath>
-      <itemPath>BurgleBrosCard.cpp</itemPath>
-      <itemPath>BurgleBrosController.cpp</itemPath>
-      <itemPath>BurgleBrosDices.cpp</itemPath>
-      <itemPath>BurgleBrosFloor.cpp</itemPath>
-      <itemPath>BurgleBrosGuard.cpp</itemPath>
-      <itemPath>BurgleBrosLoots.cpp</itemPath>
-      <itemPath>BurgleBrosModel.cpp</itemPath>
-      <itemPath>BurgleBrosPlayer.cpp</itemPath>
-      <itemPath>BurgleBrosSound.cpp</itemPath>
-      <itemPath>BurgleBrosTokens.cpp</itemPath>
-      <itemPath>BurgleBrosView.cpp</itemPath>
-      <itemPath>CModel.cpp</itemPath>
-      <itemPath>CView.cpp</itemPath>
+      <logicalFolder name="f1" displayName="BurgleBros" projectFiles="true">
+        <itemPath>BurgleBrosBoard.cpp</itemPath>
+        <itemPath>BurgleBrosCard.cpp</itemPath>
+        <itemPath>BurgleBrosController.cpp</itemPath>
+        <itemPath>BurgleBrosDices.cpp</itemPath>
+        <itemPath>BurgleBrosFloor.cpp</itemPath>
+        <itemPath>BurgleBrosGuard.cpp</itemPath>
+        <itemPath>BurgleBrosLoots.cpp</itemPath>
+        <itemPath>BurgleBrosModel.cpp</itemPath>
+        <itemPath>BurgleBrosPlayer.cpp</itemPath>
+        <itemPath>BurgleBrosSound.cpp</itemPath>
+        <itemPath>BurgleBrosTokens.cpp</itemPath>
+        <itemPath>BurgleBrosView.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="Events" projectFiles="true">
+        <itemPath>EventData.cpp</itemPath>
+        <itemPath>KeyboardED.cpp</itemPath>
+        <itemPath>MouseED.cpp</itemPath>
+        <itemPath>NetworkED.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Graphics" projectFiles="true">
+        <itemPath>GraphicButton.cpp</itemPath>
+        <itemPath>GraphicEDices.cpp</itemPath>
+        <itemPath>GraphicGDie.cpp</itemPath>
+        <itemPath>GraphicGuard.cpp</itemPath>
+        <itemPath>GraphicGuardCards.cpp</itemPath>
+        <itemPath>GraphicItem.cpp</itemPath>
+        <itemPath>GraphicLoot.cpp</itemPath>
+        <itemPath>GraphicMenuItem.cpp</itemPath>
+        <itemPath>GraphicPlayer.cpp</itemPath>
+        <itemPath>GraphicPlayerCard.cpp</itemPath>
+        <itemPath>GraphicTile.cpp</itemPath>
+        <itemPath>GraphicToken.cpp</itemPath>
+        <itemPath>GraphicWall.cpp</itemPath>
+        <itemPath>ImageLoader.cpp</itemPath>
+        <itemPath>TextBox.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="InitC" projectFiles="true">
+        <itemPath>CModel.cpp</itemPath>
+        <itemPath>CView.cpp</itemPath>
+        <itemPath>cController.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="Networking" projectFiles="true">
+        <itemPath>NetworkInterface.cpp</itemPath>
+        <itemPath>Networking.cpp</itemPath>
+        <itemPath>ProtocolFunctions.cpp</itemPath>
+      </logicalFolder>
       <itemPath>Controller.cpp</itemPath>
-      <itemPath>EventData.cpp</itemPath>
       <itemPath>GUI.cpp</itemPath>
-      <itemPath>GraphicButton.cpp</itemPath>
-      <itemPath>GraphicEDices.cpp</itemPath>
-      <itemPath>GraphicGDie.cpp</itemPath>
-      <itemPath>GraphicGuard.cpp</itemPath>
-      <itemPath>GraphicGuardCards.cpp</itemPath>
-      <itemPath>GraphicItem.cpp</itemPath>
-      <itemPath>GraphicLoot.cpp</itemPath>
-      <itemPath>GraphicMenuItem.cpp</itemPath>
-      <itemPath>GraphicPlayer.cpp</itemPath>
-      <itemPath>GraphicPlayerCard.cpp</itemPath>
-      <itemPath>GraphicTile.cpp</itemPath>
-      <itemPath>GraphicToken.cpp</itemPath>
-      <itemPath>GraphicWall.cpp</itemPath>
-      <itemPath>ImageLoader.cpp</itemPath>
-      <itemPath>KeyboardED.cpp</itemPath>
       <itemPath>LibsInit.cpp</itemPath>
       <itemPath>Model.cpp</itemPath>
-      <itemPath>MouseED.cpp</itemPath>
-      <itemPath>NetworkED.cpp</itemPath>
-      <itemPath>NetworkInterface.cpp</itemPath>
-      <itemPath>Networking.cpp</itemPath>
-      <itemPath>ProtocolFunctions.cpp</itemPath>
       <itemPath>SoundManager.cpp</itemPath>
-      <itemPath>TextBox.cpp</itemPath>
       <itemPath>View.cpp</itemPath>
-      <itemPath>cController.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
