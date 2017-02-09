@@ -15,7 +15,6 @@
 #define CMODEL_H
 
 #include "Model.h"
-#include "View.h"
 #include <string>
 
 typedef enum {MY_IP = 0, OTHER_IP, MY_NAME, NONE_SELECTED}textSelected;
@@ -34,7 +33,6 @@ public:
     CModel();
     CModel(const CModel& orig);
     virtual ~CModel();
-    void attachView(View * view);
     initInfo getInfo();
     void write(char key);
     void deleteOneChar();
@@ -42,7 +40,6 @@ public:
     void selectText(textSelected selected);
     
 private:
-    View * view;
     initInfo data;
  
 };

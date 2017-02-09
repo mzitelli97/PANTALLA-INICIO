@@ -18,11 +18,12 @@
 #include "EventData.h"
 #include "CView.h"
 #include "CModel.h"
-
+#include "BurgleBrosSound.h"
 
 class cController:public Controller {
 public:
     cController();
+    void attachSound(BurgleBrosSound *sound);
     void parseMouseEvent(EventData *mouseEvent);
     void parseNetworkEvent(EventData *evData);
     void parseKeyboardEvent(EventData *evData);
@@ -38,6 +39,7 @@ private:
     bool connecting;
     CView* view;
     CModel* model;
+    BurgleBrosSound *sound;
     bool quit;
 
 };

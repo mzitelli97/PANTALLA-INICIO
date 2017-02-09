@@ -19,9 +19,6 @@
 #include "GraphicItem.h"
 #include <list>
 typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
-typedef enum {TILES_LIST, BUTTONS_LIST, CHARACTER_CARDS_LIST, LOOT_SHOW_LIST, EXTRA_DICES_LIST, GUARD_CARDS_LIST} FirstLayerLists;
-typedef enum {TOKENS_LIST, GUARD_INFO_LIST, PLAYER_INFO_LIST, STATIC_ITEMS} SecondeLayerLists;
-typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 #define DROPDOWNS_MENUS_LIST 0
 #define INIT_QUANTITY_LAYERS 3
 
@@ -30,7 +27,7 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 class BurgleBrosView : public View{
 public:
     BurgleBrosView();
-    BurgleBrosView(Model * model);
+    BurgleBrosView(BurgleBrosModel * model);
     
     /*Devuelve sobre que item fue el click, junto con informacion del item.
      TILE -> CARDLOCATION
@@ -40,7 +37,7 @@ public:
      MENU_ITEM -> AUXINFO (string y cardLocation)*/
     ItemInfo itemFromClick(Point point);
     
-    virtual void update(Model * model);
+    virtual void update();
     void reset();
     void ViewInit(BurgleBrosModel* model);
     void showMenu(list<string> options, Point click, CardLocation tile);
@@ -56,16 +53,17 @@ public:
     void cheatCards();
     virtual ~BurgleBrosView();
 private:
+    BurgleBrosModel * model;
     list<GraphicItem *>::iterator accessGraphicItems(Layers layer, unsigned int itemType);
     list<list<GraphicItem *>>::iterator deleteList(Layers layer, unsigned int itemList);
-    void updateButtons(BurgleBrosModel *model);
-    void updateCharacters(BurgleBrosModel *model);
-    void updateCharacterCards(BurgleBrosModel *model);
-    void updateTiles(BurgleBrosModel * model);
-    void updateLoots(BurgleBrosModel * model);
-    void updateGuards(BurgleBrosModel * model);
-    void updateTokens(BurgleBrosModel * model);
-    void updateExtraDices(BurgleBrosModel * model);
+    void updateButtons();
+    void updateCharacters();
+    void updateCharacterCards();
+    void updateTiles();
+    void updateLoots();
+    void updateGuards();
+    void updateTokens();
+    void updateExtraDices();
     list<list<list<GraphicItem *>>> graphicInterface;                   //layers structure of graphical interface
     vector<GraphicItem*> walls;
     ALLEGRO_DISPLAY * display;
