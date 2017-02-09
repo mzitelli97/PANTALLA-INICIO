@@ -12,10 +12,10 @@
  */
 
 #include <cstdlib>
+#include "BurgleBrosSound.h"
 #include "BurgleBrosModel.h"
 #include "BurgleBrosController.h"
 #include "BurgleBrosView.h"
-#include "BurgleBrosSound.h"
 #include "LibsInit.h"
 #include "GUI.h"
 #include "CView.h"
@@ -37,15 +37,16 @@ int main(int argc, char** argv) {
     GUI gui;
     BurgleBrosSound sound;
     CModel initModel;
-    CView initView;
+    CView initView(&initModel);
     cController initController;
     NetworkInterface networkInterface;
     
     
-    initModel.attachView(&initView);
+    initModel.attach(&initView);
     initController.attachView(&initView);
     initController.attachModel(&initModel);
-    initView.update(&initModel);
+    initController.attachSound(&sound);
+    initView.update();
     string name;
     string ipToConnect;
     string ipToListen;
@@ -77,10 +78,11 @@ int main(int argc, char** argv) {
         if(!quit)
         {
             BurgleBrosModel model;
-            BurgleBrosView view;
-            model.attachView(&view);
+            BurgleBrosView view(&model);
+            model.attach(&view);
             model.attachController(&controller);
-            model.attachSoundManager(&sound);
+            sound.attachModel(&model);
+            controller.attachSound(&sound);
             controller.attachModel(&model);
             controller.attachView(&view);
             gui.attachController(&controller);

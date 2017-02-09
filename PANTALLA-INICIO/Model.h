@@ -14,12 +14,20 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "View.h"
+#include <list>
+
 class Model {
 public:
     Model();
     Model(const Model& orig);
     virtual ~Model();
+    void attach(View * view);
+    void deAttach(View * view);
+protected:
+    void notifyAllObservers();
 private:
+    std::list<View *> observers;
 
 };
 

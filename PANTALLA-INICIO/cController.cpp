@@ -1,6 +1,7 @@
 #include "cController.h"
 #include "MouseED.h"
 #include "KeyboardED.h"
+#include "BurgleBrosSound.h"
 
 cController::cController()
 {
@@ -19,6 +20,10 @@ cController::~cController() {
 bool cController::checkIfConnecting()
 {
     return connecting;
+}
+
+void cController::attachSound(BurgleBrosSound* sound) {
+    this->sound = sound;
 }
 
 void cController::parseTimerEvent(EventData* evData) {
@@ -44,13 +49,13 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
                 {
                     connecting = true;
                     view->toggleButton(CONNECT_BUTTON);
-                    view->update(model);
+                    view->update();
                 }
                 break;
             case VOL_BUTTON_CLICK:
                 view->toggleButton(MUTE_BUTTON);
-                //modelPointer->toggleVol();
-                view->update(model);
+                sound->toggleMute();
+                view->update();
                 break;
             case HELP_BUTTON_CLICK:
                 break;

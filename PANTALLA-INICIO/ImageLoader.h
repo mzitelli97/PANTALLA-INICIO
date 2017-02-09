@@ -3,6 +3,7 @@
 #define ALLEGRO_STATICLINK
 #include <map>
 #include "BurgleBrosModel.h"
+#include "GraphicItem.h"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
@@ -36,7 +37,7 @@ public:
 	ImageLoader();
 	bool initImages();
 	ALLEGRO_BITMAP * getGuardImage();
-        ALLEGRO_BITMAP * getImageP(buttonAction _button);
+        ALLEGRO_BITMAP * getImageP(buttonAction button);
 	ALLEGRO_BITMAP * getImageP(CardName tile);
 	ALLEGRO_BITMAP * getImageP(unsigned int safeNumber);
 	ALLEGRO_BITMAP * getImageP(CardLocation guardCard);

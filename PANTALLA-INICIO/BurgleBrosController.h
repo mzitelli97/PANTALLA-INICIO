@@ -15,6 +15,7 @@
 #define BURGLEBROSCONTROLLER_H
 #include "BurgleBrosModel.h"
 #include "BurgleBrosView.h"
+#include "BurgleBrosSound.h"
 #include "EventData.h"
 #include "NetworkED.h"
 #include "Controller.h"
@@ -47,6 +48,7 @@ public:
     void setCommunicationRoleNThisPlayerName(CommunicationRole communicationRole, string name);
     void attachModel(BurgleBrosModel *gamePointer);
     void attachView(BurgleBrosView *view);
+    void attachSound(BurgleBrosSound *sound);
     bool checkIfGameFinished();
     void parseMouseEvent(EventData *mouseEvent);
     void parseNetworkEvent(EventData *networkEvent);
@@ -66,7 +68,6 @@ private:
     void firstDecidedRoutine(NetworkED *networkEvent);
     void secondDecidedRoutine(NetworkED *networkEvent);
     void interpretNetworkAction(NetworkED *networkEvent);
-    void doOnePacketAction(NetworkED *networkEvent);
     void interpretAction(string action, CardLocation location);
     void analizeIfModelRequiresMoreActions(NetworkED *networkEvent);
     void handleWonOrLost(PerezProtocolHeader msg);
@@ -80,6 +81,7 @@ private:
     list<NetworkED> packetToAnalize; //Para eventos como move, que necesita varios paquetes para ejecutarse completamente, esta ésta queue.
     BurgleBrosModel *modelPointer;
     BurgleBrosView *view;
+    BurgleBrosSound *sound;
     bool aMoveActionPending;
     bool iStarted;
     CardLocation previousMovingToLocation;

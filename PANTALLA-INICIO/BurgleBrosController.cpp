@@ -45,6 +45,13 @@ void BurgleBrosController::attachView(BurgleBrosView *view)
     if(view!=nullptr)
         this->view=view;
 }
+
+void BurgleBrosController::attachSound(BurgleBrosSound* sound)
+{
+    if(sound!=nullptr)
+        this->sound=sound;
+}
+
 void BurgleBrosController::setCommunicationRoleNThisPlayerName(CommunicationRole communicationRole,string name)
 {
     this->communicationRole=communicationRole;
@@ -185,7 +192,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                 case LOOT_CARDS_CLICK:
                     auxPlayer = (PlayerId *)temp.info;
                     view->zoomLoot(*auxPlayer);
-                    view->update(modelPointer);
+                    view->update();
                     break;
                 case GUARD_CARDS_CLICK:
                     guardInfo = (auxInfoGuard *)temp.info;
@@ -199,17 +206,17 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                             networkInterface->sendSpyPatrol(*auxLocation,userChoice);
                         }
                     }
-                    view->update(modelPointer);
+                    view->update();
                     break;
                 case CHAR_CARD_CLICK:
                     auxPlayer = (PlayerId *)temp.info;
                     view->zoomPlayerCard(*auxPlayer);
-                    view->update(modelPointer);
+                    view->update();
                     break;
                 case ZOOM_CLICK:
                     floor = (unsigned int *)temp.info;
                     view->zoomFloor(*floor,modelPointer);
-                    view->update(modelPointer);
+                    view->update();
                     break;
                 case PASS_BUTTON_CLICK:
                     view->eraseMenu();
@@ -221,13 +228,14 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     }
                     break;
                 case VOL_BUTTON_CLICK:
-                    modelPointer->toggleVol();
+                    //modelPointer->toggleVol();
+                    sound->toggleMute();
                     view->toggleVolButton();
-                    view->update(modelPointer);
+                    view->update();
                     break;
                 case HELP_BUTTON_CLICK:
                     view->cheatCards();
-                    view->update(modelPointer);
+                    view->update();
                     break;
                 case EXIT_BUTTON_CLICK:
                     if(view->yesNoMessageBox(exitMsg)==1)
@@ -239,7 +247,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     break;
                 default:
                     view->eraseMenu();
-                    view->update(modelPointer);
+                    view->update();
                     break;
             }
         }
@@ -779,7 +787,7 @@ void BurgleBrosController::clientInitRoutine(NetworkED *networkEvent)
                 modelPointer->setInitTurn(THIS_PLAYER);         //Como el server dijo que el cliente empiece empieza el jugador de esta maquina
                 status=PLAYING;
                 view->ViewInit(modelPointer);
-                view->update(modelPointer);
+                view->update();
                 firstInitDone=true;
                 iStarted=false;
             }
@@ -790,7 +798,7 @@ void BurgleBrosController::clientInitRoutine(NetworkED *networkEvent)
                 networkInterface->sendPacket(ACK);              //Se le manda un ack para que el server sepa que le llegó el msj al cliente.
                 status=PLAYING;
                 view->ViewInit(modelPointer);
-                view->update(modelPointer);
+                view->update();
                 firstInitDone=true;
                 iStarted=true;
             }
@@ -864,7 +872,7 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
                     modelPointer->setInitTurn(OTHER_PLAYER);
                     status=PLAYING;
                     view->ViewInit(modelPointer);
-                    view->update(modelPointer);
+                    view->update();
                     firstInitDone=true;
                     iStarted=false;
                 }
@@ -882,7 +890,7 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
                 initPacketCount=0;
                 status=PLAYING;
                 view->ViewInit(modelPointer);
-                view->update(modelPointer);
+                view->update();
                 firstInitDone=true;
                 iStarted=true;
             }
@@ -939,7 +947,7 @@ void BurgleBrosController::firstDecidedRoutine(NetworkED *networkEvent)
                 modelPointer->setInitTurn(THIS_PLAYER);         //Como el server dijo que el cliente empiece empieza el jugador de esta maquina
                 status=PLAYING;
                 view->ViewInit(modelPointer);
-                view->update(modelPointer);
+                view->update();
                 iStarted=true;
             }
             else if(networkEvent->getHeader() == I_START)
@@ -949,7 +957,7 @@ void BurgleBrosController::firstDecidedRoutine(NetworkED *networkEvent)
                 networkInterface->sendPacket(ACK);              //Se le manda un ack para que el server sepa que le llegó el msj al cliente.
                 status=PLAYING;
                 view->ViewInit(modelPointer);
-                view->update(modelPointer);
+                view->update();
                 iStarted=false;
             }
             break;
@@ -998,7 +1006,7 @@ void BurgleBrosController::secondDecidedRoutine(NetworkED *networkEvent)
                     modelPointer->setInitTurn(OTHER_PLAYER);
                     status=PLAYING;
                     view->ViewInit(modelPointer);
-                    view->update(modelPointer);
+                    view->update();
                     firstInitDone=true;
                     iStarted=false;
                 }
@@ -1016,7 +1024,7 @@ void BurgleBrosController::secondDecidedRoutine(NetworkED *networkEvent)
                 initPacketCount=0;
                 status=PLAYING;
                 view->ViewInit(modelPointer);
-                view->update(modelPointer);
+                view->update();
                 firstInitDone=true;
                 iStarted=true;
             }

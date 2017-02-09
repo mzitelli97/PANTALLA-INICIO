@@ -302,4 +302,5 @@ bool NetworkInterface::sendSpyPatrol(CardLocation topOfNotShown,string userChoic
 
 NetworkInterface::~NetworkInterface()
 {
+    if(p2networking != nullptr) delete p2networking;
 }

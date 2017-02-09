@@ -15,19 +15,21 @@
 #define CVIEW_H
 
 #include "View.h"
+#include "CModel.h"
 #include "GraphicItem.h"
 #include "ImageLoader.h"
 
 
 class CView: public View {
 public:
-    CView();
+    CView(CModel * model);
     CView(const CView& orig);
     virtual ~CView();
-    void update(Model* model) override;
+    void update() override;
     ItemInfo itemFromClick(Point point);
     void toggleButton(buttonAction button);
 private:
+    CModel * model;
     std:: list<GraphicItem*> gList;
     ImageLoader imageLoader;
     ALLEGRO_BITMAP * backScreen;
