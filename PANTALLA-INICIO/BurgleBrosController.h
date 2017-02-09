@@ -38,7 +38,7 @@ typedef struct
 #define DEFAULT_QUIT_MSG "Quit", "The game will close", "The other Player has closed the game, this game will close itself", "OK"
 #define DEFAULT_GAME_OVER_MSG "Game over", "The game will close", " The other player decided not to play again, so this game will close itself", "OK"
 #define DEFAULT_SPOTTER_MSG "Hability used", "The Spotter","The other player uses The Spotter hability and choose to put the card at the ","Ok"
-
+#define DEFAULT_TIMEOUT_MSG "Error", "A timeout has ocurred (60 secs without a response)", "After 60 secs of not recieving a confirmation of your action in the other cpu, the game closes itself", "OK"
 class BurgleBrosController:public Controller {
 public:
     BurgleBrosController();
@@ -51,6 +51,8 @@ public:
     void parseMouseEvent(EventData *mouseEvent);
     void parseNetworkEvent(EventData *networkEvent);
     void parseKeyboardEvent(EventData *keyboardEvent) override;
+    void parseTimerEvent(EventData* mouseEvent) override;
+    bool isWaiting4ack();
 
     virtual string askForSpentOK(vector<string> &message);
     string getUsersResponse(vector<string> &message);

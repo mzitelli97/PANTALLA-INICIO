@@ -84,10 +84,13 @@ int main(int argc, char** argv) {
             controller.attachModel(&model);
             controller.attachView(&view);
             gui.attachController(&controller);
+            gui.playTimer();
             while(gameStillPlaying(controller))
             {
                 if(gui.hayEvento())
                     gui.parseEvento();
+                if(!controller.isWaiting4ack())
+                    gui.resetTimer();
             }
         }
     }

@@ -21,6 +21,10 @@ bool cController::checkIfConnecting()
     return connecting;
 }
 
+void cController::parseTimerEvent(EventData* evData) {
+
+}
+
 void cController::parseMouseEvent(EventData* mouseEvent) {
     MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
     if( p2MouseData != nullptr)
