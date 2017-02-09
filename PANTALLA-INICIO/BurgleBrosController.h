@@ -84,6 +84,7 @@ private:
     string thisPlayerName;
     bool quit;
     PlayAgainId whichPlayer;
+    bool waiting4ack;
     GameStatus status;
     QuitCause quitCause;
     bool waiting4QuitAck;

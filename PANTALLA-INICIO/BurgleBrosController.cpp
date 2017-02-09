@@ -20,6 +20,7 @@ BurgleBrosController::BurgleBrosController()
     aMoveActionPending=false;
     waiting4QuitAck=false;
     firstInitDone=false;
+    waiting4ack=false;
 }
 
 BurgleBrosController::BurgleBrosController(const BurgleBrosController& orig) 
@@ -147,7 +148,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
     if(mouseEvent!=nullptr && status!=INITIALIZING)
     {
         MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
-        if( p2MouseData != nullptr)
+        if( p2MouseData != nullptr )
         {
             ItemInfo temp;
             vector<string> exitMsg={"Quit","Confirm quit", "You have pressed the quit button. Are you sure you want to quit?"};
@@ -162,14 +163,20 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
             switch(temp.type)
             {
                 case TILE_CLICK:
-                    auxLocation = (CardLocation *)temp.info;
-                    view->showMenu(modelPointer->getPosibleActionsToTile(THIS_PLAYER, *auxLocation), aux, *auxLocation);
-                    view->update(modelPointer);
+                    if(!waiting4ack)
+                    {
+                        auxLocation = (CardLocation *)temp.info;
+                        view->showMenu(modelPointer->getPosibleActionsToTile(THIS_PLAYER, *auxLocation), aux, *auxLocation);
+                        view->update(modelPointer);
+                    }
                     break;
                 case MENU_ITEM_CLICK:
-                    menuInfo = (auxInfo *)temp.info;
-                    interpretAction(menuInfo->option, menuInfo->location);
-                    view->update(modelPointer);
+                    if(!waiting4ack)
+                    {
+                        menuInfo = (auxInfo *)temp.info;
+                        interpretAction(menuInfo->option, menuInfo->location);
+                        view->update(modelPointer);
+                    }
                     break;
                 case LOOT_CARDS_CLICK:
                     auxPlayer = (PlayerId *)temp.info;
@@ -182,7 +189,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                         view->zoomGuardDeck(guardInfo->floor);
                     else
                     {
-                        if(modelPointer->isPeekGuardsCardPossible(THIS_PLAYER,guardInfo->floor))
+                        if(!waiting4ack && modelPointer->isPeekGuardsCardPossible(THIS_PLAYER,guardInfo->floor))
                         {
                             userChoice = modelPointer->peekGuardsCard(THIS_PLAYER,&auxLocation,guardInfo->floor,SPOTTER_NO_PREV_CHOICE);
                             networkInterface->sendSpyPatrol(*auxLocation,userChoice);
@@ -202,7 +209,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     break;
                 case PASS_BUTTON_CLICK:
                     view->eraseMenu();
-                    if(modelPointer->getPlayerOnTurn()==THIS_PLAYER)
+                    if(!waiting4ack && modelPointer->getPlayerOnTurn()==THIS_PLAYER)
                     {
                         modelPointer->pass(THIS_PLAYER);
                         networkInterface->sendPacket(PASS);
@@ -325,6 +332,7 @@ void BurgleBrosController::interpretAction(string action, CardLocation location)
             }
         }
     }
+    waiting4ack=true;
 }
 
 void BurgleBrosController::parseKeyboardEvent(EventData *evData)
@@ -440,6 +448,8 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkInterface->sendPacket(ACK);
             break;
         case ACK:
+            if(waiting4ack)
+                waiting4ack=false;
             if(waiting4QuitAck)
                 quit=true;
             else if(aMoveActionPending)      //SI se tuvo que inicializar un guardia por un move, se inicializo y despues se mando la acción move.
@@ -524,6 +534,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             {
                 unsigned int die=modelPointer->rollDieForLoot(NO_DIE);
                 networkInterface->sendRollDiceForLoot(die);
+                waiting4ack=true;
             }
             break;
         case INITIAL_G_POS:
@@ -622,6 +633,8 @@ void BurgleBrosController::handleLootsExchange(NetworkED *networkEvent)
             modelPointer->userDecidedTo(ACCEPT_TEXTB);      //Si era un agree se lo comunica al modelo, sino le comunica un disagree.
         else if (networkEvent->getHeader()== DISAGREE)
             modelPointer->userDecidedTo(DECLINE_TEXTB);
+        if(waiting4ack)
+                waiting4ack=false;
     }
 }
 void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
