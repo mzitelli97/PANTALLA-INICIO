@@ -213,6 +213,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         modelPointer->pass(THIS_PLAYER);
                         networkInterface->sendPacket(PASS);
+                        waiting4ack = true;
                     }
                     break;
                 case VOL_BUTTON_CLICK:
