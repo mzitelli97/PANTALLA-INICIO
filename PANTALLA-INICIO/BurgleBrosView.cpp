@@ -391,7 +391,7 @@ void BurgleBrosView::updateCharacters(BurgleBrosModel *model) {
         if(onZoom && player.position.floor == floorZoomed) gPlayer->setZoom(true);
         else gPlayer->setZoom(false);
         gPlayer->setLocation(player.position);
-        if(player.isOnHelicopter) gPlayer->goToDaChoppa();
+        gPlayer->setOnBoard(player.isOnBoard);
     }
     //Second Player
     player = model->getInfo2DrawPlayer(OTHER_PLAYER);
@@ -401,7 +401,7 @@ void BurgleBrosView::updateCharacters(BurgleBrosModel *model) {
         if(onZoom && player.position.floor == floorZoomed) gPlayer->setZoom(true);
         else gPlayer->setZoom(false);
         gPlayer->setLocation(player.position);
-        if(player.isOnHelicopter) gPlayer->goToDaChoppa();
+        gPlayer->setOnBoard(player.isOnBoard);
     }
 }
 

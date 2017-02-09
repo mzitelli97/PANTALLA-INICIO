@@ -353,12 +353,13 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
 {
     NetworkED *p2NetworkData = dynamic_cast<NetworkED *> (networkEvent);
     vector<string> gameOverMsg({DEFAULT_GAME_OVER_MSG});
+    vector<string> quitMsg({DEFAULT_QUIT_MSG});
     if(p2NetworkData!=nullptr)
     {
         switch(status)      //Depende de en que estado está el juego, los paquetes de internet significan distintas cosas
         {
             case INITIALIZING:          //En la inicialización importa si es el cliente o el server en cuanto al orden de los mensajes
-                if(p2NetworkData->getHeader() != GAME_OVER)
+                if(p2NetworkData->getHeader() != GAME_OVER && p2NetworkData->getHeader() != QUIT)
                 {
                     if(!firstInitDone)
                     {
@@ -379,7 +380,8 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
                 {
                     quit=true;
                     networkInterface->sendPacket(ACK);
-                    view->MessageBox(gameOverMsg);
+                    if(p2NetworkData->getHeader() == GAME_OVER) view->MessageBox(gameOverMsg);
+                    else view->MessageBox(quitMsg);
                 }
                 
                 break;

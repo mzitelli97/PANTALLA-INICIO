@@ -18,7 +18,7 @@ typedef struct{
     string name;
     unsigned int currActions;
     bool turn;
-    bool isOnHelicopter;
+    bool isOnBoard;
 }Info2DrawPlayer;
 
 CharacterName getRandomCharacter();
@@ -44,10 +44,11 @@ public:
         void setPosition(CardLocation location);
         void setCharacter(CharacterName character);
         void getToDaChoppa();
+        void setOnBoard();
         bool hasLoot(Loot loot);
         void pickRandomPlayer();
         void pickRandomPlayer(CharacterName exceptThis);
-        list<Loot> getLootsCarried();
+        //list<Loot> getLootsCarried();
         void attachLoot(Loot loot);
         void deattachLoot(Loot loot);
         void setName(string name);

@@ -50,7 +50,7 @@ public:
     bool checkIfGameFinished();
     void parseMouseEvent(EventData *mouseEvent);
     void parseNetworkEvent(EventData *networkEvent);
-    void parseKeyboardEvent(EventData *mouseEvent) override;
+    void parseKeyboardEvent(EventData *keyboardEvent) override;
 
     virtual string askForSpentOK(vector<string> &message);
     string getUsersResponse(vector<string> &message);

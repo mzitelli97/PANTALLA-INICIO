@@ -26,7 +26,7 @@ public:
     virtual ~CView();
     void update(Model* model) override;
     ItemInfo itemFromClick(Point point);
-    void toggleConnectButton();
+    void toggleButton(buttonAction button);
 private:
     std:: list<GraphicItem*> gList;
     ImageLoader imageLoader;

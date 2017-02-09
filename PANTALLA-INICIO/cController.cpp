@@ -39,14 +39,14 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
                 if(!connecting && !model->isAnEntryEmpty())  //si se esta conectando no tomo el click en el boton connect
                 {
                     connecting = true;
-                    view->toggleConnectButton();
+                    view->toggleButton(CONNECT_BUTTON);
                     view->update(model);
                 }
                 break;
             case VOL_BUTTON_CLICK:
-                /*modelPointer->toggleVol();
-                view->toggleVolButton();
-                view->update(modelPointer);*/
+                view->toggleButton(MUTE_BUTTON);
+                //modelPointer->toggleVol();
+                view->update(model);
                 break;
             case HELP_BUTTON_CLICK:
                 break;
@@ -54,7 +54,6 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
                 quit = true;
                 break;
         }
-
     }    
 }
 
@@ -89,7 +88,7 @@ void cController::parseKeyboardEvent(EventData* evData)
 
 
 void cController::parseNetworkEvent(EventData* evData) {
-
+    //THIS CONTROLLER DOES NOT USE NETOWRK EVENTS
 }
 
 string cController::askForSpentOK(vector<string>& message) {

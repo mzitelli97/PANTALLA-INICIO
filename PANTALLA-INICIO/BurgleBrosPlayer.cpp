@@ -46,6 +46,13 @@ void BurgleBrosPlayer::getToDaChoppa()
     isOnTheBoard=false;
     //position = {3,4,4}; //this does not work, do something to dont show the player anymore
 }
+
+void BurgleBrosPlayer::setOnBoard()
+{
+    isOnTheHelicopter=false;
+    isOnTheBoard=true;
+}
+
 void BurgleBrosPlayer::setCharacter(CharacterName character)
 {
     characterName=character;
@@ -88,8 +95,16 @@ bool BurgleBrosPlayer::isOnHelicopter()
     return isOnTheHelicopter;
 }
 
+bool BurgleBrosPlayer::isOnBoard()
+{
+    return isOnTheBoard;
+}
+
 void BurgleBrosPlayer::setTurn(bool isPlayersTurn)
 {
+    //si no estaba en el tablero, y tampoco en el helicoptero, y me dijeron que era mi turno, y no era mi turno
+    if(!isOnTheBoard && !isOnTheHelicopter && isPlayersTurn && !this->isPlayersTurn)
+        isOnTheBoard = true;
     this->isPlayersTurn=isPlayersTurn;
 }
 
@@ -156,6 +171,7 @@ BurgleBrosPlayer::BurgleBrosPlayer()
     currentActions=4;
     lives=INIT_NMBR_OF_LIVES;
     isOnTheHelicopter=false;
+    isOnTheBoard = false;
     isPlayersTurn=false;
 }
 

@@ -12,6 +12,8 @@
  */
 
 #include "CModel.h"
+#define MAX_SIZE_IP 15
+#define MAX_SIZE_NAME 15
 
 CModel::CModel()
 {
@@ -39,7 +41,13 @@ initInfo CModel::getInfo()
 void CModel::write(char key)
 {
     if(data.selected != NONE_SELECTED)
-        data.entries[data.selected] += key;
+    {
+        if(data.selected == MY_NAME && data.entries[data.selected].size()<MAX_SIZE_NAME)
+            data.entries[data.selected] += key;
+        else if(data.selected != MY_NAME && data.entries[data.selected].size()<MAX_SIZE_IP)
+            if((key>='0' && key<='9') || key == '.')
+                data.entries[data.selected] += key;
+    }
     view->update(this);
 }
 

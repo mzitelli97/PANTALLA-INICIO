@@ -108,12 +108,13 @@ ItemInfo CView::itemFromClick(Point point)
     return retVal;
 }
 
-void CView::toggleConnectButton()
+void CView::toggleButton(buttonAction button)
 {
     list<GraphicItem *>::iterator it = gList.begin();
-    advance(it,N_BOXES + 1);
-    GraphicButton * button;
-    button = dynamic_cast<GraphicButton *> (*it);
-    if(button != nullptr)
-            button->toggleMute();
+    advance(it,N_BOXES);                                //avanzo hasta el boton del volumen
+    GraphicButton * auxButton;
+    if(button == CONNECT_BUTTON) it++;                  //el boton de connect esta despues del volumen
+    auxButton = dynamic_cast<GraphicButton *> (*it);
+    if(auxButton != nullptr)
+            auxButton->toggleMute();
 }
