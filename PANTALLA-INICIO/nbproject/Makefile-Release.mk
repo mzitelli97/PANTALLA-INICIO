@@ -76,6 +76,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/ProtocolFunctions.o \
 	${OBJECTDIR}/SoundManager.o \
 	${OBJECTDIR}/TextBox.o \
+	${OBJECTDIR}/TimerED.o \
 	${OBJECTDIR}/View.o \
 	${OBJECTDIR}/cController.o \
 	${OBJECTDIR}/main.o
@@ -309,6 +310,11 @@ ${OBJECTDIR}/TextBox.o: TextBox.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TextBox.o TextBox.cpp
+
+${OBJECTDIR}/TimerED.o: TimerED.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimerED.o TimerED.cpp
 
 ${OBJECTDIR}/View.o: View.cpp
 	${MKDIR} -p ${OBJECTDIR}

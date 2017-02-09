@@ -13,18 +13,22 @@
 
 #include <allegro5/keyboard.h>
 #include <allegro5/mouse.h>
+#include <allegro5/timer.h>
 #include "GUI.h"
 #include "MouseED.h"
 #include "NetworkED.h"
 #include "KeyboardED.h"
+#include "TimerED.h"
 
 GUI::GUI() {
     
     this->EventQueue=al_create_event_queue();
+    timer=al_create_timer(TIMEOUT_TIME);
     if(EventQueue != NULL)
     {
         al_register_event_source(EventQueue,al_get_mouse_event_source());
         al_register_event_source(EventQueue,al_get_keyboard_event_source());
+        al_register_event_source(EventQueue, al_get_timer_event_source(timer));
     }
     quit = false;
     networkEventEnabled=false;
@@ -99,9 +103,31 @@ bool GUI::hayEvento()
             eventData=(EventData *) auxData;
             event=GUI_EVENT_KEYBOARD;
         }
+        else if(rawEvent.type == ALLEGRO_EVENT_TIMER)
+        {
+            TimerED *auxData = new TimerED(TIMEOUT);
+            eventData=(EventData *) auxData;
+            event=GUI_EVENT_TIMER;
+            retVal=true;
+        }
     }
     return retVal;
 }
+
+void GUI::enableTimer() {
+    
+}
+
+void GUI::playTimer() {
+    al_start_timer(timer);
+}
+
+void GUI::resetTimer() {
+    al_stop_timer(timer);
+    al_start_timer(timer);
+}
+
+
 
 void GUI::parseEvento(){
     
@@ -116,8 +142,11 @@ void GUI::parseEvento(){
         case GUI_EVENT_NETWORKING:
             controller->parseNetworkEvent(eventData);
             break;
+        case GUI_EVENT_TIMER:
+            controller->parseTimerEvent(eventData);
+            break;
     }
-    
+    delete eventData;
 }
 
 GUI::~GUI() {

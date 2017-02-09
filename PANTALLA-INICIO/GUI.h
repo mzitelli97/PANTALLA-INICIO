@@ -19,7 +19,9 @@
 #include "Controller.h"
 #include "NetworkInterface.h"
 
-typedef enum{GUI_EVENT_MOUSE, GUI_EVENT_KEYBOARD,GUI_EVENT_NETWORKING,GUI_EVENT_NOEVENT} GuiEvent;
+#define TIMEOUT_TIME 60.0
+
+typedef enum{GUI_EVENT_MOUSE, GUI_EVENT_KEYBOARD,GUI_EVENT_NETWORKING,GUI_EVENT_TIMER,GUI_EVENT_NOEVENT} GuiEvent;
 
 using namespace std;
 
@@ -31,6 +33,10 @@ public:
     void parseEvento(void);
     void attachController (Controller * Controller);
     void attachNetworkInterface(NetworkInterface * networkingInterface);
+    void enableTimer();
+    void resetTimer();
+    void stopTimer();
+    void playTimer();
     virtual ~GUI();
     
 private:

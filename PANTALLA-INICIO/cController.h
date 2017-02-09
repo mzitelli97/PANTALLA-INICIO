@@ -27,6 +27,7 @@ public:
     void parseMouseEvent(EventData *mouseEvent);
     void parseNetworkEvent(EventData *evData);
     void parseKeyboardEvent(EventData *evData);
+    virtual void parseTimerEvent(EventData *evData);
     string askForSpentOK(vector<string>& message) override;
 
     bool checkIfConnecting();
