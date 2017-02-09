@@ -1,15 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   BurgleBrosView.cpp
- * Author: javier
- * 
- * Created on December 24, 2016, 12:58 PM
- */
 
 #include <vector>
 
@@ -29,7 +17,7 @@
 #include "GraphicButton.h"
 #include <time.h>
 
-#define SCREEN_W 720
+#define SCREEN_W 1200
 #define SCREEN_H (SCREEN_W*9/16)
 #define TITLE_H al_get_bitmap_height(backScreen)/20.0
 #define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/50.0

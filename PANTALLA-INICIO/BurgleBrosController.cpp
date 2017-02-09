@@ -412,7 +412,7 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
 
 void BurgleBrosController::parseTimerEvent(EventData* mouseEvent) {
     TimerED *p2TimerData = dynamic_cast<TimerED *> (mouseEvent);
-    if(!p2TimerData && p2TimerData->getType()==TIMEOUT)
+    if(p2TimerData!=nullptr && p2TimerData->getType()==TIMEOUT)
     {
         networkInterface->sendPacket(ERRORR);
         quit=true;

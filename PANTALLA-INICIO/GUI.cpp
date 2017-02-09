@@ -108,6 +108,7 @@ bool GUI::hayEvento()
             TimerED *auxData = new TimerED(TIMEOUT);
             eventData=(EventData *) auxData;
             event=GUI_EVENT_TIMER;
+            cout<< "TIMEOUT"<<endl;
             retVal=true;
         }
     }
@@ -124,7 +125,7 @@ void GUI::playTimer() {
 
 void GUI::resetTimer() {
     al_stop_timer(timer);
-    al_start_timer(timer);
+    //al_start_timer(timer);
 }
 
 
