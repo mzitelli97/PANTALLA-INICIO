@@ -5,6 +5,7 @@
 #include "GUI.h"
 #include "NetworkED.h"
 #include "KeyboardED.h"
+#include "TimerED.h"
 #include <algorithm>
 
 using namespace std;
@@ -26,7 +27,10 @@ BurgleBrosController::BurgleBrosController()
 BurgleBrosController::BurgleBrosController(const BurgleBrosController& orig) 
 {
 }
-
+bool BurgleBrosController::isWaiting4ack()
+{
+    return waiting4ack;
+}
 void BurgleBrosController::attachNetworkInterface(NetworkInterface * p2NetworkInterface)
 {
     this->networkInterface=p2NetworkInterface;
@@ -405,9 +409,20 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
     else
         quit=true;
 }
+
+void BurgleBrosController::parseTimerEvent(EventData* mouseEvent) {
+    TimerED *p2TimerData = dynamic_cast<TimerED *> (mouseEvent);
+    if(!p2TimerData && p2TimerData->getType()==TIMEOUT)
+    {
+        networkInterface->sendPacket(ERRORR);
+        quit=true;
+    }
+}
+
 void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
 {
     vector<string> message, quitMsg({DEFAULT_QUIT_MSG}), gameOverMsg({DEFAULT_GAME_OVER_MSG}), spotterDecision({DEFAULT_SPOTTER_MSG});
+    vector<string> timeoutMessage({DEFAULT_TIMEOUT_MSG});
     Loot loot;
     bool guardHasToMove;
     CardLocation guardPosition, guardDice,auxLoc;
@@ -589,6 +604,9 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkInterface->sendPacket(ACK);
             view->MessageBox(gameOverMsg);
             break;
+        case ERRORR:
+            quit=true;
+            view->MessageBox(timeoutMessage);
         default:
             break;
 
