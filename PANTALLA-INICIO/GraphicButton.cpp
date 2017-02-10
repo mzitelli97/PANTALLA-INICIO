@@ -30,7 +30,6 @@ GraphicButton::GraphicButton(const GraphicButton& orig) {
 
 GraphicButton::GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * buttonImage2, buttonAction identifier, unsigned int width, unsigned int height)
 {
-    this->info=nullptr;          //Por ahora dejo esto asi
     this->button=identifier;
     this->image=buttonImage;
     this->image_2=buttonImage2;
