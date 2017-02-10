@@ -80,6 +80,7 @@ int main(int argc, char** argv) {
             BurgleBrosModel model;
             BurgleBrosView view(&model);
             model.attach(&view);
+            model.attach(&sound);
             model.attachController(&controller);
             sound.attachModel(&model);
             controller.attachSound(&sound);
@@ -87,11 +88,15 @@ int main(int argc, char** argv) {
             controller.attachView(&view);
             gui.attachController(&controller);
             gui.playTimer();
+            bool prev=false;
             while(gameStillPlaying(controller))
             {
+                prev=controller.isWaiting4ack();
                 if(gui.hayEvento())
                     gui.parseEvento();
-                if(!controller.isWaiting4ack())
+                if(controller.isWaiting4ack() && !prev)
+                    gui.playTimer();
+                else if (!controller.isWaiting4ack())
                     gui.resetTimer();
             }
         }

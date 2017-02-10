@@ -420,7 +420,7 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
 
 void BurgleBrosController::parseTimerEvent(EventData* mouseEvent) {
     TimerED *p2TimerData = dynamic_cast<TimerED *> (mouseEvent);
-    if(!p2TimerData && p2TimerData->getType()==TIMEOUT)
+    if(p2TimerData!=nullptr && p2TimerData->getType()==TIMEOUT)
     {
         networkInterface->sendPacket(ERRORR);
         quit=true;
@@ -472,9 +472,9 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkInterface->sendPacket(ACK);
             break;
         case ACK:
-            if(waiting4ack)
+            //if(waiting4ack)
                 waiting4ack=false;
-            if(waiting4QuitAck)
+            if(waiting4QuitAck) //quit = waiting4QuitAck;
                 quit=true;
             else if(aMoveActionPending)      //SI se tuvo que inicializar un guardia por un move, se inicializo y despues se mando la acción move.
             {
