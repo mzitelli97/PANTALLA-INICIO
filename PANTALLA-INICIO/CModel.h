@@ -22,6 +22,8 @@ typedef enum {MY_IP = 0, OTHER_IP, MY_NAME, NONE_SELECTED}textSelected;
 /*textSelected operator++(const textSelected &text);
 textSelected operator--(const textSelected &text);*/
 
+#define LOOPBACK
+
 typedef struct
 {
     std::string entries[NONE_SELECTED];
