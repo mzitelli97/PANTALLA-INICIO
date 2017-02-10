@@ -87,6 +87,14 @@ void cController::parseKeyboardEvent(EventData* evData)
                 case DOWN_KEY:
                     if(!connecting) model->selectText((textSelected)((int)(model->getInfo().selected)+1));
                     break;
+                case ENTER_KEY:
+                    if(!connecting && !model->isAnEntryEmpty())  //si se esta conectando no tomo el click en el boton connect
+                    {
+                        connecting = true;
+                        view->toggleButton(CONNECT_BUTTON);
+                        view->update();
+                    }
+                break;
                 case ESCAPE_KEY:
                     quit = true;
                     break;
