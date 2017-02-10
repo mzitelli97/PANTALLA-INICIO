@@ -23,6 +23,7 @@
         <itemPath>KeyboardED.h</itemPath>
         <itemPath>MouseED.h</itemPath>
         <itemPath>NetworkED.h</itemPath>
+        <itemPath>TimerED.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Graphics" projectFiles="true">
         <itemPath>GraphicButton.h</itemPath>
@@ -56,7 +57,6 @@
       <itemPath>LibsInit.h</itemPath>
       <itemPath>Model.h</itemPath>
       <itemPath>SoundManager.h</itemPath>
-      <itemPath>TimerED.h</itemPath>
       <itemPath>View.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -85,6 +85,7 @@
         <itemPath>KeyboardED.cpp</itemPath>
         <itemPath>MouseED.cpp</itemPath>
         <itemPath>NetworkED.cpp</itemPath>
+        <itemPath>TimerED.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Graphics" projectFiles="true">
         <itemPath>GraphicButton.cpp</itemPath>
@@ -118,7 +119,6 @@
       <itemPath>LibsInit.cpp</itemPath>
       <itemPath>Model.cpp</itemPath>
       <itemPath>SoundManager.cpp</itemPath>
-      <itemPath>TimerED.cpp</itemPath>
       <itemPath>View.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>

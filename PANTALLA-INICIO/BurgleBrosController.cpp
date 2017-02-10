@@ -178,7 +178,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         auxLocation = (CardLocation *)temp.info;
                         view->showMenu(modelPointer->getPosibleActionsToTile(THIS_PLAYER, *auxLocation), aux, *auxLocation);
-                        view->update(modelPointer);
+                        view->update();
                     }
                     break;
                 case MENU_ITEM_CLICK:
@@ -186,7 +186,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         menuInfo = (auxInfo *)temp.info;
                         interpretAction(menuInfo->option, menuInfo->location);
-                        view->update(modelPointer);
+                        view->update();
                     }
                     break;
                 case LOOT_CARDS_CLICK:
@@ -472,9 +472,9 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkInterface->sendPacket(ACK);
             break;
         case ACK:
-            if(waiting4ack)
+            //if(waiting4ack)
                 waiting4ack=false;
-            if(waiting4QuitAck)
+            if(waiting4QuitAck) //quit = waiting4QuitAck;
                 quit=true;
             else if(aMoveActionPending)      //SI se tuvo que inicializar un guardia por un move, se inicializo y despues se mando la acción move.
             {

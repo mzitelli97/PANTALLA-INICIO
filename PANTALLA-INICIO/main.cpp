@@ -80,6 +80,7 @@ int main(int argc, char** argv) {
             BurgleBrosModel model;
             BurgleBrosView view(&model);
             model.attach(&view);
+            model.attach(&sound);
             model.attachController(&controller);
             sound.attachModel(&model);
             controller.attachSound(&sound);
