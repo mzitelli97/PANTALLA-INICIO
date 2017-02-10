@@ -20,6 +20,7 @@
 #include "GUI.h"
 #include "CView.h"
 #include "cController.h"
+#include "BurgleBrosWrapper.h"
 using namespace std;
 
 /*Estas funciones luego pertenecerían a un wrapper que las une para simplificar el main.*/
@@ -126,3 +127,27 @@ bool gameStillPlaying(BurgleBrosController &controller)
     return !(controller.checkIfGameFinished());
 }
 
+
+/*
+el main ahora seria :
+
+void main()
+{
+    BurgleBrosWrapper fullGame;
+    fullGame.getNameAndIp();
+    if(fullGame.gameOnCourse())
+    {
+        fullGame.connect();
+        if(fullGame.gameOnCourse())
+            fullGame.playGame();
+    }
+    //if(fullGame.wasAnError())
+      //  fullGame.showError();
+    
+    return 0;
+}
+ */
+
+
+ 
+ 

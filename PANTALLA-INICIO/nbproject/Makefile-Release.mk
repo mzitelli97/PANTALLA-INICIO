@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/BurgleBrosSound.o \
 	${OBJECTDIR}/BurgleBrosTokens.o \
 	${OBJECTDIR}/BurgleBrosView.o \
+	${OBJECTDIR}/BurgleBrosWrapper.o \
 	${OBJECTDIR}/CModel.o \
 	${OBJECTDIR}/CView.o \
 	${OBJECTDIR}/Controller.o \
@@ -165,6 +166,11 @@ ${OBJECTDIR}/BurgleBrosView.o: BurgleBrosView.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosView.o BurgleBrosView.cpp
+
+${OBJECTDIR}/BurgleBrosWrapper.o: BurgleBrosWrapper.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BurgleBrosWrapper.o BurgleBrosWrapper.cpp
 
 ${OBJECTDIR}/CModel.o: CModel.cpp
 	${MKDIR} -p ${OBJECTDIR}
