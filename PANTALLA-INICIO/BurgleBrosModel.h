@@ -77,7 +77,7 @@ class BurgleBrosModel : public Model
         /*Funciones para cuando pide cartelito con info extra.*/
         bool isMotionSpecialCase();
         CardLocation locationOfComputerRoomOrLavatory(CardName computerRoomOrLavatory);
-        //computerOrLavatoryHere(CardLocation pos);
+        bool isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile);
         ModelStatus getModelStatus();
         vector<string> getMsgToShow();
         bool userDecidedTo(string decision); // Devuelve si hay que llamar a move guard.

@@ -63,7 +63,8 @@ public:
 private:
     string askThisPlayerAndProcess(vector<string> &message);
     string handleThisPlayerMotionSpecialCase(vector<string> &message);
-    
+    string handleOtherPlayerMotionSpecialCase(vector<string> &message);
+    string processOtherPlayerBasicChoice(vector<string> &message);
     void handlePlayAgain();
     void handleLootsExchange(NetworkED * networkEvent);
     void clientInitRoutine(NetworkED *networkEvent);
