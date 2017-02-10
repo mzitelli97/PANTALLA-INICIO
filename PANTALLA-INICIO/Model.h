@@ -22,12 +22,12 @@ public:
     Model();
     Model(const Model& orig);
     virtual ~Model();
-    void attach(View * view);
-    void deAttach(View * view);
+    void attach(Observer * view);
+    void deAttach(Observer * view);
 protected:
     void notifyAllObservers();
 private:
-    std::list<View *> observers;
+    std::list<Observer *> observers;
 
 };
 

@@ -5,7 +5,7 @@
  */
 
 /* 
- * File:   View.h
+ * File:   Observer.h
  * Author: javier
  *
  * Created on December 24, 2016, 5:09 PM
@@ -14,11 +14,11 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-class View {
+class Observer {
 public:
-    View();
-    View(const View& orig);
-    virtual ~View();
+    Observer();
+    Observer(const Observer& orig);
+    virtual ~Observer();
     virtual void update() = 0;
 private:
 

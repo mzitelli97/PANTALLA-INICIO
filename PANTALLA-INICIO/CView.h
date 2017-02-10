@@ -20,7 +20,7 @@
 #include "ImageLoader.h"
 
 
-class CView: public View {
+class CView: public Observer {
 public:
     CView(CModel * model);
     CView(const CView& orig);

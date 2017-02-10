@@ -24,7 +24,7 @@ typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 
 //#define FULLSCREEN
 
-class BurgleBrosView : public View{
+class BurgleBrosView : public Observer{
 public:
     BurgleBrosView();
     BurgleBrosView(BurgleBrosModel * model);

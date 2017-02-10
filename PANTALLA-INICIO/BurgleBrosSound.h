@@ -32,7 +32,7 @@
 
 using namespace std;
 
-class BurgleBrosSound:public View {
+class BurgleBrosSound:public Observer {
 public:
     BurgleBrosSound();
     BurgleBrosSound(const BurgleBrosSound& orig);

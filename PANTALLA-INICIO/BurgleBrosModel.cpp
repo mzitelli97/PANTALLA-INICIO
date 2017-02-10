@@ -1065,9 +1065,9 @@ void BurgleBrosModel::checkTurns()
         if(!nextPlayerOnTurn->isOnBoard() && !nextPlayerOnTurn->isOnHelicopter()&& guards[nextPlayerOnTurn->getPosition().floor].getPosition()== nextPlayerOnTurn->getPosition())
             nextPlayerOnTurn->decLives();
         nextPlayerOnTurn->setTurn(true);
-        nextPlayerOnTurn->setActions(INIT_NMBR_OF_LIVES);       //Se le resetean las acciones.
+        nextPlayerOnTurn->setActions(INIT_NMBR_OF_ACTIONS);       //Se le resetean las acciones.
         if(nextPlayerOnTurn->hasLoot(MIRROR))
-            nextPlayerOnTurn->setActions(INIT_NMBR_OF_LIVES-1);       //SI tenía un mirror pierde 1 acción
+            nextPlayerOnTurn->decActions();     //SI tenía un mirror pierde 1 acción
         if(nextPlayerOnTurn->hasLoot(CHIHUAHUA) || nextPlayerOnTurn->hasLoot(PERSIAN_KITTY))
             status=WAITING_DICE_FOR_LOOT;
         // handlePersianKittyMove(nextPlayerOnTurn);

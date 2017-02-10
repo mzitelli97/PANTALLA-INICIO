@@ -9,6 +9,7 @@ typedef enum { THE_JUICER = 0x20, THE_HACKER, THE_ACROBAT, THE_SPOTTER, THE_HAWK
 #define NUMBER_OF_CHARACTERS 7
 #define FIRST_CHARACTER THE_JUICER
 #define INIT_NMBR_OF_LIVES 4
+#define INIT_NMBR_OF_ACTIONS 4
 
 string character2Str(CharacterName character);
 typedef struct{

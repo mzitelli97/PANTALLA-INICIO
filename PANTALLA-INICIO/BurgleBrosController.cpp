@@ -49,7 +49,10 @@ void BurgleBrosController::attachView(BurgleBrosView *view)
 void BurgleBrosController::attachSound(BurgleBrosSound* sound)
 {
     if(sound!=nullptr)
+    {
         this->sound=sound;
+        sound->reset();
+    }       
 }
 
 void BurgleBrosController::setCommunicationRoleNThisPlayerName(CommunicationRole communicationRole,string name)
@@ -391,7 +394,7 @@ void BurgleBrosController::interpretAction(string action, CardLocation location)
         modelPointer->placeCrow(THIS_PLAYER,location);
         networkInterface->sendPlaceCrow(location);
     }
-    else if(action=="PICK UP KITTY" || action=="PICK UP GOLD BAR" || "PICK UP LOOTS")
+    else if(action=="PICK UP KITTY" || action=="PICK UP GOLD BAR" || action=="PICK UP LOOTS")
     {
         modelPointer->pickLoot(THIS_PLAYER);
         networkInterface->sendPacket(PICK_UP_LOOT);
@@ -553,11 +556,11 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkInterface->sendPacket(ACK);
             break;
         case ACK:
-            //if(waiting4ack)
-                waiting4ack=false;
+            waiting4ack=false;
             if(waiting4QuitAck) //quit = waiting4QuitAck;
                 quit=true;
-            else if(aMoveActionPending)      //SI se tuvo que inicializar un guardia por un move, se inicializo y despues se mando la acción move.
+            else if(aMoveActionPending)      /*SI se tuvo que inicializar un guardia por un move, ya esta inicializado antes de mandar el move (el ack es al INIT_G_POS)
+                                              *  y ahora se manda la acción move.*/       
             {
                 unsigned int safeNumber = modelPointer->move(THIS_PLAYER,previousMovingToLocation,NO_SAFE_NUMBER);      //Se ejecuta el move y se hace.
                 networkInterface->sendMove(previousMovingToLocation, safeNumber);

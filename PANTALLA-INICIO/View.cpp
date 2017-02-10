@@ -5,7 +5,7 @@
  */
 
 /* 
- * File:   View.cpp
+ * File:   Observer.cpp
  * Author: javier
  * 
  * Created on December 24, 2016, 5:09 PM
@@ -13,12 +13,12 @@
 
 #include "View.h"
 
-View::View() {
+Observer::Observer() {
 }
 
-View::View(const View& orig) {
+Observer::Observer(const Observer& orig) {
 }
 
-View::~View() {
+Observer::~Observer() {
 }
 
