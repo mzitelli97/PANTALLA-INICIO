@@ -37,7 +37,7 @@
 #define SPOTTER_BOTTOM      "Bottom"
 #define SPOTTER_NO_PREV_CHOICE "..."
 
-//#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
+#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
 
 typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT} ModelStatus;
 typedef enum {GUARD_STEP_TO, GUARD_CARD_PICK} LocationMeaning;
@@ -96,7 +96,7 @@ class BurgleBrosModel : public Model
         void addDieToSafe(PlayerId playerId, CardLocation safe);
         void createAlarm(PlayerId playerId, CardLocation tile);
         void placeCrow(PlayerId playerId, CardLocation tile);
-        void pickLoot(PlayerId playerId, Loot loot);
+        void pickLoot(PlayerId playerId);
         void askForLoot(PlayerId playerId, Loot loot);
         void offerLoot(PlayerId playerId, Loot loot);
         void escape(PlayerId playerId, CardLocation stairTile);
@@ -110,7 +110,7 @@ class BurgleBrosModel : public Model
         bool isCrackSafePossible(PlayerId playerId,CardLocation tile);
         bool isCreateAlarmPossible(PlayerId playerId, CardLocation tile);
         bool isPlaceCrowPossible(PlayerId playerId, CardLocation tile);
-        bool isPickLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
+        bool isPickLootPossible(PlayerId playerId, Loot loot);
         bool isAskForLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isOfferLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isEscapePossible(PlayerId playerId, CardLocation tile);

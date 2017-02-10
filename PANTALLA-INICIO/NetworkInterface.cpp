@@ -10,7 +10,7 @@ using namespace std;
 
 bool packetHasNoDataField(PerezProtocolHeader h)
 {
-    return (h==ACK || h==AGREE || h==DISAGREE || h==NAME || h==YOU_START || h==I_START || h==PASS || h==WE_WON || h==WE_LOST || h==GAME_OVER  || h==PLAY_AGAIN || h==QUIT || h==ERRORR);
+    return (h==ACK || h==AGREE || h==DISAGREE || h==NAME || h==YOU_START || h==I_START || h==PASS || h==WE_WON || h==WE_LOST || h==GAME_OVER  || h==PLAY_AGAIN || h==QUIT || h==ERRORR || h==PICK_UP_LOOT);
 }
 
 
@@ -275,12 +275,6 @@ bool NetworkInterface::sendOfferLoot(Loot i)
     unsigned char buffer[1];
     buffer[0]= (unsigned char) i;
     return p2networking->sendPacket(OFFER_LOOT,(char *) buffer, 1);
-}
-bool NetworkInterface::sendPickUpLoot(Loot loot)
-{
-    unsigned char buffer[1];
-    buffer[0]= (unsigned char) loot;
-    return p2networking->sendPacket(PICK_UP_LOOT,(char *) buffer, 1);
 }
 bool NetworkInterface::sendRollDiceForLoot(unsigned int die)
 {
