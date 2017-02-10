@@ -19,7 +19,11 @@ CModel::CModel()
 {
     for(int i = 0; i < NONE_SELECTED; i++)
         data.entries[i] = "";
-    data.selected = MY_IP;
+    data.selected = NONE_SELECTED;
+#ifdef LOOPBACK
+    data.entries[MY_IP]="127.0.0.1";
+    data.entries[OTHER_IP]= "127.0.0.1";
+#endif
 }
 
 CModel::CModel(const CModel& orig) {

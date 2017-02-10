@@ -662,7 +662,7 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
                       this->msgsToShow=aux;
                       this->status=WAITING_FOR_USER_CONFIRMATION;
                    }
-                   else
+                   else if (!tokens.howManyTokensOnCPURoom(COMPUTER_ROOM_FINGERPRINT))
                        triggerAlarm(locationToMove);
             }   
 
