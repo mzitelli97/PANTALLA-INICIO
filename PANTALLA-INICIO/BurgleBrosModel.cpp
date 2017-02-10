@@ -30,6 +30,11 @@ BurgleBrosModel::BurgleBrosModel()
     specialMotionCase=false;
     iE = NO_IE;
 }
+
+bool BurgleBrosModel::isMotionSpecialCase() {
+    return specialMotionCase;
+}
+
 void BurgleBrosModel::reset()
 {
     BurgleBrosGuard aux1(0);

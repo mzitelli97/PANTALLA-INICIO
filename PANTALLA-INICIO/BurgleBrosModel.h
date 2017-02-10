@@ -37,7 +37,7 @@
 #define SPOTTER_BOTTOM      "Bottom"
 #define SPOTTER_NO_PREV_CHOICE "..."
 
-//#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
+#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
 
 typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT} ModelStatus;
 typedef enum {GUARD_STEP_TO, GUARD_CARD_PICK} LocationMeaning;
@@ -75,7 +75,9 @@ class BurgleBrosModel : public Model
         vector<unsigned int> getInfo2DrawExtraDices();
         importantEvents getInfoOfEvents();
         /*Funciones para cuando pide cartelito con info extra.*/
+        bool isMotionSpecialCase();
         CardLocation locationOfComputerRoomOrLavatory(CardName computerRoomOrLavatory);
+        //computerOrLavatoryHere(CardLocation pos);
         ModelStatus getModelStatus();
         vector<string> getMsgToShow();
         bool userDecidedTo(string decision); // Devuelve si hay que llamar a move guard.
