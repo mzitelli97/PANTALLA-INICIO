@@ -61,6 +61,9 @@ public:
     
     virtual ~BurgleBrosController();
 private:
+    string askThisPlayerAndProcess(vector<string> &message);
+    string handleThisPlayerMotionSpecialCase(vector<string> &message);
+    
     void handlePlayAgain();
     void handleLootsExchange(NetworkED * networkEvent);
     void clientInitRoutine(NetworkED *networkEvent);

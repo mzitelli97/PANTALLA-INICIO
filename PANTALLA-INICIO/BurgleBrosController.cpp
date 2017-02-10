@@ -84,30 +84,10 @@ string BurgleBrosController::getUsersResponse(vector<string> &message)
     vector<string> deadbolt({DEADBOLT_TEXT});
     if(modelPointer->getPlayerOnTurn() == THIS_PLAYER)      //A este jugador le pregunta con un cartelito por view
     {
-        retVal=view->MessageBox(message);   //una vez obtenido lo que el usuario escogió, se tiene que mandar un mensaje con lo que se puso.
-        //EL 2 SIGNIFICA EL TEXTO, los titulos y subtitulos son iguales.
-        if(message[2]==fingerPrint[2] && retVal==USE_HACK_TOKEN_TEXTB )  //Si se preguntaba por un fingerprint y el usuario decidió usar un token:
-            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_FINGERPRINT));
-        else if (message[2]==laser[2] )   //Si entro a un laser
-        {
-            if(retVal==USE_HACK_TOKEN_TEXTB)        //y eligio gastar un hack token, se manda con la location del mismo.
-                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_LASER));
-            else if (retVal==SPEND_ACTION_TEXTB)
-                networkInterface->sendSpent(true);  //Si eligió gastar acciones se manda con este
-            else
-                networkInterface->sendSpent(false); //Sino, se manda con este paquete.
-        }
-        else if(message[2]==lavatory[2] && retVal==USE_LAVATORY_TOKEN_TEXTB)  //si era un lavatory y eligió usar un token se manda un use token
-            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
-        else if(message[2]==deadbolt[2])          //Si era un deadbolt
-        {
-            if(retVal==SPEND_ACTIONS_TEXTB)         //Se manda spend actions con true si eligió gastarlas, con no si no gasto nada el rata.
-                networkInterface->sendSpent(true);
-            else
-                networkInterface->sendSpent(false);
-        }
-        else if(message[2]==motion[2] && retVal==USE_HACK_TOKEN_TEXTB)    //Si salio del motion y uso el token se manda un use token.
-            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
+        if(!modelPointer->isMotionSpecialCase())    //Para todos los casos salve el caso especial del motion
+            retVal=askThisPlayerAndProcess(message);
+        else
+            retVal=handleThisPlayerMotionSpecialCase(message);
     }
     else                                        //Al otro jugador le pregunta por el paquete recibido en la queue
     {
@@ -150,6 +130,66 @@ string BurgleBrosController::getUsersResponse(vector<string> &message)
         }
     }
     packetToAnalize.clear();
+    return retVal;
+}
+
+string BurgleBrosController::handleThisPlayerMotionSpecialCase(vector<string> &message)     //En este caso primero se tiene que resolver primero el motion y luego el segundo caso.
+{
+    vector<string> motion({MOTION_TEXT});
+    string retVal;
+    string userChoice =view->MessageBox(message);
+    if(message[2]==motion[2])            //Se tiene que esperar para un motion porque es su caso especial,
+    {
+        if(userChoice==USE_HACK_TOKEN_TEXTB)    //Si decidió usar token, se manda un paquete.
+        {
+            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
+            retVal=userChoice;          // si fue token devuelve ya de una esto para que procese el modelo
+        }
+        else    //SI decide no usar tokens para el motion, le pregunta por segunda vez al player 
+        {
+            modelPointer->userDecidedTo(userChoice); // primero hace que procese el modelo la wea.
+            vector<string> secondMsg= modelPointer->getMsgToShow();
+            retVal=askThisPlayerAndProcess(secondMsg);
+        }
+    }
+    else
+        quit=true; //Esto no debería pasar nunca.
+    return retVal;
+}
+
+
+string BurgleBrosController::askThisPlayerAndProcess(vector<string> &message)
+{
+    string retVal;
+    vector<string> fingerPrint({ENTER_FINGERPRINT_TEXT});
+    vector<string> lavatory({LAVATORY_TEXT});
+    vector<string> laser({LASER_TEXT});
+    vector<string> motion({MOTION_TEXT});
+    vector<string> deadbolt({DEADBOLT_TEXT});
+    retVal=view->MessageBox(message);   //una vez obtenido lo que el usuario escogió, se tiene que mandar un mensaje con lo que se puso.
+    //EL 2 SIGNIFICA EL TEXTO, los titulos y subtitulos son iguales.
+    if(message[2]==fingerPrint[2] && retVal==USE_HACK_TOKEN_TEXTB )  //Si se preguntaba por un fingerprint y el usuario decidió usar un token:
+        networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_FINGERPRINT));
+    else if (message[2]==laser[2] )   //Si entro a un laser
+    {
+        if(retVal==USE_HACK_TOKEN_TEXTB)        //y eligio gastar un hack token, se manda con la location del mismo.
+            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_LASER));
+        else if (retVal==SPEND_ACTION_TEXTB)
+            networkInterface->sendSpent(true);  //Si eligió gastar acciones se manda con este
+        else
+            networkInterface->sendSpent(false); //Sino, se manda con este paquete.
+    }
+    else if(message[2]==lavatory[2] && retVal==USE_LAVATORY_TOKEN_TEXTB)  //si era un lavatory y eligió usar un token se manda un use token
+        networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
+    else if(message[2]==deadbolt[2])          //Si era un deadbolt
+    {
+        if(retVal==SPEND_ACTIONS_TEXTB)         //Se manda spend actions con true si eligió gastarlas, con no si no gasto nada el rata.
+            networkInterface->sendSpent(true);
+        else
+            networkInterface->sendSpent(false);
+    }
+    else if(message[2]==motion[2] && retVal==USE_HACK_TOKEN_TEXTB)    //Si salio del motion y uso el token se manda un use token.
+        networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
     return retVal;
 }
 
