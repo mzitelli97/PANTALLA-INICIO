@@ -42,6 +42,8 @@ bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
 	{
 		firstTimeCalled = false;
 		error=!(p2networking->prepareToConnect(ip));
+                currClock = clock();
+                prevClock = currClock;
                 if(error)
                     errorMsg = "Ip to connect was forbidden, check ip entered. Example: 127.0.0.1";
 	}
@@ -49,10 +51,10 @@ bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
 	{
 	case CLIENT:
 		currClock = clock();
-                time = DIFF_TIME_CLOCK(currClock, prevClock);
-		if (p2networking->tryToConnect() == true)
+                time = (double)DIFF_TIME_CLOCK(currClock, prevClock);
+		if (!error && p2networking->tryToConnect() == true) //El que no haya error es por si en prepare to connect hubo un error.
 			connected = true;
-		else if (time > 0.5)          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
+		else if (time > timeToBecomeServer )          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
 		{
 			currentRole = SERVER;
 			p2networking->abortConnecting();

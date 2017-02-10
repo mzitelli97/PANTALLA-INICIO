@@ -178,7 +178,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         auxLocation = (CardLocation *)temp.info;
                         view->showMenu(modelPointer->getPosibleActionsToTile(THIS_PLAYER, *auxLocation), aux, *auxLocation);
-                        view->update(modelPointer);
+                        view->update();
                     }
                     break;
                 case MENU_ITEM_CLICK:
@@ -186,7 +186,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         menuInfo = (auxInfo *)temp.info;
                         interpretAction(menuInfo->option, menuInfo->location);
-                        view->update(modelPointer);
+                        view->update();
                     }
                     break;
                 case LOOT_CARDS_CLICK:
