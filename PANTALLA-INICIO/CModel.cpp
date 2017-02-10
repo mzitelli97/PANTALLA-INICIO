@@ -19,7 +19,7 @@ CModel::CModel()
 {
     for(int i = 0; i < NONE_SELECTED; i++)
         data.entries[i] = "";
-    data.selected = NONE_SELECTED;
+    data.selected = MY_IP;
 }
 
 CModel::CModel(const CModel& orig) {

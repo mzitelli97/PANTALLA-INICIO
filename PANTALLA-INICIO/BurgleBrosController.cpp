@@ -316,7 +316,6 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     }
                     break;
                 case VOL_BUTTON_CLICK:
-                    //modelPointer->toggleVol();
                     sound->toggleMute();
                     view->toggleVolButton();
                     view->update();
