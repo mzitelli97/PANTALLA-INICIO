@@ -98,7 +98,7 @@ class BurgleBrosModel : public Model
         void addDieToSafe(PlayerId playerId, CardLocation safe);
         void createAlarm(PlayerId playerId, CardLocation tile);
         void placeCrow(PlayerId playerId, CardLocation tile);
-        void pickLoot(PlayerId playerId, Loot loot);
+        void pickLoot(PlayerId playerId);
         void askForLoot(PlayerId playerId, Loot loot);
         void offerLoot(PlayerId playerId, Loot loot);
         void escape(PlayerId playerId, CardLocation stairTile);
@@ -112,7 +112,7 @@ class BurgleBrosModel : public Model
         bool isCrackSafePossible(PlayerId playerId,CardLocation tile);
         bool isCreateAlarmPossible(PlayerId playerId, CardLocation tile);
         bool isPlaceCrowPossible(PlayerId playerId, CardLocation tile);
-        bool isPickLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
+        bool isPickLootPossible(PlayerId playerId, Loot loot);
         bool isAskForLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isOfferLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isEscapePossible(PlayerId playerId, CardLocation tile);

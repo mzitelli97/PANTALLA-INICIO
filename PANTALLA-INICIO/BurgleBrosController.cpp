@@ -392,16 +392,10 @@ void BurgleBrosController::interpretAction(string action, CardLocation location)
         modelPointer->placeCrow(THIS_PLAYER,location);
         networkInterface->sendPlaceCrow(location);
     }
-    else if(action=="PICK UP KITTY")
+    else if(action=="PICK UP KITTY" || action=="PICK UP GOLD BAR" || "PICK UP LOOTS")
     {
-        modelPointer->pickLoot(THIS_PLAYER, PERSIAN_KITTY);
-        networkInterface->sendPickUpLoot(PERSIAN_KITTY);
-    }
-        
-    else if(action=="PICK UP GOLD BAR")
-    {
-        modelPointer->pickLoot(THIS_PLAYER, GOLD_BAR);
-        networkInterface->sendPickUpLoot(GOLD_BAR);
+        modelPointer->pickLoot(THIS_PLAYER);
+        networkInterface->sendPacket(PICK_UP_LOOT);
     }
     else if(action=="ESCAPE")
     {
@@ -660,7 +654,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkInterface->sendPacket(ACK);
             break;
         case PICK_UP_LOOT:
-            modelPointer->pickLoot(OTHER_PLAYER, networkEvent->getLoot());
+            modelPointer->pickLoot(OTHER_PLAYER);
             networkInterface->sendPacket(ACK);
             break;       
         case CREATE_ALARM:

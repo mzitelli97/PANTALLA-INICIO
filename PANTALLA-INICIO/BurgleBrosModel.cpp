@@ -888,13 +888,13 @@ void BurgleBrosModel::placeCrow(PlayerId playerId, CardLocation tile)
     if(actionOk==false)
     {   gameFinished=true; finishMsg = "ERROR: BBModel error: A place crow action was called when it wasnt possible to do it!"; }
 }
-void BurgleBrosModel::pickLoot(PlayerId playerId, Loot lootToPick)
+void BurgleBrosModel::pickLoot(PlayerId playerId)
 {
     bool actionOk=false;
     BurgleBrosPlayer *p= getP2Player(playerId);
-    if(isPickLootPossible(playerId,p->getPosition(), lootToPick) && !gameFinished)
+    if(!gameFinished)
     {
-        if(lootToPick==PERSIAN_KITTY)          //Si es el persian kitty
+        if(isPickLootPossible(playerId,PERSIAN_KITTY))          //Si es el persian kitty
         {
             pair<bool, CardLocation> kittyInfo;
             kittyInfo.first= false;
@@ -904,7 +904,7 @@ void BurgleBrosModel::pickLoot(PlayerId playerId, Loot lootToPick)
             notifyAllObservers();
             actionOk=true;
         }
-        else if(lootToPick==GOLD_BAR)
+        if(isPickLootPossible(playerId, GOLD_BAR))
         {
             loots.pickGoldBarOnFloor(playerId, p->getPosition());
             p->attachLoot(GOLD_BAR);
@@ -1252,15 +1252,15 @@ bool BurgleBrosModel::isOfferLootPossible(PlayerId playerId, CardLocation tile, 
     }
     return retVal;
 }
-bool BurgleBrosModel::isPickLootPossible(PlayerId playerId, CardLocation tile , Loot lootToPick)
+bool BurgleBrosModel::isPickLootPossible(PlayerId playerId, Loot lootToPick)
 {
     bool retVal = false;
     BurgleBrosPlayer * p = getP2Player(playerId);
-    if(p->isItsTurn() && p->getPosition()==tile && status == WAITING_FOR_ACTION)
+    if(p->isItsTurn() && status == WAITING_FOR_ACTION)
     {
-        if(lootToPick == PERSIAN_KITTY && tokens.isThereAPersianKittyToken(tile))
+        if(lootToPick == PERSIAN_KITTY && tokens.isThereAPersianKittyToken(p->getPosition()))
             retVal=true;
-        else if(lootToPick == GOLD_BAR && loots.canPlayerPickUpGoldBarOnFloor(playerId,tile))
+        else if(lootToPick == GOLD_BAR && loots.canPlayerPickUpGoldBarOnFloor(playerId,p->getPosition()))
             retVal=true;
     }
     return retVal;
@@ -1319,10 +1319,15 @@ list<string> BurgleBrosModel::getPosibleActionsToTile(PlayerId player, CardLocat
         if(isOfferLootPossible(player,tile,(Loot)i))
             aux.push_back(offer);
     }
-    if(isPickLootPossible(player, tile,PERSIAN_KITTY))
-        aux.push_back("PICK UP KITTY");
-    if(isPickLootPossible(player, tile, GOLD_BAR))
-        aux.push_back("PICK UP GOLD BAR");
+    if(isPickLootPossible(player, GOLD_BAR) && isPickLootPossible(player,PERSIAN_KITTY) )
+        aux.push_back("PICK UP LOOTS");
+    else
+    {
+        if(isPickLootPossible(player,PERSIAN_KITTY))
+            aux.push_back("PICK UP KITTY");
+        else if(isPickLootPossible(player,GOLD_BAR))
+            aux.push_back("PICK UP GOLD BAR");
+    }
     if(isEscapePossible(player,tile))
         aux.push_back("ESCAPE");
     return aux;
