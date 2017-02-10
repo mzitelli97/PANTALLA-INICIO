@@ -30,6 +30,11 @@ BurgleBrosModel::BurgleBrosModel()
     specialMotionCase=false;
     iE = NO_IE;
 }
+
+bool BurgleBrosModel::isMotionSpecialCase() {
+    return specialMotionCase;
+}
+
 void BurgleBrosModel::reset()
 {
     BurgleBrosGuard aux1(0);
@@ -343,6 +348,14 @@ CardLocation BurgleBrosModel::locationOfComputerRoomOrLavatory(CardName computer
     else
         return board.getComputerRoomLocation(computerRoomOrLavatory);
 }
+
+bool BurgleBrosModel::isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile) {
+    if(whichTypeOfTile == LAVATORY)
+        return pos == board.getLavatoryLocation();
+    else
+        return pos == board.getComputerRoomLocation(whichTypeOfTile);
+}
+
 ModelStatus BurgleBrosModel::getModelStatus()
 {
     return status;

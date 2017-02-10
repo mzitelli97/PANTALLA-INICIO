@@ -75,7 +75,9 @@ class BurgleBrosModel : public Model
         vector<unsigned int> getInfo2DrawExtraDices();
         importantEvents getInfoOfEvents();
         /*Funciones para cuando pide cartelito con info extra.*/
+        bool isMotionSpecialCase();
         CardLocation locationOfComputerRoomOrLavatory(CardName computerRoomOrLavatory);
+        bool isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile);
         ModelStatus getModelStatus();
         vector<string> getMsgToShow();
         bool userDecidedTo(string decision); // Devuelve si hay que llamar a move guard.
