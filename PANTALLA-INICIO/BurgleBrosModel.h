@@ -7,7 +7,6 @@
 #include "BurgleBrosPlayer.h"
 #include "BurgleBrosDices.h"
 #include "Model.h"
-#include "View.h"
 #include "Controller.h"
 #include "SoundManager.h"
 
@@ -38,10 +37,7 @@
 #define SPOTTER_BOTTOM      "Bottom"
 #define SPOTTER_NO_PREV_CHOICE "..."
 
-
-//#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
-
-
+#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
 
 typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT} ModelStatus;
 typedef enum {GUARD_STEP_TO, GUARD_CARD_PICK} LocationMeaning;
@@ -49,6 +45,10 @@ typedef struct{
     LocationMeaning meaning;
     CardLocation cardLocation;
 }GuardMoveInfo;
+
+
+typedef enum{ALARM_TRIGGERED, SAFE_CRACKED, KEYPAD_OPENED, STAIRS, CHIHUAHUA_BARKS, KITTY_ESCAPED, LOST, WON, NO_IE}importantEvents;
+
 class BurgleBrosModel : public Model
 {
     public:
@@ -64,7 +64,7 @@ class BurgleBrosModel : public Model
         void setInitTurn(PlayerId playerId);
         void copyGuardInitPos(CardLocation guardPos, CardLocation guardDiePos);          //Esta función es inteligente y si se inicializó el guardia del primer piso y se la llama, inicializa el del segundo piso, etc.
         void generateGuardInitPos(CardLocation *guardPos, CardLocation *guardDiePos);   //Esta función es inteligente y si se inicializó el guardia del primer piso y se la llama, inicializa el del segundo piso, etc.
-        /* Funciones para obtener información para dibujar. */
+        /* Funciones para obtener información para los observers. */
         pair<bool,CardLocation> getGoldBarInfo();
         vector<wall> getInfo2DrawWalls();
 	vector<Info2DrawCards> getInfo2DrawCards();
@@ -73,8 +73,11 @@ class BurgleBrosModel : public Model
         Info2DrawGuard getInfo2DrawGuard(unsigned int floor);
 	list<Info2DrawTokens> getInfo2DrawTokens();
         vector<unsigned int> getInfo2DrawExtraDices();
+        importantEvents getInfoOfEvents();
         /*Funciones para cuando pide cartelito con info extra.*/
+        bool isMotionSpecialCase();
         CardLocation locationOfComputerRoomOrLavatory(CardName computerRoomOrLavatory);
+        bool isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile);
         ModelStatus getModelStatus();
         vector<string> getMsgToShow();
         bool userDecidedTo(string decision); // Devuelve si hay que llamar a move guard.
@@ -95,7 +98,7 @@ class BurgleBrosModel : public Model
         void addDieToSafe(PlayerId playerId, CardLocation safe);
         void createAlarm(PlayerId playerId, CardLocation tile);
         void placeCrow(PlayerId playerId, CardLocation tile);
-        void pickLoot(PlayerId playerId, Loot loot);
+        void pickLoot(PlayerId playerId);
         void askForLoot(PlayerId playerId, Loot loot);
         void offerLoot(PlayerId playerId, Loot loot);
         void escape(PlayerId playerId, CardLocation stairTile);
@@ -109,7 +112,7 @@ class BurgleBrosModel : public Model
         bool isCrackSafePossible(PlayerId playerId,CardLocation tile);
         bool isCreateAlarmPossible(PlayerId playerId, CardLocation tile);
         bool isPlaceCrowPossible(PlayerId playerId, CardLocation tile);
-        bool isPickLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
+        bool isPickLootPossible(PlayerId playerId, Loot loot);
         bool isAskForLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isOfferLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isEscapePossible(PlayerId playerId, CardLocation tile);
@@ -118,7 +121,6 @@ class BurgleBrosModel : public Model
         list<string> getPosibleActionsToTile(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
         list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
         
-        void attachView(View * view);
         void attachController(Controller * controller);
         void attachSoundManager(SoundManager * soundManager);
 	~BurgleBrosModel();
@@ -145,9 +147,9 @@ class BurgleBrosModel : public Model
 	BurgleBrosTokens tokens;
 	BurgleBrosLoots loots;
 	BurgleBrosDices dice;
-        View * view;
         Controller * controller;
-        SoundManager * soundManager;  
+        SoundManager * soundManager;
+        importantEvents iE;
         bool gameFinished;
         string finishMsg;       //Si el juego terminó indica como termino (por ejemplo WON, LOST o MODEL ERROR:"(errormsg)"
         ModelStatus status;         //Para las preguntas al usuario

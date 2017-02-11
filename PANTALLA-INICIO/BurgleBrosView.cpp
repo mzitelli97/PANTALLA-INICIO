@@ -1,15 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   BurgleBrosView.cpp
- * Author: javier
- * 
- * Created on December 24, 2016, 12:58 PM
- */
 
 #include <vector>
 
@@ -25,11 +13,14 @@
 #include "GraphicToken.h"
 #include "GraphicMenuItem.h"
 #include "GraphicWall.h"
-#include "allegro5/allegro_native_dialog.h"
 #include "GraphicButton.h"
 #include <time.h>
 
-#define SCREEN_W 720
+typedef enum {TILES_LIST, BUTTONS_LIST, CHARACTER_CARDS_LIST, LOOT_SHOW_LIST, EXTRA_DICES_LIST, GUARD_CARDS_LIST} FirstLayerLists;
+typedef enum {TOKENS_LIST, GUARD_INFO_LIST, PLAYER_INFO_LIST, STATIC_ITEMS} SecondeLayerLists;
+typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
+
+#define SCREEN_W 1200
 #define SCREEN_H (SCREEN_W*9/16)
 #define TITLE_H al_get_bitmap_height(backScreen)/20.0
 #define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/50.0
@@ -37,8 +28,9 @@
 #define NO_GUARD_ZOOMED -1
 
 
-BurgleBrosView::BurgleBrosView() {
+BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     imageLoader.initImages();           //Falta checkear.
+    this->model = model;
 #ifdef FULLSCREEN
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 #endif
@@ -259,20 +251,16 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     
 }
 
-void BurgleBrosView::update(Model* auxModel)
+void BurgleBrosView::update()
 {
     /*Update all*/
-    clock_t  before,after;
-    
-    //before=clock();
-    BurgleBrosModel * model = (BurgleBrosModel *) auxModel;
-    updateTiles(model);
-    updateTokens(model);
-    updateCharacters(model);
-    updateCharacterCards(model);
-    updateLoots(model);
-    updateGuards(model);
-    updateExtraDices(model);
+    updateTiles();
+    updateTokens();
+    updateCharacters();
+    updateCharacterCards();
+    updateLoots();
+    updateGuards();
+    updateExtraDices();
     //after=clock();
     //cout << "Update tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC<< " segundos."<<endl; 
     /*Draw all*/
@@ -322,7 +310,7 @@ ItemInfo BurgleBrosView::itemFromClick(Point point)
     }
     return retVal;
 }
-void BurgleBrosView::updateTiles(BurgleBrosModel * model)
+void BurgleBrosView::updateTiles()
 {
     vector<Info2DrawCards> aux = model->getInfo2DrawCards();
     list<GraphicItem *>::iterator it = accessGraphicItems(FIRST_LAYER, TILES_LIST);
@@ -336,7 +324,7 @@ void BurgleBrosView::updateTiles(BurgleBrosModel * model)
         }
     }
 }
-void BurgleBrosView::updateTokens(BurgleBrosModel* model)
+void BurgleBrosView::updateTokens()
 {
     list<Info2DrawTokens> info_tokens = model->getInfo2DrawTokens();
     list<list<GraphicItem *>>::iterator it_itemType;
@@ -355,7 +343,7 @@ void BurgleBrosView::updateTokens(BurgleBrosModel* model)
         it_itemType->push_back(token);
     }
 }
-void BurgleBrosView::updateLoots(BurgleBrosModel * model)
+void BurgleBrosView::updateLoots()
 {
     list<Info2DrawLoot> aux = model->getInfo2DrawLoot();
     map<PlayerId, unsigned int> lootsCount;
@@ -386,11 +374,11 @@ void BurgleBrosView::updateLoots(BurgleBrosModel * model)
     }
     
 }
-void BurgleBrosView::updateButtons(BurgleBrosModel *model)
+void BurgleBrosView::updateButtons()
 {
     
 }
-void BurgleBrosView::updateCharacters(BurgleBrosModel *model) {
+void BurgleBrosView::updateCharacters() {
     list<GraphicItem*>::iterator it = accessGraphicItems(SECOND_LAYER, PLAYER_INFO_LIST);
     //First Player
     Info2DrawPlayer player = model->getInfo2DrawPlayer(THIS_PLAYER);
@@ -414,7 +402,7 @@ void BurgleBrosView::updateCharacters(BurgleBrosModel *model) {
     }
 }
 
-void BurgleBrosView::updateCharacterCards(BurgleBrosModel *model) {
+void BurgleBrosView::updateCharacterCards() {
     Info2DrawPlayer player = model->getInfo2DrawPlayer(THIS_PLAYER);
     //FirstPlayer
     list<GraphicItem *>::iterator it = accessGraphicItems(FIRST_LAYER, CHARACTER_CARDS_LIST);
@@ -437,7 +425,7 @@ void BurgleBrosView::updateCharacterCards(BurgleBrosModel *model) {
         gPlayerCard->setTurn(player.turn);
     }
 }
-void BurgleBrosView::updateGuards(BurgleBrosModel* model)
+void BurgleBrosView::updateGuards()
 {
     list<GraphicItem *>:: iterator guard = accessGraphicItems(SECOND_LAYER, (unsigned int) GUARD_INFO_LIST);
     list<GraphicItem *>::iterator it = accessGraphicItems(FIRST_LAYER, (unsigned int) GUARD_CARDS_LIST);
@@ -484,7 +472,7 @@ void BurgleBrosView::updateGuards(BurgleBrosModel* model)
         }
     }
 }
-void BurgleBrosView::updateExtraDices(BurgleBrosModel* model)
+void BurgleBrosView::updateExtraDices()
 {
     vector<unsigned int> info_dices = model->getInfo2DrawExtraDices();
     list<list<GraphicItem *>>::iterator it_itemType;

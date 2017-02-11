@@ -87,10 +87,14 @@ bool GUI::hayEvento()
                 auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'A');
             else if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_0 && rawEvent.keyboard.keycode <= ALLEGRO_KEY_9)
                 auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_0+'0');
-            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_FULLSTOP)
+            else if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_PAD_0 && rawEvent.keyboard.keycode <= ALLEGRO_KEY_PAD_9)
+                auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_PAD_0+'0');
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_FULLSTOP || rawEvent.keyboard.keycode == ALLEGRO_KEY_PAD_DELETE)
                 auxData= new KeyboardED('.');
             else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_SPACE)
                 auxData= new KeyboardED(' ');
+            else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_ENTER || rawEvent.keyboard.keycode == ALLEGRO_KEY_PAD_ENTER)
+                auxData= new KeyboardED(ENTER_KEY);
             else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
                 auxData= new KeyboardED(ESCAPE_KEY);
             else if(rawEvent.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
@@ -108,6 +112,7 @@ bool GUI::hayEvento()
             TimerED *auxData = new TimerED(TIMEOUT);
             eventData=(EventData *) auxData;
             event=GUI_EVENT_TIMER;
+            cout<< "TIMEOUT"<<endl;
             retVal=true;
         }
     }
@@ -124,7 +129,7 @@ void GUI::playTimer() {
 
 void GUI::resetTimer() {
     al_stop_timer(timer);
-    al_start_timer(timer);
+    //al_start_timer(timer);
 }
 
 

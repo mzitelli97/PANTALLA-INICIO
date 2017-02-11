@@ -31,9 +31,15 @@ BurgleBrosSound::BurgleBrosSound(const BurgleBrosSound& orig) {
     
 }
 
-void BurgleBrosSound::playSoundEffect(SoundEffect effect)
+void BurgleBrosSound::attachModel(BurgleBrosModel* model) 
 {
-    if(!onMute && initOK)
+    this->model = model;
+}
+
+
+void BurgleBrosSound::playSoundEffect(importantEvents effect)
+{
+    if(!onMute && initOK && effect != NO_IE)
         al_play_sample(samples[(int)effect+1], 1.5, 0.0, 1.0,ALLEGRO_PLAYMODE_ONCE, NULL);  //+1 por la musica de fondo
 }
 bool BurgleBrosSound::loadAllSamples()
@@ -48,7 +54,7 @@ bool BurgleBrosSound::loadAllSamples()
     }
     for(int i = (int)ALARM_TRIGGERED; i <= (int)WON; i++)
     {
-        fullPath = (string)SOUNDS_FOLDER + soundEffect2String((SoundEffect)i) + (string)THEMES_EXTENSION;
+        fullPath = (string)SOUNDS_FOLDER + soundEffect2String((importantEvents)i) + (string)THEMES_EXTENSION;
         temp = al_load_sample(fullPath.c_str());
         if(temp != nullptr)
         {
@@ -60,7 +66,7 @@ bool BurgleBrosSound::loadAllSamples()
     return retVal;
 }
 
-string BurgleBrosSound::soundEffect2String(SoundEffect effect)
+string BurgleBrosSound::soundEffect2String(importantEvents effect)
 {
     string retVal = "";
     switch(effect)
@@ -68,8 +74,9 @@ string BurgleBrosSound::soundEffect2String(SoundEffect effect)
         case ALARM_TRIGGERED: retVal += "Alarm"; break;
         case SAFE_CRACKED: retVal += "Safe"; break;
         case KEYPAD_OPENED: retVal += "Keypad"; break;
-        case STAIRS_STEPS: retVal += "Stairs"; break;
+        case STAIRS: retVal += "Stairs"; break;
         case CHIHUAHUA_BARKS: retVal += "Bark"; break;
+        case KITTY_ESCAPED: retVal += "Kitty"; break;
         case LOST: retVal += "Lost"; break;
         case WON: retVal += "Chopper"; break;
         default: retVal += "ERROR"; break;
@@ -93,6 +100,11 @@ void BurgleBrosSound::reset()
     al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL); //reinicio la musica de fondo
 }
 
+void BurgleBrosSound::update()
+{
+    importantEvents iE = model->getInfoOfEvents();
+    playSoundEffect(iE);
+}
 
 BurgleBrosSound::~BurgleBrosSound() {
 }

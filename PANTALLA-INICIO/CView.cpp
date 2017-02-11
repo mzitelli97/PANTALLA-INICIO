@@ -17,8 +17,9 @@
 
 #define TEXT_COLOR al_map_rgb(0,0,255)
 
-CView::CView()
+CView::CView(CModel * model)
 {
+    this->model = model;
     imageLoader.initImages();           //Falta checkear.
 #ifdef FULLSCREEN
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
@@ -27,17 +28,18 @@ CView::CView()
     backScreen = al_load_bitmap("fondo.jpg");
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     al_set_window_title(display,"EDA Burgle Bros");
-    font = al_load_font("title.ttf",BOX_HEIGHT,0);
+    ALLEGRO_FONT * auxFont = al_load_font("title.ttf",BOX_HEIGHT,0);
         
-    al_draw_text(font,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
-    al_draw_text(font,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
-    al_draw_text(font,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");
+    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
+    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
+    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");
     
-    ALLEGRO_FONT * box_font = al_load_font("fonts.ttf",BOX_HEIGHT, 0);
+    al_destroy_font(auxFont);
+    font = al_load_font("fonts.ttf",BOX_HEIGHT, 0);
     //Creo las cajas de texto
     for(int i = 0; i < N_BOXES; i++)
     {
-        TextBox * box = new TextBox(BOX_WIDTH,BOX_HEIGHT,box_font, (textSelected)i);
+        TextBox * box = new TextBox(BOX_WIDTH,BOX_HEIGHT,font, (textSelected)i);
         box->setPosition(BOX_MIN_X, BOX_MIN_Y + SPACE_Y* (i%N_BOXES) + (i%N_BOXES) * BOX_HEIGHT);
         gList.push_back((GraphicItem*) box);
     }
@@ -55,9 +57,6 @@ CView::CView()
         auxButton = new GraphicButton(imageLoader.getImageP((buttonAction)i), nullptr, (buttonAction)i, al_get_display_width(display), al_get_display_height(display));
         gList.push_back(auxButton);
     }
-    
-    al_destroy_font(font);
-    //al_destroy_font(box_font);
 }
 
 CView::CView(const CView& orig) {
@@ -65,6 +64,7 @@ CView::CView(const CView& orig) {
 
 CView::~CView()
 {
+    al_destroy_font(font);
     list<GraphicItem*>::iterator it;
     for(it = gList.begin(); it != gList.end(); it++)
         if(*it != nullptr) delete *it;
@@ -72,9 +72,8 @@ CView::~CView()
     al_destroy_display(display);
 }
 
-void CView::update(Model* auxModel)
+void CView::update()
 {
-    CModel * model = (CModel*) auxModel;
     initInfo data = model->getInfo();
     list<GraphicItem *>::iterator it = gList.begin();
     //Update all the text boxes with the info of the model

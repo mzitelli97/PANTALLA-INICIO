@@ -1,6 +1,7 @@
 #include "cController.h"
 #include "MouseED.h"
 #include "KeyboardED.h"
+#include "BurgleBrosSound.h"
 
 cController::cController()
 {
@@ -19,6 +20,10 @@ cController::~cController() {
 bool cController::checkIfConnecting()
 {
     return connecting;
+}
+
+void cController::attachSound(BurgleBrosSound* sound) {
+    this->sound = sound;
 }
 
 void cController::parseTimerEvent(EventData* evData) {
@@ -44,13 +49,13 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
                 {
                     connecting = true;
                     view->toggleButton(CONNECT_BUTTON);
-                    view->update(model);
+                    view->update();
                 }
                 break;
             case VOL_BUTTON_CLICK:
                 view->toggleButton(MUTE_BUTTON);
-                //modelPointer->toggleVol();
-                view->update(model);
+                sound->toggleMute();
+                view->update();
                 break;
             case HELP_BUTTON_CLICK:
                 break;
@@ -82,6 +87,14 @@ void cController::parseKeyboardEvent(EventData* evData)
                 case DOWN_KEY:
                     if(!connecting) model->selectText((textSelected)((int)(model->getInfo().selected)+1));
                     break;
+                case ENTER_KEY:
+                    if(!connecting && !model->isAnEntryEmpty())  //si se esta conectando no tomo el click en el boton connect
+                    {
+                        connecting = true;
+                        view->toggleButton(CONNECT_BUTTON);
+                        view->update();
+                    }
+                break;
                 case ESCAPE_KEY:
                     quit = true;
                     break;

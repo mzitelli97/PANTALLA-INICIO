@@ -20,17 +20,16 @@ CModel::CModel()
     for(int i = 0; i < NONE_SELECTED; i++)
         data.entries[i] = "";
     data.selected = NONE_SELECTED;
+#ifdef LOOPBACK
+    data.entries[MY_IP]="127.0.0.1";
+    data.entries[OTHER_IP]= "127.0.0.1";
+#endif
 }
 
 CModel::CModel(const CModel& orig) {
 }
 
 CModel::~CModel() {
-}
-
-void CModel::attachView(View* view)
-{
-    this->view = view;
 }
 
 initInfo CModel::getInfo()
@@ -48,14 +47,14 @@ void CModel::write(char key)
             if((key>='0' && key<='9') || key == '.')
                 data.entries[data.selected] += key;
     }
-    view->update(this);
+    notifyAllObservers();
 }
 
 void CModel::deleteOneChar()
 {
     if(data.selected != NONE_SELECTED && !data.entries[data.selected].empty())
         data.entries[data.selected].pop_back();
-    view->update(this);
+    notifyAllObservers();
 }
 
 
@@ -63,7 +62,7 @@ void CModel::selectText(textSelected selected)
 {
     if(selected >= MY_IP && selected <= MY_NAME)
         this->data.selected = selected;
-    view->update(this);
+    notifyAllObservers();
 }
 
 bool CModel::isAnEntryEmpty()

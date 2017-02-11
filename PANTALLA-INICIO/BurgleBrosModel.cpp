@@ -28,7 +28,13 @@ BurgleBrosModel::BurgleBrosModel()
     guardFinishedMoving=false;
     rollForLootCount=0;
     specialMotionCase=false;
+    iE = NO_IE;
 }
+
+bool BurgleBrosModel::isMotionSpecialCase() {
+    return specialMotionCase;
+}
+
 void BurgleBrosModel::reset()
 {
     BurgleBrosGuard aux1(0);
@@ -59,13 +65,10 @@ void BurgleBrosModel::reset()
     specialMotionCase=false;
     finishMsg.clear();
     auxMsgsToShow.clear();
-    soundManager->reset();
+    //soundManager->reset();
+    iE = NO_IE;
 }
 
-void BurgleBrosModel::attachView(View * view)
-{
-    this->view = view;
-}
 void BurgleBrosModel::attachController(Controller * controller)
 {
     this->controller = controller;
@@ -301,7 +304,6 @@ Info2DrawPlayer BurgleBrosModel:: getInfo2DrawPlayer(PlayerId player)
     return info;
 }
 
-
 vector<unsigned int> BurgleBrosModel::getInfo2DrawExtraDices()
 {
     return dice.getCurrDice();
@@ -310,6 +312,11 @@ vector<unsigned int> BurgleBrosModel::getInfo2DrawExtraDices()
 pair<bool,CardLocation> BurgleBrosModel::getGoldBarInfo()
 {
     return loots.getGoldBarOnFloor();
+}
+
+importantEvents BurgleBrosModel::getInfoOfEvents()
+{
+    return iE;
 }
 
 PlayerId BurgleBrosModel::getPlayerOnTurn()
@@ -341,6 +348,14 @@ CardLocation BurgleBrosModel::locationOfComputerRoomOrLavatory(CardName computer
     else
         return board.getComputerRoomLocation(computerRoomOrLavatory);
 }
+
+bool BurgleBrosModel::isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile) {
+    if(whichTypeOfTile == LAVATORY)
+        return pos == board.getLavatoryLocation();
+    else
+        return pos == board.getComputerRoomLocation(whichTypeOfTile);
+}
+
 ModelStatus BurgleBrosModel::getModelStatus()
 {
     return status;
@@ -432,7 +447,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             getP2OtherPlayer(playerOnTurn)->attachLoot(lootOfferedOrAskedFor);
             getP2Player(playerOnTurn)->deattachLoot(lootOfferedOrAskedFor);
             loots.setNewLootOwner(lootOfferedOrAskedFor,playerOnTurn==THIS_PLAYER?OTHER_PLAYER:THIS_PLAYER);
-            view->update(this);
+            notifyAllObservers();
         }
     }
     if(msgsToShow[2]== motion[2] && specialMotionCase)      //Si fue el caso especial de motion salen 2 carteles seguidos, o sea se espera por una confirmación más.
@@ -449,9 +464,9 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
     }   
     else
         status=WAITING_FOR_ACTION;
-    view->update(this);
+    notifyAllObservers();
     checkTurns();
-    view->update(this);
+    notifyAllObservers();
     return guardHasToMove;
 }
 
@@ -475,7 +490,10 @@ void BurgleBrosModel::setDice(vector<unsigned int> &currDice)
     if(keyCracked)  //SI se crackeo, se pone un token, o sino se lo devuelve a su posición anterior
     {
         tokens.putKeyPadToken(movingPlayer->getPosition());
-        soundManager->playSoundEffect(KEYPAD_OPENED);
+        iE = KEYPAD_OPENED;
+        notifyAllObservers();
+        iE = NO_IE;
+        //soundManager->playSoundEffect(KEYPAD_OPENED);
         if(movingPlayer->getPosition() == guards[movingPlayer->getPosition().floor].getPosition())
             movingPlayer->decLives();       //si habia un guardia al entrar al keypad, pierde una vida
     }
@@ -485,9 +503,9 @@ void BurgleBrosModel::setDice(vector<unsigned int> &currDice)
         movingPlayer->setPosition(prevLoc);
     }
     status=WAITING_FOR_ACTION;
-    view->update(this);
+    notifyAllObservers();
     checkTurns();
-    view->update(this);
+    notifyAllObservers();
 }
 void BurgleBrosModel::pass(PlayerId playerId)
 {
@@ -500,7 +518,7 @@ void BurgleBrosModel::pass(PlayerId playerId)
         if(board.getCardType(p->getPosition()) == THERMO && board.isCardVisible(p->getPosition()))
             triggerAlarm(p->getPosition());
         checkTurns();
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;
     }
     if(actionOk==false)
@@ -524,7 +542,7 @@ unsigned int BurgleBrosModel::peek(PlayerId playerId, CardLocation locationToPee
         if(board.getCardType(locationToPeek)==LAVATORY)
             tokens.lavatoryRevealed(locationToPeek); 
         checkTurns();
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;      
     }
     if(actionOk==false)
@@ -557,7 +575,12 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
         movingPlayer->setPosition(locationToMove);
         
         if(locationToMove.floor != prevLocation.floor && (board.getCardType(prevLocation) == STAIR || tokens.isThereADownstairToken(prevLocation)))
-            soundManager->playSoundEffect(STAIRS_STEPS);
+        {
+            iE = STAIRS;
+            notifyAllObservers();
+            iE = NO_IE;
+            //soundManager->playSoundEffect(STAIRS_STEPS);
+        }
         
         //Cambios segun el lugar desde el que me muevo
         if(board.getCardType(prevLocation)==MOTION && board.isMotionActivated())
@@ -585,7 +608,7 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
             movingPlayer->decLives();
         
         
-        view->update(this);
+        notifyAllObservers();
         if(locationToMove==guards[locationToMove.floor].getPosition() && board.getCardType(locationToMove)!= LAVATORY && movingPlayer->getCharacter()!=THE_ACROBAT)
             if( !(board.getCardType(locationToMove) == KEYPAD && !tokens.isThereAKeypadToken(locationToMove)) )     //esto cubre el caso de que te rebote el keypad
                 movingPlayer->decLives();
@@ -639,7 +662,7 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
                       this->msgsToShow=aux;
                       this->status=WAITING_FOR_USER_CONFIRMATION;
                    }
-                   else
+                   else if (!tokens.howManyTokensOnCPURoom(COMPUTER_ROOM_FINGERPRINT))
                        triggerAlarm(locationToMove);
             }   
 
@@ -695,7 +718,7 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
         }
 
         checkTurns();
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;
     }
     if(actionOk==false)
@@ -756,7 +779,7 @@ void BurgleBrosModel::addToken(PlayerId playerId, CardLocation locationToAddToke
         tokens.addHackTokenOn(board.getCardType(locationToAddToken));
         movingPlayer->decActions();
         checkTurns();
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;
     }
     if(actionOk==false)
@@ -772,7 +795,7 @@ void BurgleBrosModel::addDieToSafe(PlayerId playerId, CardLocation safe)
         p->decActions();
         dice.addDieToSafe(safe.floor); 
         checkTurns();
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;
     }
     if(actionOk==false)
@@ -800,9 +823,12 @@ void BurgleBrosModel::crackSafe(PlayerId playerId,vector<unsigned int> &diceThro
         {
             status=WAITING_FOR_LOOT;    //Espero a que me confirmen el loot.
             prevLoc=safe;           //Guardo a que safe crackeo
-            soundManager->playSoundEffect(SAFE_CRACKED);    //check if this needs to be here or in the controller
+            iE = SAFE_CRACKED;
+            notifyAllObservers();
+            iE = NO_IE;
+            //soundManager->playSoundEffect(SAFE_CRACKED);    //check if this needs to be here or in the controller
         }
-        view->update(this);
+        notifyAllObservers();
         checkTurns();
         actionOk=true;
     }
@@ -829,7 +855,7 @@ void BurgleBrosModel::setLoot(PlayerId playerId, Loot *loot)
         triggerSilentAlarm(safe.floor);
         *loot=lootGotten;
         status=WAITING_FOR_ACTION;
-        view->update(this);
+        notifyAllObservers();
         checkTurns();
     }
     else
@@ -844,7 +870,7 @@ void BurgleBrosModel::createAlarm(PlayerId playerId, CardLocation tile)
         playerSpentFreeAction=true;
         triggerAlarm(tile);
         actionOk=true;
-        view->update(this);
+        notifyAllObservers();
     }
     if(actionOk==false)
     {   gameFinished=true; finishMsg = "ERROR: BBModel error: A create alarm action was called when it wasnt possible to do it!"; }
@@ -857,32 +883,32 @@ void BurgleBrosModel::placeCrow(PlayerId playerId, CardLocation tile)
         tokens.placeCrowToken(tile);
         playerSpentFreeAction=true;
         actionOk=true;
-        view->update(this);
+        notifyAllObservers();
     }
     if(actionOk==false)
     {   gameFinished=true; finishMsg = "ERROR: BBModel error: A place crow action was called when it wasnt possible to do it!"; }
 }
-void BurgleBrosModel::pickLoot(PlayerId playerId, Loot lootToPick)
+void BurgleBrosModel::pickLoot(PlayerId playerId)
 {
     bool actionOk=false;
     BurgleBrosPlayer *p= getP2Player(playerId);
-    if(isPickLootPossible(playerId,p->getPosition(), lootToPick) && !gameFinished)
+    if(!gameFinished)
     {
-        if(lootToPick==PERSIAN_KITTY)          //Si es el persian kitty
+        if(isPickLootPossible(playerId,PERSIAN_KITTY))          //Si es el persian kitty
         {
             pair<bool, CardLocation> kittyInfo;
             kittyInfo.first= false;
             tokens.placePersianKittyToken(kittyInfo);
             loots.setNewLootOwner(PERSIAN_KITTY, playerId);
             p->attachLoot(PERSIAN_KITTY);
-            view->update(this);
+            notifyAllObservers();
             actionOk=true;
         }
-        else if(lootToPick==GOLD_BAR)
+        if(isPickLootPossible(playerId, GOLD_BAR))
         {
             loots.pickGoldBarOnFloor(playerId, p->getPosition());
             p->attachLoot(GOLD_BAR);
-            view->update(this);
+            notifyAllObservers();
             actionOk=true;
         }
     }
@@ -904,7 +930,7 @@ string BurgleBrosModel::peekGuardsCard(PlayerId playerId, CardLocation **guardCa
             *guardCard=&spyGuardCard;        //sino, es un movimiento mio, asi que guardo la carta que espio para mandarla
         }
         guards[guardsFloor].setTopOfNotShownDeckVisible(true);      //Muestro la carta de arriba
-        view->update(this);
+        notifyAllObservers();
         
         if(prevChoice == SPOTTER_NO_PREV_CHOICE && playerId==THIS_PLAYER)   //Para este jugador le pregunta por patalla
         {
@@ -922,7 +948,7 @@ string BurgleBrosModel::peekGuardsCard(PlayerId playerId, CardLocation **guardCa
             guards[guardsFloor].pushTopCardToTheBottom();
         getP2Player(playerId)->decActions();
         playerSpentFreeAction=true;
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;
         checkTurns();
     }
@@ -970,10 +996,13 @@ void BurgleBrosModel::escape(PlayerId playerId, CardLocation stairTile)
         while(p->getcurrentActions())
             p->decActions();
         p->getToDaChoppa(); 
-        soundManager->playSoundEffect(STAIRS_STEPS);
-        view->update(this);
+        iE = STAIRS;
+        notifyAllObservers();
+        iE = NO_IE;
+        //soundManager->playSoundEffect(STAIRS_STEPS);
+        notifyAllObservers();
         checkTurns();
-        view->update(this);
+        notifyAllObservers();
         actionOk=true;
     }
     if(actionOk==false)
@@ -1036,16 +1065,16 @@ void BurgleBrosModel::checkTurns()
         if(!nextPlayerOnTurn->isOnBoard() && !nextPlayerOnTurn->isOnHelicopter()&& guards[nextPlayerOnTurn->getPosition().floor].getPosition()== nextPlayerOnTurn->getPosition())
             nextPlayerOnTurn->decLives();
         nextPlayerOnTurn->setTurn(true);
-        nextPlayerOnTurn->setActions(INIT_NMBR_OF_LIVES);       //Se le resetean las acciones.
+        nextPlayerOnTurn->setActions(INIT_NMBR_OF_ACTIONS);       //Se le resetean las acciones.
         if(nextPlayerOnTurn->hasLoot(MIRROR))
-            nextPlayerOnTurn->setActions(INIT_NMBR_OF_LIVES-1);       //SI tenía un mirror pierde 1 acción
+            nextPlayerOnTurn->decActions();     //SI tenía un mirror pierde 1 acción
         if(nextPlayerOnTurn->hasLoot(CHIHUAHUA) || nextPlayerOnTurn->hasLoot(PERSIAN_KITTY))
             status=WAITING_DICE_FOR_LOOT;
         // handlePersianKittyMove(nextPlayerOnTurn);
        // handleChihuahuaMove(nextPlayerOnTurn);
         guardFinishedMoving=false;
         dice.resetKeypadsDice();
-        view->update(this);
+        notifyAllObservers();
     }
     checkIfWonOrLost();
 }
@@ -1056,7 +1085,10 @@ void BurgleBrosModel::checkIfWonOrLost()
     {
         gameFinished=true;
         finishMsg= "WON";
-        soundManager->playSoundEffect(WON);     //check if this needs to be here or in the controller
+        iE = WON;
+        notifyAllObservers();
+        iE = NO_IE;
+        //soundManager->playSoundEffect(WON);     //check if this needs to be here or in the controller
         myPlayer.setTurn(false);
         otherPlayer.setTurn(false);
     }
@@ -1065,7 +1097,10 @@ void BurgleBrosModel::checkIfWonOrLost()
     {
         gameFinished=true;
         finishMsg= "LOST";
-        soundManager->playSoundEffect(LOST);    //check if this needs to be here or in the controller
+        iE = LOST;
+        notifyAllObservers();
+        iE = NO_IE;
+        //soundManager->playSoundEffect(LOST);    //check if this needs to be here or in the controller
         myPlayer.setTurn(false);
         otherPlayer.setTurn(false);
     }
@@ -1217,15 +1252,15 @@ bool BurgleBrosModel::isOfferLootPossible(PlayerId playerId, CardLocation tile, 
     }
     return retVal;
 }
-bool BurgleBrosModel::isPickLootPossible(PlayerId playerId, CardLocation tile , Loot lootToPick)
+bool BurgleBrosModel::isPickLootPossible(PlayerId playerId, Loot lootToPick)
 {
     bool retVal = false;
     BurgleBrosPlayer * p = getP2Player(playerId);
-    if(p->isItsTurn() && p->getPosition()==tile && status == WAITING_FOR_ACTION)
+    if(p->isItsTurn() && status == WAITING_FOR_ACTION)
     {
-        if(lootToPick == PERSIAN_KITTY && tokens.isThereAPersianKittyToken(tile))
+        if(lootToPick == PERSIAN_KITTY && tokens.isThereAPersianKittyToken(p->getPosition()))
             retVal=true;
-        else if(lootToPick == GOLD_BAR && loots.canPlayerPickUpGoldBarOnFloor(playerId,tile))
+        else if(lootToPick == GOLD_BAR && loots.canPlayerPickUpGoldBarOnFloor(playerId,p->getPosition()))
             retVal=true;
     }
     return retVal;
@@ -1284,10 +1319,15 @@ list<string> BurgleBrosModel::getPosibleActionsToTile(PlayerId player, CardLocat
         if(isOfferLootPossible(player,tile,(Loot)i))
             aux.push_back(offer);
     }
-    if(isPickLootPossible(player, tile,PERSIAN_KITTY))
-        aux.push_back("PICK UP KITTY");
-    if(isPickLootPossible(player, tile, GOLD_BAR))
-        aux.push_back("PICK UP GOLD BAR");
+    if(isPickLootPossible(player, GOLD_BAR) && isPickLootPossible(player,PERSIAN_KITTY) )
+        aux.push_back("PICK UP LOOTS");
+    else
+    {
+        if(isPickLootPossible(player,PERSIAN_KITTY))
+            aux.push_back("PICK UP KITTY");
+        else if(isPickLootPossible(player,GOLD_BAR))
+            aux.push_back("PICK UP GOLD BAR");
+    }
     if(isEscapePossible(player,tile))
         aux.push_back("ESCAPE");
     return aux;
@@ -1405,7 +1445,7 @@ void BurgleBrosModel::makeGuardMove(list<GuardMoveInfo> &guardMovement)
         /*Si había un crow token en el tile donde se encuentra*/
         if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN) && stepsToMove > 0)
             stepsToMove--;
-        view->update(this);
+        notifyAllObservers();
         checkIfWonOrLost();
         sleep(0.2);
     }
@@ -1472,7 +1512,7 @@ void BurgleBrosModel::copyGuardMove(list<GuardMoveInfo> &guardMovement)
         }
         else if(it->meaning==GUARD_CARD_PICK)
             guardMoving->drawCardTarget(it->cardLocation);
-        view->update(this);
+        notifyAllObservers();
         checkIfWonOrLost();
         sleep(0.2);
     }
@@ -1629,8 +1669,11 @@ void BurgleBrosModel::handlePersianKittyMove(unsigned int die)
             persianKittyToken.first = true;
             persianKittyToken.second = board.getKittyMovingPos(p->getPosition());
             tokens.placePersianKittyToken(persianKittyToken);
+            iE = KITTY_ESCAPED;
+            notifyAllObservers();
+            iE = NO_IE;
         }
-        view->update(this);
+        notifyAllObservers();
     }
     rollForLootCount++;
 }
@@ -1646,12 +1689,15 @@ void BurgleBrosModel::handleChihuahuaMove(unsigned int die)
             itWillBark=dice.chihuahuaBarks(die);    //SIno, tira los dados recibidos.
         if(itWillBark)
         {
-            soundManager->playSoundEffect(CHIHUAHUA_BARKS);
+            iE = CHIHUAHUA_BARKS;
+            notifyAllObservers();
+            iE = NO_IE;
+            //soundManager->playSoundEffect(CHIHUAHUA_BARKS);
             triggerAlarm(p->getPosition());
             //tokens.triggerAlarm(p->getPosition());
             //setGuardsNewPath(p->getPosition().floor);
         }
-        view->update(this);
+        notifyAllObservers();
     }
     rollForLootCount++;
 }
@@ -1662,13 +1708,16 @@ void BurgleBrosModel::triggerAlarm(CardLocation tile)
     {
         tokens.triggerAlarm(tile);
         setGuardsNewPath(tile.floor);
-        soundManager->playSoundEffect(ALARM_TRIGGERED);
+        iE = ALARM_TRIGGERED;
+        notifyAllObservers();
+        iE = NO_IE;
+        //soundManager->playSoundEffect(ALARM_TRIGGERED);
     }
 }
 
 void BurgleBrosModel::toggleVol()
 {
-    soundManager->toggleMute();
+    //soundManager->toggleMute();
 }
 
 

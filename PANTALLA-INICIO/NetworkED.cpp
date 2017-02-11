@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   NetworkED.cpp
- * Author: javier
- * 
- * Created on January 18, 2017, 12:28 AM
- */
-
 #include "NetworkED.h"
 
 NetworkED::NetworkED(PerezProtocolHeader header,unsigned char * buffer, unsigned int length) 
@@ -65,7 +52,7 @@ void NetworkED::getInitGPos(CardLocation *guardPos, CardLocation *guardsDiePos)
 Loot NetworkED::getLoot()
 {
     Loot retVal;
-    if(header==SAFE_OPENED || header== OFFER_LOOT || header == REQUEST_LOOT || header == PICK_UP_LOOT)
+    if(header==SAFE_OPENED || header== OFFER_LOOT || header == REQUEST_LOOT)
     {
         retVal= (Loot) buffer[0];
     }

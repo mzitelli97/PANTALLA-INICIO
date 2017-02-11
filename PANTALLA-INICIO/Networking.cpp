@@ -224,8 +224,8 @@ bool Networking::recievePacket(PerezProtocolHeader *header, char *buffer, unsign
 
 Networking::~Networking()
 {
-	apr_socket_shutdown(principalSocket, APR_SHUTDOWN_READWRITE);
-	apr_socket_close(principalSocket);
+	if(principalSocket != nullptr)apr_socket_shutdown(principalSocket, APR_SHUTDOWN_READWRITE);
+	if(principalSocket != nullptr)apr_socket_close(principalSocket);
 	apr_terminate();
 }
 

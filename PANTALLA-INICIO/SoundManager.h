@@ -14,13 +14,11 @@
 #ifndef SOUNDMANAGER_H
 #define SOUNDMANAGER_H
 
-typedef enum{ALARM_TRIGGERED, SAFE_CRACKED, KEYPAD_OPENED, STAIRS_STEPS, CHIHUAHUA_BARKS, LOST, WON}SoundEffect;
-
 class SoundManager {
 public:
     SoundManager();
     SoundManager(const SoundManager& orig);
-    virtual void playSoundEffect(SoundEffect effect)=0;
+    //virtual void playSoundEffect(SoundEffect effect)=0;
     virtual void toggleMute()=0;
     virtual void reset()=0;
     virtual ~SoundManager();

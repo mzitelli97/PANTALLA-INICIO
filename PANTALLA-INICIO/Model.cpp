@@ -21,4 +21,14 @@ Model::Model(const Model& orig) {
 
 Model::~Model() {
 }
+void Model::attach(Observer * view)
+{
+    observers.push_back(view);
+}
 
+void Model::notifyAllObservers() 
+{
+    std::list<Observer *>::iterator it;
+    for(it = observers.begin(); it != observers.end(); it++)
+        (*it)->update();
+}

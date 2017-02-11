@@ -10,7 +10,7 @@ using namespace std;
 
 bool packetHasNoDataField(PerezProtocolHeader h)
 {
-    return (h==ACK || h==AGREE || h==DISAGREE || h==NAME || h==YOU_START || h==I_START || h==PASS || h==WE_WON || h==WE_LOST || h==GAME_OVER  || h==PLAY_AGAIN || h==QUIT || h==ERRORR);
+    return (h==ACK || h==AGREE || h==DISAGREE || h==NAME || h==YOU_START || h==I_START || h==PASS || h==WE_WON || h==WE_LOST || h==GAME_OVER  || h==PLAY_AGAIN || h==QUIT || h==ERRORR || h==PICK_UP_LOOT);
 }
 
 
@@ -42,6 +42,8 @@ bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
 	{
 		firstTimeCalled = false;
 		error=!(p2networking->prepareToConnect(ip));
+                currClock = clock();
+                prevClock = currClock;
                 if(error)
                     errorMsg = "Ip to connect was forbidden, check ip entered. Example: 127.0.0.1";
 	}
@@ -49,10 +51,10 @@ bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
 	{
 	case CLIENT:
 		currClock = clock();
-                time = DIFF_TIME_CLOCK(currClock, prevClock);
-		if (p2networking->tryToConnect() == true)
+                time = (double)DIFF_TIME_CLOCK(currClock, prevClock);
+		if (!error && p2networking->tryToConnect() == true) //El que no haya error es por si en prepare to connect hubo un error.
 			connected = true;
-		else if (time > 0.5)          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
+		else if (time > timeToBecomeServer )          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
 		{
 			currentRole = SERVER;
 			p2networking->abortConnecting();
@@ -274,12 +276,6 @@ bool NetworkInterface::sendOfferLoot(Loot i)
     buffer[0]= (unsigned char) i;
     return p2networking->sendPacket(OFFER_LOOT,(char *) buffer, 1);
 }
-bool NetworkInterface::sendPickUpLoot(Loot loot)
-{
-    unsigned char buffer[1];
-    buffer[0]= (unsigned char) loot;
-    return p2networking->sendPacket(PICK_UP_LOOT,(char *) buffer, 1);
-}
 bool NetworkInterface::sendRollDiceForLoot(unsigned int die)
 {
     unsigned char buffer[1];
@@ -302,4 +298,5 @@ bool NetworkInterface::sendSpyPatrol(CardLocation topOfNotShown,string userChoic
 
 NetworkInterface::~NetworkInterface()
 {
+    if(p2networking != nullptr) delete p2networking;
 }

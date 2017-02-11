@@ -168,7 +168,7 @@ void BurgleBrosPlayer::attachLoot(Loot loot)
 BurgleBrosPlayer::BurgleBrosPlayer()
 {
     //pickRandomPlayer();//Ver si queda adentro, afuera o que....
-    currentActions=4;
+    currentActions=INIT_NMBR_OF_ACTIONS;
     lives=INIT_NMBR_OF_LIVES;
     isOnTheHelicopter=false;
     isOnTheBoard = false;

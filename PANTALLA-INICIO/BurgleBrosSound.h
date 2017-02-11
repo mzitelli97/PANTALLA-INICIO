@@ -14,7 +14,9 @@
 #ifndef BURGLEBROSSOUND_H
 #define BURGLEBROSSOUND_H
 
-#include "SoundManager.h"
+//#include "SoundManager.h"
+#include "Observer.h"
+#include "BurgleBrosModel.h"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_audio.h>
 #include <iostream>
@@ -30,17 +32,22 @@
 
 using namespace std;
 
-class BurgleBrosSound:public SoundManager {
+class BurgleBrosSound:public Observer {
 public:
     BurgleBrosSound();
     BurgleBrosSound(const BurgleBrosSound& orig);
-    virtual void playSoundEffect(SoundEffect effect);
-    virtual void toggleMute();
-    virtual void reset();
+    
+    void toggleMute();
+    void reset();
+    void update() override;
+    void attachModel(BurgleBrosModel *model);
+
     virtual ~BurgleBrosSound();
 private:
+    void playSoundEffect(importantEvents effect);
     vector<ALLEGRO_SAMPLE *> samples;
-    string soundEffect2String(SoundEffect effect);
+    BurgleBrosModel *model;
+    string soundEffect2String(importantEvents effect);
     bool loadAllSamples();
     bool initOK;
     bool onMute;

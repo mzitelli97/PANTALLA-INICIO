@@ -1,20 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   BurgleBrosController.h
- * Author: javier
- *
- * Created on December 29, 2016, 5:34 PM
- */
-
 #ifndef BURGLEBROSCONTROLLER_H
 #define BURGLEBROSCONTROLLER_H
 #include "BurgleBrosModel.h"
 #include "BurgleBrosView.h"
+#include "BurgleBrosSound.h"
 #include "EventData.h"
 #include "NetworkED.h"
 #include "Controller.h"
@@ -47,6 +35,7 @@ public:
     void setCommunicationRoleNThisPlayerName(CommunicationRole communicationRole, string name);
     void attachModel(BurgleBrosModel *gamePointer);
     void attachView(BurgleBrosView *view);
+    void attachSound(BurgleBrosSound *sound);
     bool checkIfGameFinished();
     void parseMouseEvent(EventData *mouseEvent);
     void parseNetworkEvent(EventData *networkEvent);
@@ -59,6 +48,10 @@ public:
     
     virtual ~BurgleBrosController();
 private:
+    string askThisPlayerAndProcess(vector<string> &message);
+    string handleThisPlayerMotionSpecialCase(vector<string> &message);
+    string handleOtherPlayerMotionSpecialCase(vector<string> &message);
+    string processOtherPlayerBasicChoice(vector<string> &message);
     void handlePlayAgain();
     void handleLootsExchange(NetworkED * networkEvent);
     void clientInitRoutine(NetworkED *networkEvent);
@@ -66,7 +59,6 @@ private:
     void firstDecidedRoutine(NetworkED *networkEvent);
     void secondDecidedRoutine(NetworkED *networkEvent);
     void interpretNetworkAction(NetworkED *networkEvent);
-    void doOnePacketAction(NetworkED *networkEvent);
     void interpretAction(string action, CardLocation location);
     void analizeIfModelRequiresMoreActions(NetworkED *networkEvent);
     void handleWonOrLost(PerezProtocolHeader msg);
@@ -80,6 +72,7 @@ private:
     list<NetworkED> packetToAnalize; //Para eventos como move, que necesita varios paquetes para ejecutarse completamente, esta ésta queue.
     BurgleBrosModel *modelPointer;
     BurgleBrosView *view;
+    BurgleBrosSound *sound;
     bool aMoveActionPending;
     bool iStarted;
     CardLocation previousMovingToLocation;

@@ -12,14 +12,15 @@
  */
 
 #include <cstdlib>
+#include "BurgleBrosSound.h"
 #include "BurgleBrosModel.h"
 #include "BurgleBrosController.h"
 #include "BurgleBrosView.h"
-#include "BurgleBrosSound.h"
 #include "LibsInit.h"
 #include "GUI.h"
 #include "CView.h"
 #include "cController.h"
+#include "BurgleBrosWrapper.h"
 using namespace std;
 
 /*Estas funciones luego pertenecerían a un wrapper que las une para simplificar el main.*/
@@ -37,15 +38,16 @@ int main(int argc, char** argv) {
     GUI gui;
     BurgleBrosSound sound;
     CModel initModel;
-    CView initView;
+    CView initView(&initModel);
     cController initController;
     NetworkInterface networkInterface;
     
     
-    initModel.attachView(&initView);
+    initModel.attach(&initView);
     initController.attachView(&initView);
     initController.attachModel(&initModel);
-    initView.update(&initModel);
+    initController.attachSound(&sound);
+    initView.update();
     string name;
     string ipToConnect;
     string ipToListen;
@@ -77,19 +79,25 @@ int main(int argc, char** argv) {
         if(!quit)
         {
             BurgleBrosModel model;
-            BurgleBrosView view;
-            model.attachView(&view);
+            BurgleBrosView view(&model);
+            model.attach(&view);
+            model.attach(&sound);
             model.attachController(&controller);
-            model.attachSoundManager(&sound);
+            sound.attachModel(&model);
+            controller.attachSound(&sound);
             controller.attachModel(&model);
             controller.attachView(&view);
             gui.attachController(&controller);
             gui.playTimer();
+            bool prev=false;
             while(gameStillPlaying(controller))
             {
+                prev=controller.isWaiting4ack();
                 if(gui.hayEvento())
                     gui.parseEvento();
-                if(!controller.isWaiting4ack())
+                if(controller.isWaiting4ack() && !prev)
+                    gui.playTimer();
+                else if (!controller.isWaiting4ack())
                     gui.resetTimer();
             }
         }
@@ -119,3 +127,27 @@ bool gameStillPlaying(BurgleBrosController &controller)
     return !(controller.checkIfGameFinished());
 }
 
+
+/*
+el main ahora seria :
+
+void main()
+{
+    BurgleBrosWrapper fullGame;
+    fullGame.getNameAndIp();
+    if(fullGame.gameOnCourse())
+    {
+        fullGame.connect();
+        if(fullGame.gameOnCourse())
+            fullGame.playGame();
+    }
+    //if(fullGame.wasAnError())
+      //  fullGame.showError();
+    
+    return 0;
+}
+ */
+
+
+ 
+ 

@@ -5,20 +5,24 @@
  */
 
 /* 
- * File:   Observer.cpp
+ * File:   Observer.h
  * Author: javier
- * 
+ *
  * Created on December 24, 2016, 5:09 PM
  */
 
-#include "Observer.h"
+#ifndef VIEW_H
+#define VIEW_H
 
-Observer::Observer() {
-}
+class Observer {
+public:
+    Observer();
+    Observer(const Observer& orig);
+    virtual ~Observer();
+    virtual void update() = 0;
+private:
 
-Observer::Observer(const Observer& orig) {
-}
+};
 
-Observer::~Observer() {
-}
+#endif /* VIEW_H */
 

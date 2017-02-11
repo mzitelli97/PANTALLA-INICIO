@@ -23,6 +23,7 @@
         <itemPath>KeyboardED.h</itemPath>
         <itemPath>MouseED.h</itemPath>
         <itemPath>NetworkED.h</itemPath>
+        <itemPath>TimerED.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Graphics" projectFiles="true">
         <itemPath>GraphicButton.h</itemPath>
@@ -51,13 +52,13 @@
         <itemPath>Networking.h</itemPath>
         <itemPath>ProtocolFunctions.h</itemPath>
       </logicalFolder>
+      <itemPath>BurgleBrosWrapper.h</itemPath>
       <itemPath>Controller.h</itemPath>
       <itemPath>GUI.h</itemPath>
       <itemPath>LibsInit.h</itemPath>
       <itemPath>Model.h</itemPath>
+      <itemPath>Observer.h</itemPath>
       <itemPath>SoundManager.h</itemPath>
-      <itemPath>TimerED.h</itemPath>
-      <itemPath>View.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -85,6 +86,7 @@
         <itemPath>KeyboardED.cpp</itemPath>
         <itemPath>MouseED.cpp</itemPath>
         <itemPath>NetworkED.cpp</itemPath>
+        <itemPath>TimerED.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Graphics" projectFiles="true">
         <itemPath>GraphicButton.cpp</itemPath>
@@ -113,14 +115,36 @@
         <itemPath>Networking.cpp</itemPath>
         <itemPath>ProtocolFunctions.cpp</itemPath>
       </logicalFolder>
+      <itemPath>BurgleBrosWrapper.cpp</itemPath>
       <itemPath>Controller.cpp</itemPath>
       <itemPath>GUI.cpp</itemPath>
       <itemPath>LibsInit.cpp</itemPath>
       <itemPath>Model.cpp</itemPath>
       <itemPath>SoundManager.cpp</itemPath>
-      <itemPath>TimerED.cpp</itemPath>
       <itemPath>View.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -223,6 +247,10 @@
       </item>
       <item path="BurgleBrosView.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="BurgleBrosWrapper.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosWrapper.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CModel.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CModel.h" ex="false" tool="3" flavor2="0">
@@ -327,6 +355,8 @@
       </item>
       <item path="Networking.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Observer.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
@@ -344,8 +374,6 @@
       <item path="TimerED.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="View.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="View.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cController.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -422,6 +450,10 @@
       </item>
       <item path="BurgleBrosView.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="BurgleBrosWrapper.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="BurgleBrosWrapper.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CModel.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CModel.h" ex="false" tool="3" flavor2="0">
@@ -526,6 +558,8 @@
       </item>
       <item path="Networking.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Observer.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
@@ -543,8 +577,6 @@
       <item path="TimerED.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="View.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="View.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cController.cpp" ex="false" tool="1" flavor2="0">
       </item>
