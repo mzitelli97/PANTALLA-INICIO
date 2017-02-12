@@ -15,7 +15,7 @@
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
     srand(time(NULL));
-    allegro_startup();
+    //allegro_startup();
     quit=false;
     CModel *initModel = new CModel;
     CView *initView = new CView(initModel);
@@ -84,6 +84,9 @@ void BurgleBrosWrapper::connect()
             bbcontroller->attachModel(newModel);
             bbcontroller->attachView(newView);
             gui.attachController(bbcontroller);
+            p2Controller = bbcontroller;
+            p2Model = newModel;
+            p2View = newView;
         }
     }    
 }

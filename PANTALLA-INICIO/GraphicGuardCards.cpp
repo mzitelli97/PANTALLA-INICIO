@@ -25,6 +25,7 @@ GraphicGuardCards::GraphicGuardCards(ALLEGRO_BITMAP * image, unsigned int floor,
     this->properties.floor = floor;
     topOfNonVisibleDeckShown=false;
     this->properties.shownDeck = isShownDeck;
+    isVisible = !isShownDeck;        //si es el mazo de las cartas que no salieron, lo inicializo visible
 }
 
 GraphicGuardCards::GraphicGuardCards(const GraphicGuardCards& orig) {
@@ -35,9 +36,12 @@ GraphicGuardCards::~GraphicGuardCards() {
 
 ItemInfo GraphicGuardCards::IAm()
 {
-    ItemInfo retVal;
-    retVal.type = GUARD_CARDS_CLICK;
-    retVal.info = &properties;
+    ItemInfo retVal = {NO_ITEM_CLICK,nullptr};      //si no estoy visible no dejo que me vean
+    if(isVisible)
+    {
+        retVal.type = GUARD_CARDS_CLICK;
+        retVal.info = &properties;
+    }
     return retVal;
 }
 
@@ -56,30 +60,38 @@ void GraphicGuardCards::setTopOfNonVisibleDeck(bool visible, ALLEGRO_BITMAP *tar
     topOfNonVisibleDeckTarget=target;
 }
 
+void GraphicGuardCards::setVisible(bool isVisible)
+{
+    this->isVisible = isVisible;
+}
+
 void GraphicGuardCards::draw()
 {
-    setPosition();
-    if(!zoomed)
+    if(isVisible)       //solo la dibujo si esta visible
     {
-        if(properties.shownDeck)
+        setPosition();
+        if(!zoomed)
         {
-            if(!cards.empty())
-                al_draw_scaled_bitmap(cards.front(),0,0,al_get_bitmap_width(cards.front()),al_get_bitmap_height(cards.front()),
-                        min.x, min.y, width, height, 0);
+            if(properties.shownDeck)
+            {
+                if(!cards.empty())
+                    al_draw_scaled_bitmap(cards.front(),0,0,al_get_bitmap_width(cards.front()),al_get_bitmap_height(cards.front()),
+                            min.x, min.y, width, height, 0);
+            }
+            else
+            {
+                if(image != nullptr)
+                    al_draw_scaled_bitmap(image,0,0,al_get_bitmap_width(image),al_get_bitmap_width(image),
+                            min.x, min.y, width, height, 0);
+            }
+
+            if(topOfNonVisibleDeckShown && topOfNonVisibleDeckTarget !=NULL)
+                al_draw_scaled_bitmap(topOfNonVisibleDeckTarget,0,0,al_get_bitmap_width(topOfNonVisibleDeckTarget),al_get_bitmap_width(topOfNonVisibleDeckTarget),
+                        min.x - (SEPARATION + CARD_WIDTH) / 2.0, min.y + CARD_HEIGHT / 2.0, width, height, 0);
         }
         else
-        {
-            if(image != nullptr)
-                al_draw_scaled_bitmap(image,0,0,al_get_bitmap_width(image),al_get_bitmap_width(image),
-                        min.x, min.y, width, height, 0);
-        }
-        
-        if(topOfNonVisibleDeckShown && topOfNonVisibleDeckTarget !=NULL)
-            al_draw_scaled_bitmap(topOfNonVisibleDeckTarget,0,0,al_get_bitmap_width(topOfNonVisibleDeckTarget),al_get_bitmap_width(topOfNonVisibleDeckTarget),
-                    min.x - (SEPARATION + CARD_WIDTH) / 2.0, min.y + CARD_HEIGHT / 2.0, width, height, 0);
+            drawOnZoom();
     }
-    else
-        drawOnZoom();
 }
 
 void GraphicGuardCards::setPosition()

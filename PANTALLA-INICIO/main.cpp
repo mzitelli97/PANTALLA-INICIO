@@ -29,7 +29,7 @@ bool gameStillPlaying(BurgleBrosController &controller);
 /*
  * 
  */
-int main(int argc, char** argv) {
+/*int main(int argc, char** argv) {
 
     srand(time(NULL));
     allegro_startup();
@@ -125,14 +125,15 @@ bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosControll
 bool gameStillPlaying(BurgleBrosController &controller)
 {
     return !(controller.checkIfGameFinished());
-}
+}*/
 
 
-/*
-el main ahora seria :
 
-void main()
+//el main ahora seria :
+
+int main(int argc, char** argv)
 {
+    allegro_startup();
     BurgleBrosWrapper fullGame;
     fullGame.getNameAndIp();
     if(fullGame.gameOnCourse())
@@ -146,7 +147,7 @@ void main()
     
     return 0;
 }
- */
+
 
 
  

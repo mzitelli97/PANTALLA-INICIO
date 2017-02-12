@@ -32,6 +32,7 @@ public:
     void clearShownCards();
     virtual void draw() override;
     void setTopOfNonVisibleDeck(bool visible, ALLEGRO_BITMAP *target);
+    void setVisible(bool isVisible);
 private:
     list<ALLEGRO_BITMAP *> cards;
     void setPosition();
@@ -39,6 +40,7 @@ private:
     auxInfoGuard properties;
     bool topOfNonVisibleDeckShown;
     ALLEGRO_BITMAP * topOfNonVisibleDeckTarget;
+    bool isVisible;
 };
 
 #endif /* GRAPHICGUARDCARDS_H */
