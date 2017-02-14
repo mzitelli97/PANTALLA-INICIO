@@ -23,7 +23,7 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 #define SCREEN_W 1200
 #define SCREEN_H (SCREEN_W*9/16)
 #define TITLE_H al_get_bitmap_height(backScreen)/20.0
-#define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/50.0
+#define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/60.0
 #define NO_FLOOR_ZOOMED -1
 #define NO_GUARD_ZOOMED -1
 
@@ -62,8 +62,8 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
 
 BurgleBrosView::~BurgleBrosView()
 {
-    al_destroy_display(display);
-    al_destroy_bitmap(backScreen);
+    if(display != nullptr) al_destroy_display(display);
+    if(backScreen != nullptr) al_destroy_bitmap(backScreen);
 }
 
 void BurgleBrosView::reset()
