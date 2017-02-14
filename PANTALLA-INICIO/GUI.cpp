@@ -20,15 +20,16 @@
 #include "KeyboardED.h"
 #include "TimerED.h"
 
+#define SECONDS 1.0
+
 GUI::GUI() {
     
     this->EventQueue=al_create_event_queue();
-    timer=al_create_timer(TIMEOUT_TIME);
+    timer=al_create_timer(SECONDS);     //Pongo el timer a contar segundos.
     if(EventQueue != NULL)
     {
         al_register_event_source(EventQueue,al_get_mouse_event_source());
         al_register_event_source(EventQueue,al_get_keyboard_event_source());
-        al_register_event_source(EventQueue, al_get_timer_event_source(timer));
     }
     quit = false;
     networkEventEnabled=false;
@@ -69,6 +70,15 @@ bool GUI::hayEvento()
         else
             error=true;
     }
+    else if(al_get_timer_count(timer) >= TIMEOUT_TIME)
+    {
+        TimerED *auxData = new TimerED(TIMEOUT);
+        
+        eventData=(EventData *) auxData;
+        event=GUI_EVENT_TIMER;
+        cout<< "TIMEOUT"<<endl;
+        retVal=true;
+    }
     else if(al_get_next_event(EventQueue,&rawEvent))   //necesito una eventQueue y donde la iniciliza
     {
         if(rawEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
@@ -107,15 +117,8 @@ bool GUI::hayEvento()
             eventData=(EventData *) auxData;
             event=GUI_EVENT_KEYBOARD;
         }
-        else if(rawEvent.type == ALLEGRO_EVENT_TIMER)
-        {
-            TimerED *auxData = new TimerED(TIMEOUT);
-            eventData=(EventData *) auxData;
-            event=GUI_EVENT_TIMER;
-            cout<< "TIMEOUT"<<endl;
-            retVal=true;
-        }
     }
+    
     return retVal;
 }
 
@@ -129,9 +132,13 @@ void GUI::playTimer() {
 
 void GUI::resetTimer() {
     al_stop_timer(timer);
-    //al_start_timer(timer);
+    al_set_timer_count(timer,0);
+    al_start_timer(timer);
 }
-
+void GUI::stopTimer() {
+    al_stop_timer(timer);
+    al_set_timer_count(timer,0);
+}
 
 
 void GUI::parseEvento(){

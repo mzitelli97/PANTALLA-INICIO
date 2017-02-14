@@ -19,7 +19,7 @@
 #include "Controller.h"
 #include "NetworkInterface.h"
 
-#define TIMEOUT_TIME 60.0
+#define TIMEOUT_TIME 60
 
 typedef enum{GUI_EVENT_MOUSE, GUI_EVENT_KEYBOARD,GUI_EVENT_NETWORKING,GUI_EVENT_TIMER,GUI_EVENT_NOEVENT} GuiEvent;
 

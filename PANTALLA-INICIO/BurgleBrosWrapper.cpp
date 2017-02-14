@@ -101,11 +101,15 @@ void BurgleBrosWrapper::playGame() {
         {
             prev=controller->isWaiting4ack();
             if(gui.hayEvento())
+            {
                 gui.parseEvento();
-            if(controller->isWaiting4ack() && !prev)
-                gui.playTimer();
-            else if (!controller->isWaiting4ack())
-                gui.resetTimer();
+                if(controller->hasToResetTimeoutTimer())
+                    {gui.resetTimer(); cout<<"Resetie timer"<<endl;}
+                if(controller->isWaiting4ack() && !prev)
+                    {gui.playTimer();cout<<"Playie timer"<<endl;}
+                else if (!controller->isWaiting4ack())
+                    {gui.stopTimer(); cout<<"apague timer"<<endl;}
+            }
         }
     }
     delete p2Controller;
