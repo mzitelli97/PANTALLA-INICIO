@@ -19,6 +19,7 @@ BurgleBrosController::BurgleBrosController()
     status=INITIALIZING;
     initPacketCount=0;
     aMoveActionPending=false;
+    resetTimeoutTimer=false;
     waiting4QuitAck=false;
     firstInitDone=false;
     waiting4ack=false;
@@ -27,6 +28,19 @@ BurgleBrosController::BurgleBrosController()
 BurgleBrosController::BurgleBrosController(const BurgleBrosController& orig) 
 {
 }
+
+
+bool BurgleBrosController::hasToResetTimeoutTimer()
+{
+    bool retVal=false;
+    if(resetTimeoutTimer == true)
+    {
+        resetTimeoutTimer=false;
+        retVal=true;
+    }
+    return retVal;
+}
+
 bool BurgleBrosController::isWaiting4ack()
 {
     return waiting4ack;
@@ -108,11 +122,13 @@ string BurgleBrosController::handleThisPlayerMotionSpecialCase(vector<string> &m
     vector<string> motion({MOTION_TEXT});
     string retVal;
     string userChoice =view->MessageBox(message);
+    resetTimeoutTimer=true;
     if(message[2]==motion[2])            //Se tiene que esperar para un motion porque es su caso especial,
     {
         if(userChoice==USE_HACK_TOKEN_TEXTB)    //Si decidió usar token, se manda un paquete.
         {
             networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
+            waiting4ack=true;
             retVal=userChoice;          // si fue token devuelve ya de una esto para que procese el modelo
         }
         else    //SI decide no usar tokens para el motion, le pregunta por segunda vez al player 
@@ -157,12 +173,14 @@ string BurgleBrosController::handleOtherPlayerMotionSpecialCase(vector<string> &
 string BurgleBrosController::askThisPlayerAndProcess(vector<string> &message)
 {
     string retVal;
+    bool willWaitForAck=true;
     vector<string> fingerPrint({ENTER_FINGERPRINT_TEXT});
     vector<string> lavatory({LAVATORY_TEXT});
     vector<string> laser({LASER_TEXT});
     vector<string> motion({MOTION_TEXT});
     vector<string> deadbolt({DEADBOLT_TEXT});
     retVal=view->MessageBox(message);   //una vez obtenido lo que el usuario escogió, se tiene que mandar un mensaje con lo que se puso.
+    resetTimeoutTimer=true;
     //EL 2 SIGNIFICA EL TEXTO, los titulos y subtitulos son iguales.
     if(message[2]==fingerPrint[2] && retVal==USE_HACK_TOKEN_TEXTB )  //Si se preguntaba por un fingerprint y el usuario decidió usar un token:
         networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_FINGERPRINT));
@@ -173,9 +191,7 @@ string BurgleBrosController::askThisPlayerAndProcess(vector<string> &message)
         else if (retVal==SPEND_ACTION_TEXTB)
             networkInterface->sendSpent(true);  //Si eligió gastar acciones se manda con este
         else if(message.size()==5 && message[4]==USE_HACK_TOKEN_TEXTB && retVal== TRIGGER_ALARM_TEXTB) // Si solo podia elegir entre use token o trigger alarm y eligio trigger alarm, no manda paquete
-        {
-            
-        }  
+            willWaitForAck=false;
         else
             networkInterface->sendSpent(false); //Sino, se manda que no quiso aceptar el gasto de acciones.
     }
@@ -190,6 +206,9 @@ string BurgleBrosController::askThisPlayerAndProcess(vector<string> &message)
     }
     else if(message[2]==motion[2] && retVal==USE_HACK_TOKEN_TEXTB)    //Si salio del motion y uso el token se manda un use token.
         networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
+    else
+        willWaitForAck=false;
+    waiting4ack=willWaitForAck;
     return retVal;
 }
 string BurgleBrosController::processOtherPlayerBasicChoice(vector<string> &message) 
@@ -504,9 +523,11 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
 
 void BurgleBrosController::parseTimerEvent(EventData* mouseEvent) {
     TimerED *p2TimerData = dynamic_cast<TimerED *> (mouseEvent);
+    vector<string> timeoutMessage({DEFAULT_TIMEOUT_MSG});
     if(p2TimerData!=nullptr && p2TimerData->getType()==TIMEOUT)
     {
         networkInterface->sendPacket(ERRORR);
+        view->MessageBox(timeoutMessage);
         quit=true;
     }
 }
@@ -564,12 +585,13 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             {
                 unsigned int safeNumber = modelPointer->move(THIS_PLAYER,previousMovingToLocation,NO_SAFE_NUMBER);      //Se ejecuta el move y se hace.
                 networkInterface->sendMove(previousMovingToLocation, safeNumber);
-                aMoveActionPending=false;
+                aMoveActionPending=false;   resetTimeoutTimer=true;     waiting4ack=true;
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_ACTION && modelPointer->isGuardsTurn())    //Si el jugador gastó todas las acciones y, para casos especiales metió lo que se preguntaba (deadbolt, etc) se procede a mover el guardia.
             {
                 modelPointer->guardMove(guardMovement);         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
                 networkInterface->sendGMove(guardMovement);     //Se envía esa información.
+                resetTimeoutTimer=true;
             }
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
@@ -582,16 +604,19 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             {
                 modelPointer->setDice(dice);    //le paso unos dados vacíos y ahí pone los dados que salieron tirando para el keypad.
                 networkInterface->sendDice(dice); //Se lo envía a la otra pc.
+                resetTimeoutTimer=true;     waiting4ack=true;
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_GUARD_INIT)
             {
                 modelPointer->generateGuardInitPos(&guardPosition, &guardDice);
                 networkInterface->sendInitGPos(guardPosition, guardDice);
+                resetTimeoutTimer=true;     waiting4ack=true;
             }
             else if(modelPointer->getModelStatus()==WAITING_FOR_LOOT)   //Si se envió un throw dice que habría el safe
             {
                 modelPointer->setLoot(THIS_PLAYER, &loot);          //Al llegar el ack se manda el safeopened con el loot obtenido.
                 networkInterface->sendSafeOpened(loot);
+                resetTimeoutTimer=true;     waiting4ack=true;
             }
             else if(modelPointer->getModelStatus()== WAITING_DICE_FOR_LOOT) //Si llegó el ack a un tiro de dados
             {
@@ -599,6 +624,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
                 {
                     unsigned int die=modelPointer->rollDieForLoot(NO_DIE);
                     networkInterface->sendRollDiceForLoot(die);
+                    resetTimeoutTimer=true;     waiting4ack=true;
                 }
                 else
                     modelPointer->continueGame();       //SIno se sigue con el juego normal.

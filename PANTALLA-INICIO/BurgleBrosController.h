@@ -41,6 +41,7 @@ public:
     void parseNetworkEvent(EventData *networkEvent);
     void parseKeyboardEvent(EventData *keyboardEvent) override;
     void parseTimerEvent(EventData* mouseEvent) override;
+    bool hasToResetTimeoutTimer();
     bool isWaiting4ack();
 
     virtual string askForSpentOK(vector<string> &message);
@@ -83,6 +84,7 @@ private:
     GameStatus status;
     QuitCause quitCause;
     bool waiting4QuitAck;
+    bool resetTimeoutTimer;
 };
 
 #endif /* BURGLEBROSCONTROLLER_H */
