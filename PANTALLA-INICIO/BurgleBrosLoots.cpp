@@ -44,19 +44,11 @@ BurgleBrosLoots::BurgleBrosLoots()
     lootDeck.push_back(GOLD_BAR);  //Hay 2 barras de oro en el mazo.
     shuffleDeck();
     
-    /*Esto es para probar.*/
-    /*lootDeck.push_back(PERSIAN_KITTY);
-    lootDeck.push_back(CHIHUAHUA);
-    lootDeck.push_back(GOLD_BAR);
-    lootDeck.push_back(GOLD_BAR);*/
-    
-    
     goldBarOnFloor.first=false;
 }
 void BurgleBrosLoots::shuffleDeck()
 {
     shuffle(lootDeck.begin(), lootDeck.end(), default_random_engine(rand()));
-    //lootDeck[0]=PERSIAN_KITTY;
 }
 bool BurgleBrosLoots::isLootDrawn(Loot loot)
 {
