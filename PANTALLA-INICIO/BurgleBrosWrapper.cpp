@@ -47,8 +47,7 @@ void BurgleBrosWrapper::getNameAndIp() {
                 gui.parseEvento();
         }
         name=initModel->getInfo().entries[MY_NAME];
-        ipToConnect=initModel->getInfo().entries[OTHER_IP];
-        ipToListen=initModel->getInfo().entries[MY_IP];
+        ipToConnect=initModel->getInfo().entries[IP_TO_CONNECT];
     }
     else
         quit=true;
@@ -122,7 +121,7 @@ void BurgleBrosWrapper::playGame() {
 
 bool BurgleBrosWrapper::connect(BurgleBrosController* controller) {
     bool retVal = false;
-    if(networkInterface.standardConnectionStart(ipToConnect,ipToListen))
+    if(networkInterface.standardConnectionStart(ipToConnect))
     {
         controller->setCommunicationRoleNThisPlayerName(networkInterface.getCommunicationRole(), name);
         retVal = true;

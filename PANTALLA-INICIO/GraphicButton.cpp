@@ -6,7 +6,7 @@
 #define BUTTON_HEIGHT (totalHeight/28.0)
 
 #define BUTTON_CENTER_Y (this->height*0.8)      //position of the main buttons
-#define QUIT_CENTER_X   totalWidth-this->width*1.2//(39*(totalWidth/40))
+#define QUIT_CENTER_X   totalWidth-this->width*1.2
 #define HELP_CENTER_X   QUIT_CENTER_X-this->width*1.2
 #define MUTE_CENTER_X   HELP_CENTER_X-this->width*1.2
 

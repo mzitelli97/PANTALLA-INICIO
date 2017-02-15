@@ -10,13 +10,14 @@
 #define MAX_WAITING_TIME 10.0
 
 typedef enum {CLIENT, SERVER} CommunicationRole;
-typedef struct
+/*typedef struct
 {
     PerezProtocolHeader header;
     std::string message;
-}NetworkMessage;
+}NetworkMessage;*/      //THIS STRUCT IS NOT USED ANYWHERE
 using namespace std;
 
+//can this be in the .cpp?
 bool packetHasNoDataField(PerezProtocolHeader header); //Devuelve si el header no requiere ningún dato extra, por ejemplo ack
 
 class NetworkInterface
@@ -28,7 +29,7 @@ public:
 	/*Intenta conectarse con un server, y despues con un tiempo random entre las 2 macros definidas arriba
 	se vuelve en servidor y espera que alguien se conecte. Es no bloqueante, devuelve 1 si se pudo establecer una conexion (se tiene que llamar
 	a getcomunicationrole para saber si quedo como server o como cliente.*/
-	bool standardConnectionStart(std::string &ip, std::string &myIp);	
+	bool standardConnectionStart(std::string &ip);	
 	/*Devuelve si se conect� como server o cliente */
 	CommunicationRole getCommunicationRole();
         bool checkError();

@@ -3,7 +3,7 @@
 #include "GraphicButton.h"
 #include "CModel.h"
 
-#define N_BOXES 3
+#define N_BOXES 2
 #define SCREEN_W 400
 #define SCREEN_H SCREEN_W*(3/2.0)
 #define BOX_WIDTH al_get_display_width(display)/1.15
@@ -24,7 +24,7 @@ CView::CView(CModel * model)
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 #endif
     display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
-    backScreen = al_load_bitmap("a1.jpg");
+    backScreen = al_load_bitmap("begin.jpg");
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     al_set_window_title(display,"EDA Burgle Bros");
     ALLEGRO_FONT * auxFont = al_load_font("title.ttf",BOX_HEIGHT/1.5,0);
@@ -33,9 +33,8 @@ CView::CView(CModel * model)
     al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
     al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");*/
     
-    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y - BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"YOUR IP:");
-    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT -BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
-    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT) -BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
+    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
+    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
     
     al_destroy_font(auxFont);
     font = al_load_font("fonts.ttf",BOX_HEIGHT/1.2, 0);

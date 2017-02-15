@@ -24,7 +24,7 @@ private:
     Controller *p2Controller;
     NetworkInterface networkInterface;
     BurgleBrosSound sound;
-    string name, ipToConnect, ipToListen;
+    string name, ipToConnect;
 };
 
 #endif /* BURGLEBROSWRAPPER_H */
