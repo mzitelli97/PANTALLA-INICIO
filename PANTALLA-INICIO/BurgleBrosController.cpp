@@ -10,7 +10,7 @@
 
 using namespace std;
 
-BurgleBrosController::BurgleBrosController() 
+BurgleBrosController::BurgleBrosController()
 {
     modelPointer=nullptr;
     networkInterface=nullptr;
@@ -351,6 +351,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         networkInterface->sendPacket(QUIT);
                         waiting4QuitAck=true;
+                        waiting4ack = true;
                         quitCause=USER_QUIT;
                     }
                     break;
@@ -466,6 +467,7 @@ void BurgleBrosController::parseKeyboardEvent(EventData *evData)
                 {
                     networkInterface->sendPacket(QUIT);
                     waiting4QuitAck=true;
+                    waiting4ack = true;
                     quitCause=USER_QUIT;
                 }
             }
