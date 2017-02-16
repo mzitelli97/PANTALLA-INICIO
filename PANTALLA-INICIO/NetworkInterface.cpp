@@ -125,7 +125,7 @@ bool NetworkInterface::sendInitGPos(CardLocation guardPos, CardLocation guardDie
     retVal = p2networking->sendPacket(INITIAL_G_POS, aux.c_str(), aux.length());
     return retVal;
 }
-bool NetworkInterface::sendStartInfo(vector<CardName> &tiles, CardLocation &initTile)
+bool NetworkInterface::sendStartInfo(vector<CardName> &tiles, CardLocation &initTile, unsigned int safeNumber)
 {
     bool retVal=false;
     unsigned char auxBuffer[BUFSIZE];
@@ -136,8 +136,9 @@ bool NetworkInterface::sendStartInfo(vector<CardName> &tiles, CardLocation &init
         {
             auxBuffer[i]=(unsigned char) tiles[i];
         }
-        string initPos=cardLocationToProtocol(initTile);
-        memcpy(&(auxBuffer[i]), initPos.c_str(), initPos.length());	 
+        char buf[2]; buf[0] = '0' + safeNumber; buf[1] = '\0';
+        string initPos=cardLocationToProtocol(initTile) +  buf;
+        memcpy(&(auxBuffer[i]), initPos.c_str(), initPos.length());
         retVal = p2networking->sendPacket(START_INFO,(const char *) auxBuffer, BOARD_STANDARD_FLOORS*FLOOR_RAWS * FLOOR_COLUMNS+ initPos.length());
     }
     return retVal;

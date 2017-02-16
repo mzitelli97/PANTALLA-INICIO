@@ -32,7 +32,7 @@ public:
         bool sendName(string name);         //El largo del nombre debe ser menor que bufsize - 1
         bool sendChar(CharacterName characterName);
         bool sendInitGPos(CardLocation guardPos, CardLocation guardDiePos);
-        bool sendStartInfo(vector<CardName> &tiles, CardLocation &initTile);
+        bool sendStartInfo(vector<CardName> &tiles, CardLocation &initTile, unsigned int safeNumber);
         bool sendPeek(CardLocation tileToPeek, unsigned int safeNumber);
         bool sendMove(CardLocation tileToPeek, unsigned int safeNumber);
         bool sendDice(vector<unsigned int> &dice);

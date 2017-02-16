@@ -894,6 +894,7 @@ void BurgleBrosController::checkGameStatus()
 void BurgleBrosController::clientInitRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
+    unsigned int initSafeNumber = 0;
     CardLocation guardPos,guardsDiePos, playersPos;
     vector<CardName> tiles;
     switch(initPacketCount)
@@ -943,7 +944,8 @@ void BurgleBrosController::clientInitRoutine(NetworkED *networkEvent)
             if(networkEvent->getHeader() == START_INFO)         //Luego vienen de que tipo es cada tile, y la posición inicial de los jugadores
             {   
                 networkEvent->getStartInfo(&tiles, &playersPos);    
-                modelPointer->initBoard(tiles);                 //Se inicializa ya el board
+                initSafeNumber = networkEvent->getSafeNumber();
+                modelPointer->initBoard(tiles,playersPos, &initSafeNumber);                 //Se inicializa ya el board
                 auxInitInfo[OTHER_PLAYER].initPos=playersPos;   //Y se pasa toda la info de los players al modelo
                 auxInitInfo[THIS_PLAYER].initPos=playersPos;
                 modelPointer->initPlayer(THIS_PLAYER,auxInitInfo[THIS_PLAYER].PlayerName,auxInitInfo[THIS_PLAYER].playersCharacter,auxInitInfo[THIS_PLAYER].initPos);
@@ -985,6 +987,7 @@ void BurgleBrosController::clientInitRoutine(NetworkED *networkEvent)
 void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
+    unsigned int initSafeNumber = 0;
     CardLocation guardPos,guardsDiePos, playersPos;
     vector<CardName> tiles;
     switch(initPacketCount)
@@ -1025,10 +1028,10 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
         case 4:
             if(networkEvent->getHeader() == ACK)
             {
-                modelPointer->initBoard(tiles);
                 auxInitInfo[THIS_PLAYER].initPos=getRandomCardLocation(modelPointer->getInfo2DrawGuard(0).position, 0); // EN el piso 0 empiezan
                 auxInitInfo[OTHER_PLAYER].initPos= auxInitInfo[THIS_PLAYER].initPos;    //Los dos empiezan en la misma posición
-                networkInterface->sendStartInfo(tiles, auxInitInfo[THIS_PLAYER].initPos);   //Se manda la información inicial de los tiles y la posición inicial de los jugadores
+                modelPointer->initBoard(tiles,auxInitInfo[THIS_PLAYER].initPos,&initSafeNumber);
+                networkInterface->sendStartInfo(tiles, auxInitInfo[THIS_PLAYER].initPos,initSafeNumber);   //Se manda la información inicial de los tiles y la posición inicial de los jugadores
                 modelPointer->initPlayer(THIS_PLAYER,auxInitInfo[THIS_PLAYER].PlayerName,auxInitInfo[THIS_PLAYER].playersCharacter,auxInitInfo[THIS_PLAYER].initPos); //Se inicializan los jugadores con los datos que veníamos guardando en los anteriores mensajes.
                 modelPointer->initPlayer(OTHER_PLAYER,auxInitInfo[OTHER_PLAYER].PlayerName,auxInitInfo[OTHER_PLAYER].playersCharacter,auxInitInfo[OTHER_PLAYER].initPos);
                 initPacketCount++;
@@ -1077,6 +1080,7 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
 void BurgleBrosController::firstDecidedRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
+    unsigned int initSafeNumber;
     CardLocation guardPos,guardsDiePos, playersPos;
     vector<CardName> tiles;
     switch(initPacketCount)
@@ -1103,7 +1107,8 @@ void BurgleBrosController::firstDecidedRoutine(NetworkED *networkEvent)
             if(networkEvent->getHeader() == START_INFO)         //Luego vienen de que tipo es cada tile, y la posición inicial de los jugadores
             {   
                 networkEvent->getStartInfo(&tiles, &playersPos);    
-                modelPointer->initBoard(tiles);                 //Se inicializa ya el board
+                initSafeNumber = networkEvent->getSafeNumber();
+                modelPointer->initBoard(tiles, playersPos, &initSafeNumber);                 //Se inicializa ya el board
                 auxInitInfo[OTHER_PLAYER].initPos=playersPos;   //Y se pasa toda la info de los players al modelo
                 auxInitInfo[THIS_PLAYER].initPos=playersPos;
                 modelPointer->initPlayer(THIS_PLAYER,auxInitInfo[THIS_PLAYER].PlayerName,auxInitInfo[THIS_PLAYER].playersCharacter,auxInitInfo[THIS_PLAYER].initPos);
@@ -1143,6 +1148,7 @@ void BurgleBrosController::firstDecidedRoutine(NetworkED *networkEvent)
 void BurgleBrosController::secondDecidedRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
+    unsigned int initSafeNumber;
     CardLocation guardPos,guardsDiePos, playersPos;
     vector<CardName> tiles;
     switch(initPacketCount)
@@ -1159,10 +1165,10 @@ void BurgleBrosController::secondDecidedRoutine(NetworkED *networkEvent)
         case 1:
             if(networkEvent->getHeader() == ACK)
             {
-                modelPointer->initBoard(tiles);
                 auxInitInfo[THIS_PLAYER].initPos=getRandomCardLocation(modelPointer->getInfo2DrawGuard(0).position, 0); // EN el piso 0 empiezan
                 auxInitInfo[OTHER_PLAYER].initPos= auxInitInfo[THIS_PLAYER].initPos;    //Los dos empiezan en la misma posición
-                networkInterface->sendStartInfo(tiles, auxInitInfo[THIS_PLAYER].initPos);   //Se manda la información inicial de los tiles y la posición inicial de los jugadores
+                modelPointer->initBoard(tiles, auxInitInfo[THIS_PLAYER].initPos, &initSafeNumber);
+                networkInterface->sendStartInfo(tiles, auxInitInfo[THIS_PLAYER].initPos, initSafeNumber);   //Se manda la información inicial de los tiles y la posición inicial de los jugadores
                 modelPointer->initPlayer(THIS_PLAYER,auxInitInfo[THIS_PLAYER].PlayerName,auxInitInfo[THIS_PLAYER].playersCharacter,auxInitInfo[THIS_PLAYER].initPos); //Se inicializan los jugadores con los datos que veníamos guardando en los anteriores mensajes.
                 modelPointer->initPlayer(OTHER_PLAYER,auxInitInfo[OTHER_PLAYER].PlayerName,auxInitInfo[OTHER_PLAYER].playersCharacter,auxInitInfo[OTHER_PLAYER].initPos);
                 initPacketCount++;

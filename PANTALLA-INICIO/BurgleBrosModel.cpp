@@ -82,7 +82,7 @@ bool BurgleBrosModel::moveRequiresToInitGuard(CardLocation locationToMove)
     return !guards[locationToMove.floor].checkIfInitialized();
 }
 
-void BurgleBrosModel::initBoard(vector<CardName> &allTiles)
+void BurgleBrosModel::initBoard(vector<CardName> &allTiles,CardLocation initPos, unsigned int *safeNumber)
 {
     if(allTiles.empty())
     {
@@ -98,9 +98,13 @@ void BurgleBrosModel::initBoard(vector<CardName> &allTiles)
                 }
             }
         }
+        *safeNumber = board.setCardVisible(initPos);
     }
     else if(allTiles.size()== BOARD_STANDARD_FLOORS * FLOOR_COLUMNS * FLOOR_RAWS)
+    {
         board.initBoard(allTiles);
+        board.setCardVisible(initPos, *safeNumber);
+    }
     else
     {
         gameFinished=true;

@@ -59,7 +59,7 @@ class BurgleBrosModel : public Model
         bool hasGameFinished();
         string getFinishMsg();
         /* Funciones para inicializar al modelo.*/
-        void initBoard(vector<CardName> &allTiles);     //Dado un vector de cardNames: Si está vacío, se genera el board y se le pasa toda la información, si tiene 48 cartas, se copian las cartas, sino genera un error.
+        void initBoard(vector<CardName> &allTiles,CardLocation initPos, unsigned int *safeNumber);     //Dado un vector de cardNames: Si está vacío, se genera el board y se le pasa toda la información, si tiene 48 cartas, se copian las cartas, sino genera un error.
         void initPlayer(PlayerId playerId, string playerName, CharacterName playerCharacter, CardLocation playerPos);   
         void setInitTurn(PlayerId playerId);
         void copyGuardInitPos(CardLocation guardPos, CardLocation guardDiePos);          //Esta función es inteligente y si se inicializó el guardia del primer piso y se la llama, inicializa el del segundo piso, etc.
