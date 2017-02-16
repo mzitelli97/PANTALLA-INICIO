@@ -10,15 +10,8 @@
 #define MAX_WAITING_TIME 10.0
 
 typedef enum {CLIENT, SERVER} CommunicationRole;
-/*typedef struct
-{
-    PerezProtocolHeader header;
-    std::string message;
-}NetworkMessage;*/      //THIS STRUCT IS NOT USED ANYWHERE
-using namespace std;
 
-//can this be in the .cpp?
-bool packetHasNoDataField(PerezProtocolHeader header); //Devuelve si el header no requiere ningún dato extra, por ejemplo ack
+using namespace std;
 
 class NetworkInterface
 {

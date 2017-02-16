@@ -652,7 +652,7 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
             this->prevLoc=prevLocation;
         }
         
-        if(tokens.isThereAnAlarmToken(locationToMove) && movingPlayer->getCharacter()!=THE_HACKER && ( playerNotMoving->getCharacter()!=THE_HACKER || (playerNotMoving->getCharacter()==THE_HACKER && (locationToMove!= playerNotMoving->getPosition() || (locationToMove== playerNotMoving->getPosition() && !playerNotMoving->isOnBoard())) ) ) && guards[locationToMove.floor].getPosition()!=locationToMove)
+        if(!tokens.isThereAnAlarmToken(locationToMove) && movingPlayer->getCharacter()!=THE_HACKER && ( playerNotMoving->getCharacter()!=THE_HACKER || (playerNotMoving->getCharacter()==THE_HACKER && (locationToMove!= playerNotMoving->getPosition() || (locationToMove== playerNotMoving->getPosition() && !playerNotMoving->isOnBoard())) ) ) && guards[locationToMove.floor].getPosition()!=locationToMove)
         {    
             if( newCardType==FINGERPRINT)//hay que arreglar el tema de cuando hace click en la cruz del native message
             {

@@ -3,16 +3,13 @@
 #define DIFF_TIME_CLOCK(X,Y) (((double)((X)-(Y)))/((double) CLOCKS_PER_SEC))
 #define RAND_IN_RANGE_DOUBLE(x,y) y+((((double)rand())/((double)(RAND_MAX)))*((x)-(y))) //y<x
 
-
-
-using namespace std;
+bool packetHasNoDataField(PerezProtocolHeader header); //Devuelve si el header no requiere ningún dato extra, por ejemplo ack
 
 
 bool packetHasNoDataField(PerezProtocolHeader h)
 {
     return (h==ACK || h==AGREE || h==DISAGREE || h==NAME || h==YOU_START || h==I_START || h==PASS || h==WE_WON || h==WE_LOST || h==GAME_OVER  || h==PLAY_AGAIN || h==QUIT || h==ERRORR || h==PICK_UP_LOOT);
 }
-
 
 NetworkInterface::NetworkInterface()
 {
@@ -54,7 +51,7 @@ bool NetworkInterface::standardConnectionStart(string &ip)
                 time = (double)DIFF_TIME_CLOCK(currClock, prevClock);
 		if (!error && p2networking->tryToConnect() == true) //El que no haya error es por si en prepare to connect hubo un error.
 			connected = true;
-		else if (time > timeToBecomeServer )          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
+		else if (time > 0.1)//timeToBecomeServer )          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
 		{
 			currentRole = SERVER;
 			p2networking->abortConnecting();
