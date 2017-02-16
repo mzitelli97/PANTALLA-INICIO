@@ -14,6 +14,7 @@
 #include <list>
 
 #include "BurgleBrosSound.h"
+#define MUTE
 
 using namespace std;
 
@@ -21,9 +22,11 @@ BurgleBrosSound::BurgleBrosSound() {
     bool test;
     initOK=loadAllSamples();
     al_reserve_samples(3);              //para poder reproducir 3 sonidos a la vez(no va a haber mas)
+#ifndef MUTE
     if(initOK)
          test=al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
     //cout<<(unsigned int)test;
+#endif   
     onMute = false;
 }
 
@@ -97,7 +100,9 @@ void BurgleBrosSound::reset()
 {
     onMute = false;
     al_stop_samples();              //paro todos los sonidos que pueda haber
+#ifndef MUTE    
     al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL); //reinicio la musica de fondo
+#endif
 }
 
 void BurgleBrosSound::update()

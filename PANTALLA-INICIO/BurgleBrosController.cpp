@@ -562,13 +562,34 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             else
                 modelPointer->move(OTHER_PLAYER, networkEvent->getPos(),networkEvent->getSafeNumber());
-            if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg() == "WON")
-                networkInterface->sendPacket(WE_WON);
-            else if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
-                networkInterface->sendPacket(WE_LOST);
+            
+            if(modelPointer->hasGameFinished())
+            {
+                vector<string> toShow;
+                if(modelPointer->getFinishMsg() == "WON")
+                {
+                    networkInterface->sendPacket(WE_WON);
+                    vector<string> aux({DEFAULT_WIN_MSG});
+                    toShow=aux;
+                }
+                else if(modelPointer->getFinishMsg()== "LOST")
+                {    
+                    networkInterface->sendPacket(WE_LOST);
+                    vector<string> aux({DEFAULT_LOST_MSG});
+                    toShow=aux;
+                }
+                string userChoice=view->MessageBox(toShow);
+                if(userChoice == "Play again")
+                {
+                    whichPlayer=SECOND_DECIDING_PLAYER;
+                    resetGame();
+                } 
+            }
+            
             else
                 networkInterface->sendPacket(ACK);
             break;
+                
         case ADD_TOKEN:
             if(modelPointer->isAddDieToSafePossible(OTHER_PLAYER,networkEvent->getTokenPos()))      //SI el add token era para añadir un dado al safe
                 modelPointer->addDieToSafe(OTHER_PLAYER,networkEvent->getTokenPos());
@@ -663,7 +684,16 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkEvent->getGuardMovement(guardMovement);  //Obtengo el movimiento del guardia
             modelPointer->guardMove(guardMovement); //Y hago que el modelo lo procese.
             if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
+            {
                 networkInterface->sendPacket(WE_LOST);
+                vector<string> aux({DEFAULT_LOST_MSG});
+                string userChoice=view->MessageBox(aux);
+                if(userChoice == "Play again")
+                {
+                    whichPlayer=SECOND_DECIDING_PLAYER;
+                    resetGame();
+                }
+            }    
             else if(modelPointer->dieForLootNeeded())        //Si se necesita tirar un dado para los loots (chihuahua o persian kitty).
             {
                 unsigned int die=modelPointer->rollDieForLoot(NO_DIE);
@@ -720,7 +750,8 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
         case GAME_OVER:
             quit=true;
             networkInterface->sendPacket(ACK);
-            view->MessageBox(gameOverMsg);
+            if(!modelPointer->hasGameFinished())
+                view->MessageBox(gameOverMsg);
             break;
         case ERRORR:
             quit=true;
@@ -732,13 +763,13 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
 }
 void BurgleBrosController::handlePlayAgain()
 {
-    vector<string> toShow({DEFAULT_PLAY_AGAIN_MSG});
+    /*vector<string> toShow({DEFAULT_PLAY_AGAIN_MSG});
     string userChoice=view->MessageBox(toShow);
     if(userChoice == "Play again")
     {
         resetGame();
         auxInitInfo[THIS_PLAYER].playersCharacter=getRandomCharacter();
-        networkInterface->sendChar(auxInitInfo[THIS_PLAYER].playersCharacter);
+        networkInterface->sendChar(auxInitInfo[THIS_PLAYER].playersCharacter);//sendCharacter()
         this->status=INITIALIZING;
         whichPlayer=SECOND_DECIDING_PLAYER;
     }
@@ -746,7 +777,18 @@ void BurgleBrosController::handlePlayAgain()
     {
         waiting4QuitAck=true;   
         networkInterface->sendPacket(GAME_OVER);
+    }*/
+    if(!modelPointer->hasGameFinished())
+    {
+        auxInitInfo[THIS_PLAYER].playersCharacter=getRandomCharacter();
+        networkInterface->sendChar(auxInitInfo[THIS_PLAYER].playersCharacter);//sendCharacter()
+        this->status=INITIALIZING;
     }
+    else
+    {
+        waiting4QuitAck=true;   
+        networkInterface->sendPacket(GAME_OVER);
+    }    
 }
 void BurgleBrosController::handleLootsExchange(NetworkED *networkEvent)
 {
@@ -1156,7 +1198,9 @@ void BurgleBrosController::resetGame()
     auxInitInfo[THIS_PLAYER].PlayerName=modelPointer->getInfo2DrawPlayer(THIS_PLAYER).name;
     auxInitInfo[OTHER_PLAYER].PlayerName=modelPointer->getInfo2DrawPlayer(OTHER_PLAYER).name;
     modelPointer->reset();
+    sound->reset();
     view->reset();
+    waiting4ack=false;
     aMoveActionPending=false;
     waiting4QuitAck=false;
 }
