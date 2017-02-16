@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <vector>
 #include <algorithm>
+#include <chrono>
+#include <thread>
 
 #define KEYPAD_CRACK_NUMBER 6
 typedef struct
@@ -940,7 +942,8 @@ string BurgleBrosModel::peekGuardsCard(PlayerId playerId, CardLocation **guardCa
         else
         {
             userChoice=prevChoice;      //Sino es lo pasado por argumento.
-            sleep(1); //Se duerme un segundo para mostrar la carta que saco el otro pj.
+            std::chrono::seconds second(1);
+            std::this_thread::sleep_for(second); //Se duerme un segundo para mostrar la carta que saco el otro pj.
         }    
         
         guards[guardsFloor].setTopOfNotShownDeckVisible(false); //Dejo de mostrarla.
@@ -1447,7 +1450,8 @@ void BurgleBrosModel::makeGuardMove(list<GuardMoveInfo> &guardMovement)
             stepsToMove--;
         notifyAllObservers();
         checkIfWonOrLost();
-        sleep(0.2);
+        std::chrono::milliseconds milliseconds(500);
+       std::this_thread::sleep_for(milliseconds);
     }
     
 }
@@ -1514,7 +1518,8 @@ void BurgleBrosModel::copyGuardMove(list<GuardMoveInfo> &guardMovement)
             guardMoving->drawCardTarget(it->cardLocation);
         notifyAllObservers();
         checkIfWonOrLost();
-        sleep(0.2);
+        std::chrono::milliseconds milliseconds(500);
+        std::this_thread::sleep_for(milliseconds);
     }
     setGuardsNewPath(guardFloor, guardMoving->getTargetPosition());//Para que no quede sin un camino  si la próxima vez se ejecuta desde esta cpu.
 }
