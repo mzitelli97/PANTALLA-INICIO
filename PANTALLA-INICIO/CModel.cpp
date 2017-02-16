@@ -21,8 +21,7 @@ CModel::CModel()
         data.entries[i] = "";
     data.selected = NONE_SELECTED;
 #ifdef LOOPBACK
-    data.entries[MY_IP]="127.0.0.1";
-    data.entries[OTHER_IP]= "127.0.0.1";
+    data.entries[IP_TO_CONNECT]= "127.0.0.1";
 #endif
 }
 
@@ -60,7 +59,7 @@ void CModel::deleteOneChar()
 
 void CModel::selectText(textSelected selected)
 {
-    if(selected >= MY_IP && selected <= MY_NAME)
+    if(selected >= IP_TO_CONNECT && selected <= MY_NAME)
         this->data.selected = selected;
     notifyAllObservers();
 }

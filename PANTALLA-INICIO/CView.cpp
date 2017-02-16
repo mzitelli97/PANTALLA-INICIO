@@ -3,19 +3,18 @@
 #include "GraphicButton.h"
 #include "CModel.h"
 
-#define N_BOXES 3
-#define SCREEN_W 1080
-#define SCREEN_H (SCREEN_W*9/16)
-#define ACTIONS_FONT_H al_get_bitmap_height(backScreen)/50.0
-#define BOX_WIDTH al_get_display_width(display)/3.0
-#define BOX_HEIGHT al_get_display_height(display)/20.0
+#define N_BOXES 2
+#define SCREEN_W 400
+#define SCREEN_H SCREEN_W*(3/2.0)
+#define BOX_WIDTH al_get_display_width(display)/1.15
+#define BOX_HEIGHT al_get_display_height(display)/17.0
 
-#define BOX_MIN_X al_get_display_width(display)/2.0
-#define BOX_MIN_Y al_get_display_height(display)/3.0
+#define BOX_MIN_X (al_get_display_width(display)-BOX_WIDTH)/2.0
+#define BOX_MIN_Y al_get_display_height(display)/5.0
 #define SPACE_X al_get_display_width(display)/50.0
-#define SPACE_Y al_get_display_height(display)/10.0
+#define SPACE_Y al_get_display_height(display)/5.7
 
-#define TEXT_COLOR al_map_rgb(0,0,255)
+#define TEXT_COLOR al_map_rgb(255,255,255)
 
 CView::CView(CModel * model)
 {
@@ -25,17 +24,20 @@ CView::CView(CModel * model)
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 #endif
     display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
-    backScreen = al_load_bitmap("fondo.jpg");
+    backScreen = al_load_bitmap("begin.jpg");
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     al_set_window_title(display,"EDA Burgle Bros");
-    ALLEGRO_FONT * auxFont = al_load_font("title.ttf",BOX_HEIGHT,0);
+    ALLEGRO_FONT * auxFont = al_load_font("title.ttf",BOX_HEIGHT/1.5,0);
         
-    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
+    /*al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
     al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
-    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");
+    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");*/
+    
+    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
+    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
     
     al_destroy_font(auxFont);
-    font = al_load_font("fonts.ttf",BOX_HEIGHT, 0);
+    font = al_load_font("fonts.ttf",BOX_HEIGHT/1.2, 0);
     //Creo las cajas de texto
     for(int i = 0; i < N_BOXES; i++)
     {

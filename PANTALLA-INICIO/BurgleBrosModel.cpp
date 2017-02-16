@@ -652,7 +652,7 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
             this->prevLoc=prevLocation;
         }
         
-        if(movingPlayer->getCharacter()!=THE_HACKER && ( playerNotMoving->getCharacter()!=THE_HACKER || (playerNotMoving->getCharacter()==THE_HACKER && (locationToMove!= playerNotMoving->getPosition() || (locationToMove== playerNotMoving->getPosition() && !playerNotMoving->isOnBoard())) ) ) && guards[locationToMove.floor].getPosition()!=locationToMove)
+        if(tokens.isThereAnAlarmToken(locationToMove) && movingPlayer->getCharacter()!=THE_HACKER && ( playerNotMoving->getCharacter()!=THE_HACKER || (playerNotMoving->getCharacter()==THE_HACKER && (locationToMove!= playerNotMoving->getPosition() || (locationToMove== playerNotMoving->getPosition() && !playerNotMoving->isOnBoard())) ) ) && guards[locationToMove.floor].getPosition()!=locationToMove)
         {    
             if( newCardType==FINGERPRINT)//hay que arreglar el tema de cuando hace click en la cruz del native message
             {
@@ -1409,7 +1409,7 @@ void BurgleBrosModel::makeGuardMove(list<GuardMoveInfo> &guardMovement)
         if(board.isCardVisible(guardMoving->getPosition()))
         {   
             if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
-                if(board.getCardType(guardMoving->getPosition()) != board.getCardType(myPlayer.getPosition()))      //Y ese player no está en la misma camara que el guardia
+                if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
                     triggerAlarm(myPlayer.getPosition());   //Triggerea una alarma en el piso que se encuentra 
             if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(otherPlayer.getPosition()) == CAMERA && board.isCardVisible(otherPlayer.getPosition()))
                 if(guardMoving->getPosition() != otherPlayer.getPosition())

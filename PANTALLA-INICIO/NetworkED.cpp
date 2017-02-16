@@ -166,7 +166,7 @@ bool NetworkED::playerAcceptedToSpentMoves()
 unsigned int NetworkED::getSafeNumber()
 {
     unsigned int retVal;
-    if(header==MOVE || header == PEEK)
+    if(header==MOVE || header == PEEK || header == START_INFO)
     {
         retVal=buffer[len-1]- '0';       //El numero de safe se guarda en el ultimo byte del msg.
     }

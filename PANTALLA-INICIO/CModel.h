@@ -4,7 +4,7 @@
 #include "Model.h"
 #include <string>
 
-typedef enum {MY_IP = 0, OTHER_IP, MY_NAME, NONE_SELECTED}textSelected;
+typedef enum {IP_TO_CONNECT, MY_NAME, NONE_SELECTED}textSelected;
 
 /*textSelected operator++(const textSelected &text);
 textSelected operator--(const textSelected &text);*/

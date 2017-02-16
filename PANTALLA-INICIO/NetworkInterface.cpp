@@ -34,7 +34,7 @@ NetworkInterface::NetworkInterface(Networking &networking)
 	prevClock = currClock;
         error=false;
 }
-bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
+bool NetworkInterface::standardConnectionStart(string &ip)
 {
 	bool connected = false;
         double time;
@@ -58,12 +58,12 @@ bool NetworkInterface::standardConnectionStart(string &ip, string &myIp)
 		{
 			currentRole = SERVER;
 			p2networking->abortConnecting();
-			error=!(p2networking->prepareToListen(myIp));
+			error=!(p2networking->prepareToListen());
                         if(error)
                             errorMsg = "Ip to listen was forbidden, check ip entered. Example: 127.0.0.1";
-                        cout<<"YA SOY SERVER";
+                        cout<<"YA SOY SERVER" << endl;
 		}
-               break;
+                break;
 	case SERVER:
 		if (p2networking->listen() == true)
 			connected = true;
