@@ -122,24 +122,29 @@ string BurgleBrosController::handleThisPlayerMotionSpecialCase(vector<string> &m
     vector<string> motion({MOTION_TEXT});
     string retVal;
     string userChoice =view->MessageBox(message);
+    checkForNonOrderedPackets();
     resetTimeoutTimer=true;
-    if(message[2]==motion[2])            //Se tiene que esperar para un motion porque es su caso especial,
+    if(!quit)       //Si em el tiempo que se escogió lo que quería el usuario no hubo un quit, se procesa las cosas y se mandan los paquetes correspondientes.
     {
-        if(userChoice==USE_HACK_TOKEN_TEXTB)    //Si decidió usar token, se manda un paquete.
+        
+        if(message[2]==motion[2])            //Se tiene que esperar para un motion porque es su caso especial,
         {
-            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
-            waiting4ack=true;
-            retVal=userChoice;          // si fue token devuelve ya de una esto para que procese el modelo
+            if(userChoice==USE_HACK_TOKEN_TEXTB)    //Si decidió usar token, se manda un paquete.
+            {
+                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
+                waiting4ack=true;
+                retVal=userChoice;          // si fue token devuelve ya de una esto para que procese el modelo
+            }
+            else    //SI decide no usar tokens para el motion, le pregunta por segunda vez al player 
+            {
+                modelPointer->userDecidedTo(userChoice); // primero hace que procese el modelo la wea.
+                vector<string> secondMsg= modelPointer->getMsgToShow();
+                retVal=askThisPlayerAndProcess(secondMsg);
+            }
         }
-        else    //SI decide no usar tokens para el motion, le pregunta por segunda vez al player 
-        {
-            modelPointer->userDecidedTo(userChoice); // primero hace que procese el modelo la wea.
-            vector<string> secondMsg= modelPointer->getMsgToShow();
-            retVal=askThisPlayerAndProcess(secondMsg);
-        }
+        else
+            quit=true; //Esto no debería pasar nunca.
     }
-    else
-        quit=true; //Esto no debería pasar nunca.
     return retVal;
 }
 
@@ -181,34 +186,38 @@ string BurgleBrosController::askThisPlayerAndProcess(vector<string> &message)
     vector<string> deadbolt({DEADBOLT_TEXT});
     retVal=view->MessageBox(message);   //una vez obtenido lo que el usuario escogió, se tiene que mandar un mensaje con lo que se puso.
     resetTimeoutTimer=true;
-    //EL 2 SIGNIFICA EL TEXTO, los titulos y subtitulos son iguales.
-    if(message[2]==fingerPrint[2] && retVal==USE_HACK_TOKEN_TEXTB )  //Si se preguntaba por un fingerprint y el usuario decidió usar un token:
-        networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_FINGERPRINT));
-    else if (message[2]==laser[2] )   //Si entro a un laser
+    checkForNonOrderedPackets();
+    if(!quit)       //Si em el tiempo que se escogió lo que quería el usuario no hubo un quit, se procesa las cosas y se mandan los paquetes correspondientes.
     {
-        if(retVal==USE_HACK_TOKEN_TEXTB)        //y eligio gastar un hack token, se manda con la location del mismo.
-            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_LASER));
-        else if (retVal==SPEND_ACTION_TEXTB)
-            networkInterface->sendSpent(true);  //Si eligió gastar acciones se manda con este
-        else if(message.size()==5 && message[4]==USE_HACK_TOKEN_TEXTB && retVal== TRIGGER_ALARM_TEXTB) // Si solo podia elegir entre use token o trigger alarm y eligio trigger alarm, no manda paquete
+            //EL 2 SIGNIFICA EL TEXTO, los titulos y subtitulos son iguales.
+        if(message[2]==fingerPrint[2] && retVal==USE_HACK_TOKEN_TEXTB )  //Si se preguntaba por un fingerprint y el usuario decidió usar un token:
+            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_FINGERPRINT));
+        else if (message[2]==laser[2] )   //Si entro a un laser
+        {
+            if(retVal==USE_HACK_TOKEN_TEXTB)        //y eligio gastar un hack token, se manda con la location del mismo.
+                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_LASER));
+            else if (retVal==SPEND_ACTION_TEXTB)
+                networkInterface->sendSpent(true);  //Si eligió gastar acciones se manda con este
+            else if(message.size()==5 && message[4]==USE_HACK_TOKEN_TEXTB && retVal== TRIGGER_ALARM_TEXTB) // Si solo podia elegir entre use token o trigger alarm y eligio trigger alarm, no manda paquete
+                willWaitForAck=false;
+            else
+                networkInterface->sendSpent(false); //Sino, se manda que no quiso aceptar el gasto de acciones.
+        }
+        else if(message[2]==lavatory[2] && retVal==USE_LAVATORY_TOKEN_TEXTB)  //si era un lavatory y eligió usar un token se manda un use token
+            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
+        else if(message[2]==deadbolt[2])          //Si era un deadbolt
+        {
+            if(retVal==SPEND_ACTIONS_TEXTB)         //Se manda spend actions con true si eligió gastarlas, con no si no gasto nada el rata.
+                networkInterface->sendSpent(true);
+            else
+                networkInterface->sendSpent(false);
+        }
+        else if(message[2]==motion[2] && retVal==USE_HACK_TOKEN_TEXTB)    //Si salio del motion y uso el token se manda un use token.
+            networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
+        else
             willWaitForAck=false;
-        else
-            networkInterface->sendSpent(false); //Sino, se manda que no quiso aceptar el gasto de acciones.
+        waiting4ack=willWaitForAck;
     }
-    else if(message[2]==lavatory[2] && retVal==USE_LAVATORY_TOKEN_TEXTB)  //si era un lavatory y eligió usar un token se manda un use token
-        networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
-    else if(message[2]==deadbolt[2])          //Si era un deadbolt
-    {
-        if(retVal==SPEND_ACTIONS_TEXTB)         //Se manda spend actions con true si eligió gastarlas, con no si no gasto nada el rata.
-            networkInterface->sendSpent(true);
-        else
-            networkInterface->sendSpent(false);
-    }
-    else if(message[2]==motion[2] && retVal==USE_HACK_TOKEN_TEXTB)    //Si salio del motion y uso el token se manda un use token.
-        networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(COMPUTER_ROOM_MOTION));
-    else
-        willWaitForAck=false;
-    waiting4ack=willWaitForAck;
     return retVal;
 }
 string BurgleBrosController::processOtherPlayerBasicChoice(vector<string> &message) 
@@ -347,13 +356,17 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     view->update();
                     break;
                 case EXIT_BUTTON_CLICK:
-                    if(view->yesNoMessageBox(exitMsg)==1)
+                   /* if(view->yesNoMessageBox(exitMsg)==1)
                     {
                         networkInterface->sendPacket(QUIT);
                         waiting4QuitAck=true;
                         waiting4ack = true;
                         quitCause=USER_QUIT;
-                    }
+                    }*/
+                    networkInterface->sendPacket(QUIT);
+                    waiting4QuitAck=true;
+                    waiting4ack = true;
+                    quitCause=USER_QUIT;
                     break;
                 default:
                     view->eraseMenu();
@@ -1205,6 +1218,35 @@ void BurgleBrosController::resetGame()
     waiting4ack=false;
     aMoveActionPending=false;
     waiting4QuitAck=false;
+}
+
+void BurgleBrosController::checkForNonOrderedPackets() 
+{
+    bool retVal=false;
+    PerezProtocolHeader header;
+    unsigned char buffer[BUFSIZE];
+    unsigned int len;
+    vector<string> quitMsg({DEFAULT_QUIT_MSG});
+    vector<string> othersErrorMessage({DEFAULT_OTHERS_ERROR_MSG});
+    if(networkInterface->recievePacket(&header, buffer, &len))
+    {
+        if(header == QUIT)      //Si llego un quit mientras esta pc estaba en modo bloqueante por un native message
+        {
+            quit=true;
+            networkInterface->sendPacket(ACK);
+            view->MessageBox(quitMsg);
+        }
+        else if(header == ERRORR)       //o un error
+        {
+            quit=true;
+            view->MessageBox(othersErrorMessage);
+        }
+        else        //En el caso que llego un paquete que no era ninguno de los dos, hubo un error de sincronización, por lo que se debe mandar error!
+        {
+            quit=true;
+            networkInterface->sendPacket(ERRORR);
+        }
+    }
 }
 
 
