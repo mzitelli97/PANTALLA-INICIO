@@ -1083,7 +1083,8 @@ void BurgleBrosModel::checkTurns()
         dice.resetKeypadsDice();
         notifyAllObservers();
     }
-    checkIfWonOrLost();
+    if(!gameFinished)
+        checkIfWonOrLost();
 }
 
 void BurgleBrosModel::checkIfWonOrLost()
