@@ -46,7 +46,6 @@ public:
     bool hasToResetTimeoutTimer();
     bool isWaiting4ack();
 
-    virtual string askForSpentOK(vector<string> &message);
     string getUsersResponse(vector<string> &message);
     
     virtual ~BurgleBrosController();

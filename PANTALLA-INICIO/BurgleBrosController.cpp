@@ -82,15 +82,6 @@ bool BurgleBrosController::checkIfGameFinished()
     return quit;
 }
 
-string BurgleBrosController::askForSpentOK(vector<string> &message)
-{
-    string retVal;
-    
-    retVal=view->MessageBox(message);   //una vez obtenido lo que el usuario escogió, se tiene que mandar un mensaje con lo que se puso.
-        
-          
-    return retVal;
-}
 string BurgleBrosController::getUsersResponse(vector<string> &message)
 {
     string retVal;
@@ -321,7 +312,10 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     {
                         if(!waiting4ack && modelPointer->isPeekGuardsCardPossible(THIS_PLAYER,guardInfo->floor))
                         {
-                            userChoice = modelPointer->peekGuardsCard(THIS_PLAYER,&auxLocation,guardInfo->floor,SPOTTER_NO_PREV_CHOICE);
+                            modelPointer->peekGuardsCard(THIS_PLAYER,&auxLocation,guardInfo->floor,SPOTTER_NO_PREV_CHOICE);
+                            vector<string> msg= modelPointer->getMsgToShow();
+                            string userChoice = view->MessageBox(msg);
+                            modelPointer->userDecidedTo(userChoice);
                             networkInterface->sendSpyPatrol(*auxLocation,userChoice);
                         }
                     }

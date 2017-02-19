@@ -101,11 +101,15 @@ void BurgleBrosModel::initBoard(vector<CardName> &allTiles,CardLocation initPos,
             }
         }
         *safeNumber = board.setCardVisible(initPos);
+        if(board.getCardType(initPos)== LAVATORY)
+            tokens.lavatoryRevealed(initPos);
     }
     else if(allTiles.size()== BOARD_STANDARD_FLOORS * FLOOR_COLUMNS * FLOOR_RAWS)
     {
         board.initBoard(allTiles);
         board.setCardVisible(initPos, *safeNumber);
+        if(board.getCardType(initPos)== LAVATORY)
+            tokens.lavatoryRevealed(initPos);
     }
     else
     {
@@ -381,6 +385,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
     vector<string> deadbolt({DEADBOLT_TEXT});
     vector<string> askForLoot({ASK_FOR_LOOT_TEXT});
     vector<string> offerLoot({OFFER_LOOT_TEXT});
+    vector<string> spotter({SPOTTER_SPECIAL_ACTION_TEXT});
     if(msgsToShow[2]== motion[2])     //Si era una respuesta para un motion
     {
         if(userChoice==USE_HACK_TOKEN_TEXTB)        // y uso hack tokens
@@ -455,6 +460,16 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             loots.setNewLootOwner(lootOfferedOrAskedFor,playerOnTurn==THIS_PLAYER?OTHER_PLAYER:THIS_PLAYER);
             notifyAllObservers();
         }
+    }
+    else if(msgsToShow[2] == spotter[2])
+    {
+        guards[getP2Player(getPlayerOnTurn())->getPosition().floor].setTopOfNotShownDeckVisible(false); //Dejo de mostrarla.
+        if(userChoice==SPOTTER_BOTTOM)
+            guards[getP2Player(getPlayerOnTurn())->getPosition().floor].pushTopCardToTheBottom();
+        getP2Player(getPlayerOnTurn())->decActions();
+        playerSpentFreeAction=true;
+        notifyAllObservers();
+        checkTurns();
     }
     if(msgsToShow[2]== motion[2] && specialMotionCase)      //Si fue el caso especial de motion salen 2 carteles seguidos, o sea se espera por una confirmación más.
     {
@@ -941,23 +956,33 @@ string BurgleBrosModel::peekGuardsCard(PlayerId playerId, CardLocation **guardCa
         if(prevChoice == SPOTTER_NO_PREV_CHOICE && playerId==THIS_PLAYER)   //Para este jugador le pregunta por patalla
         {
             vector<string>msgToShow({SPOTTER_SPECIAL_ACTION_TEXT,SPOTTER_TOP,SPOTTER_BOTTOM});
-            userChoice = controller->askForSpentOK(msgToShow);//Le pregunto si la quiere arriba o abajo
+           // userChoice = controller->askForSpentOK(msgToShow);//Le pregunto si la quiere arriba o abajo
+            this->msgsToShow=msgToShow;
+            status=WAITING_FOR_USER_CONFIRMATION;
         }
         else
         {
             userChoice=prevChoice;      //Sino es lo pasado por argumento.
             std::chrono::seconds second(1);
             std::this_thread::sleep_for(second); //Se duerme un segundo para mostrar la carta que saco el otro pj.
+            guards[guardsFloor].setTopOfNotShownDeckVisible(false); //Dejo de mostrarla.
+            if(userChoice==SPOTTER_BOTTOM)
+                guards[guardsFloor].pushTopCardToTheBottom();
+            getP2Player(playerId)->decActions();
+            playerSpentFreeAction=true;
+            notifyAllObservers();
+            checkTurns();
         }    
-        
+       /*
         guards[guardsFloor].setTopOfNotShownDeckVisible(false); //Dejo de mostrarla.
         if(userChoice==SPOTTER_BOTTOM)
             guards[guardsFloor].pushTopCardToTheBottom();
         getP2Player(playerId)->decActions();
         playerSpentFreeAction=true;
         notifyAllObservers();
+        
+        checkTurns();*/
         actionOk=true;
-        checkTurns();
     }
     if(actionOk==false)
     {   gameFinished=true; finishMsg = "ERROR: BBModel error: A peek guards card action was called when it wasnt possible to do it!"; }

@@ -108,9 +108,6 @@ void cController::parseNetworkEvent(EventData* evData) {
     //THIS CONTROLLER DOES NOT USE NETOWRK EVENTS
 }
 
-string cController::askForSpentOK(vector<string>& message) {
-
-}
 
 void cController::attachModel(CModel* model)
 {
