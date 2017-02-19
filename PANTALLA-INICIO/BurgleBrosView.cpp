@@ -14,6 +14,7 @@
 #include "GraphicMenuItem.h"
 #include "GraphicWall.h"
 #include "GraphicButton.h"
+
 #include <time.h>
 
 typedef enum {TILES_LIST, BUTTONS_LIST, CHARACTER_CARDS_LIST, LOOT_SHOW_LIST, EXTRA_DICES_LIST, GUARD_CARDS_LIST} FirstLayerLists;
@@ -48,7 +49,15 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     guardZoomed = NO_GUARD_ZOOMED;
     playerZoomed = NON_PLAYER;
     lootZoomed = NON_PLAYER;
-    
+    ALLEGRO_BITMAP *helpImg= al_load_bitmap("help.jpg");
+    if(helpImg != nullptr)
+    {
+        GraphicHelp temp(helpImg);
+        help=temp;
+        help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
+        help.init();
+    }
+    showingHelp=false;
     #ifdef ICON
     ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              //Falta checkear.
     al_set_display_icon(display,icon);
@@ -87,6 +96,7 @@ void BurgleBrosView::reset()
     guardZoomed = NO_GUARD_ZOOMED;
     playerZoomed = NON_PLAYER;
     lootZoomed = NON_PLAYER;
+    showingHelp=false;
 }
 
 void BurgleBrosView::ViewInit(BurgleBrosModel* model)
@@ -250,6 +260,48 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     it_layers->push_back(auxMenuItem_list);
     
 }
+void BurgleBrosView::drawScreen()
+{
+    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
+    if(!showingHelp)
+    {
+        list<list<list<GraphicItem *>>>::iterator it_layers;
+        list<list<GraphicItem *>>::iterator it_itemType;
+        list<GraphicItem *>::iterator it_items;
+        //before=clock();
+        for( it_layers = graphicInterface.begin(); it_layers != graphicInterface.end(); it_layers++)
+        {
+            for( it_itemType = it_layers->begin(); it_itemType != it_layers->end(); it_itemType++)
+            {
+                for( it_items = it_itemType->begin(); it_items != it_itemType->end(); it_items++)
+                {
+                    if((*it_items)->isZoomed() || !onZoom)
+                        (*it_items)->draw();
+
+                }
+            }
+        }
+    }
+    else
+        help.draw();
+    
+    al_flip_display();
+}
+
+bool BurgleBrosView::isShowingHelp() {
+    return showingHelp;
+}
+
+void BurgleBrosView::showHelp(bool yesOrNo) {
+    if(yesOrNo != showingHelp)
+        help.resetScroll();
+    this->showingHelp = yesOrNo;
+}
+
+void BurgleBrosView::setHelpScroll(unsigned int scroll) {
+    help.setScroll(scroll);
+}
+
 
 void BurgleBrosView::update()
 {
@@ -264,50 +316,38 @@ void BurgleBrosView::update()
     //after=clock();
     //cout << "Update tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC<< " segundos."<<endl; 
     /*Draw all*/
-    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-    list<list<list<GraphicItem *>>>::iterator it_layers;
-    list<list<GraphicItem *>>::iterator it_itemType;
-    list<GraphicItem *>::iterator it_items;
-    //before=clock();
-    for( it_layers = graphicInterface.begin(); it_layers != graphicInterface.end(); it_layers++)
-    {
-        for( it_itemType = it_layers->begin(); it_itemType != it_layers->end(); it_itemType++)
-        {
-            for( it_items = it_itemType->begin(); it_items != it_itemType->end(); it_items++)
-            {
-                if((*it_items)->isZoomed() || !onZoom)
-                    (*it_items)->draw();
-                
-            }
-        }
-    }
-    al_flip_display();
+    drawScreen();
     //after=clock();
     //cout << "Draw tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC << " segundos."<<endl; 
 }
 ItemInfo BurgleBrosView::itemFromClick(Point point)
 {
     ItemInfo retVal = {NO_ITEM_CLICK, nullptr};
-    bool layer_flag = false;                                                                    //to exit outer loop
-    list<list<list<GraphicItem *>>>::reverse_iterator it_layers;
-    list<list<GraphicItem *>>::iterator it_itemType;
-    list<GraphicItem *>::iterator it_items;
-    for( it_layers = graphicInterface.rbegin(); it_layers != graphicInterface.rend() && !layer_flag; it_layers++)
+    bool layer_flag = false;  //to exit outer loop
+    if(!showingHelp)
     {
-        for( it_itemType = it_layers->begin(); it_itemType != it_layers->end() && !layer_flag; it_itemType++)
+        list<list<list<GraphicItem *>>>::reverse_iterator it_layers;
+        list<list<GraphicItem *>>::iterator it_itemType;
+        list<GraphicItem *>::iterator it_items;
+        for( it_layers = graphicInterface.rbegin(); it_layers != graphicInterface.rend() && !layer_flag; it_layers++)
         {
-            for( it_items = it_itemType->begin(); it_items != it_itemType->end(); it_items++)
+            for( it_itemType = it_layers->begin(); it_itemType != it_layers->end() && !layer_flag; it_itemType++)
             {
-                if((*it_items)->isZoomed() || !onZoom)
-                    if((*it_items)->isPointIn(point))
-                    {
-                        retVal = (*it_items)->IAm();
-                        layer_flag = true;
-                        break;
-                    }
+                for( it_items = it_itemType->begin(); it_items != it_itemType->end(); it_items++)
+                {
+                    if((*it_items)->isZoomed() || !onZoom)
+                        if((*it_items)->isPointIn(point))
+                        {
+                            retVal = (*it_items)->IAm();
+                            layer_flag = true;
+                            break;
+                        }
+                }
             }
         }
     }
+    else
+        retVal=help.IAm();
     return retVal;
 }
 void BurgleBrosView::updateTiles()

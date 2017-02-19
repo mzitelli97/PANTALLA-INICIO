@@ -23,10 +23,18 @@ BurgleBrosController::BurgleBrosController()
     waiting4QuitAck=false;
     firstInitDone=false;
     waiting4ack=false;
+    resetMouseZ=false;
 }
 
 BurgleBrosController::BurgleBrosController(const BurgleBrosController& orig) 
 {
+}
+
+bool BurgleBrosController::resetZMouse() {
+    bool retVal=resetMouseZ;
+    if(resetMouseZ==true)
+        resetMouseZ=false;
+    return retVal;
 }
 
 
@@ -269,7 +277,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
     if(mouseEvent!=nullptr && status!=INITIALIZING)
     {
         MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
-        if( p2MouseData != nullptr )
+        if( p2MouseData != nullptr && p2MouseData->isClicked())
         {
             ItemInfo temp;
             vector<string> exitMsg={"Quit","Confirm quit", "You have pressed the quit button. Are you sure you want to quit?"};
@@ -346,7 +354,8 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     view->update();
                     break;
                 case HELP_BUTTON_CLICK:
-                    view->cheatCards();
+                    //view->cheatCards();
+                    view->showHelp(true);
                     view->update();
                     break;
                 case EXIT_BUTTON_CLICK:
@@ -362,11 +371,22 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     waiting4ack = true;
                     quitCause=USER_QUIT;
                     break;
+                case HELP_IMAGE_CLICK:
+                    view->showHelp(false);
+                    resetMouseZ=true;
+                    view->update();
+                    break;
                 default:
                     view->eraseMenu();
                     view->update();
                     break;
             }
+        }
+        else if( p2MouseData != nullptr && !p2MouseData->isClicked())
+        {
+            if(view->isShowingHelp())
+                view->setHelpScroll((-1)*p2MouseData->getZ());
+            view->update();
         }
     }
     //checkGameStatus();

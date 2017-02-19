@@ -18,6 +18,12 @@ MouseED:: MouseED(bool click,unsigned int x,unsigned int y) {
     this->x=x;
     this->y=y;
 }
+MouseED::MouseED(int z)
+{
+    this->click= false;
+    this->z=z;
+}
+
 
 MouseED::MouseED(const MouseED& orig) {
 }
@@ -33,6 +39,11 @@ unsigned int MouseED::getX()
 unsigned int MouseED::getY()
 {
     return y;
+}
+
+int MouseED::getZ() 
+{
+    return z;
 }
 
 bool MouseED::isClicked()

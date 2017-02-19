@@ -21,6 +21,11 @@
 
 #define TIMEOUT_TIME 60
 
+
+#define MOUSE_Z_STD_RESOLUTION 100
+
+
+
 typedef enum{GUI_EVENT_MOUSE, GUI_EVENT_KEYBOARD,GUI_EVENT_NETWORKING,GUI_EVENT_TIMER,GUI_EVENT_NOEVENT} GuiEvent;
 
 using namespace std;
@@ -31,18 +36,22 @@ public:
     GUI(const GUI& orig);
     bool hayEvento(void);
     void parseEvento(void);
+    void setMouseZResolution(int resol);
     void attachController (Controller * Controller);
     void attachNetworkInterface(NetworkInterface * networkingInterface);
     void enableTimer();
     void resetTimer();
     void stopTimer();
     void playTimer();
+    void resetZMouse();
     virtual ~GUI();
     
 private:
     Controller *controller;
     bool networkEventEnabled;
     bool error;
+    int prevMouseZ;
+    int mouseZResolution;
     GuiEvent event;
     ALLEGRO_TIMER * timer;
     EventData *eventData;

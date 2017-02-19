@@ -32,7 +32,7 @@ void cController::parseTimerEvent(EventData* evData) {
 
 void cController::parseMouseEvent(EventData* mouseEvent) {
     MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
-    if( p2MouseData != nullptr)
+    if( p2MouseData != nullptr && p2MouseData->isClicked()) //Si fue un click
     {
         ItemInfo temp;
         Point aux = {(double)p2MouseData->getX(),(double)p2MouseData->getY()};
@@ -63,7 +63,9 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
                 quit = true;
                 break;
         }
-    }    
+    }
+    else if( p2MouseData != nullptr && !p2MouseData->isClicked())
+            cout<<"Z coordinate: " <<p2MouseData->getZ()<< endl;    
 }
 
 void cController::parseKeyboardEvent(EventData* evData)

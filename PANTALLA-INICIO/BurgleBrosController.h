@@ -45,7 +45,7 @@ public:
     void parseTimerEvent(EventData* mouseEvent) override;
     bool hasToResetTimeoutTimer();
     bool isWaiting4ack();
-
+    bool resetZMouse();
     string getUsersResponse(vector<string> &message);
     
     virtual ~BurgleBrosController();
@@ -87,6 +87,7 @@ private:
     QuitCause quitCause;
     bool waiting4QuitAck;
     bool resetTimeoutTimer;
+    bool resetMouseZ;
 };
 
 #endif /* BURGLEBROSCONTROLLER_H */

@@ -80,6 +80,7 @@ void BurgleBrosWrapper::connect()
 void BurgleBrosWrapper::playGame() {
     gui.playTimer();
     BurgleBrosController *controller = dynamic_cast<BurgleBrosController *>(p2Controller);
+    gui.setMouseZResolution(MOUSE_Z_RESOL_REQUIRED);
     bool prev=false;
     if( controller != nullptr)
     {
@@ -95,6 +96,8 @@ void BurgleBrosWrapper::playGame() {
                     {gui.playTimer();cout<<"Playie timer"<<endl;}
                 else if (!controller->isWaiting4ack())
                     {gui.stopTimer(); cout<<"apague timer"<<endl;}
+                if(controller->resetZMouse())
+                    gui.resetZMouse();
             }
         }
     }

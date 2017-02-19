@@ -17,10 +17,14 @@
 #include "ImageLoader.h"
 #include "Observer.h"
 #include "GraphicItem.h"
+#include "GraphicHelp.h"
 #include <list>
 typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 #define DROPDOWNS_MENUS_LIST 0
 #define INIT_QUANTITY_LAYERS 3
+
+
+
 
 //#define FULLSCREEN
 
@@ -50,12 +54,16 @@ public:
     void toggleVolButton();
     string MessageBox(vector<string> &message);
     int yesNoMessageBox(vector<string> &message);
+    void showHelp(bool yesOrNo);
+    void setHelpScroll(unsigned int scroll);
+    bool isShowingHelp();
     void cheatCards();
     virtual ~BurgleBrosView();
 private:
     BurgleBrosModel * model;
     list<GraphicItem *>::iterator accessGraphicItems(Layers layer, unsigned int itemType);
     list<list<GraphicItem *>>::iterator deleteList(Layers layer, unsigned int itemList);
+    void drawScreen();
     void updateButtons();
     void updateCharacters();
     void updateCharacterCards();
@@ -70,11 +78,13 @@ private:
     ALLEGRO_BITMAP * backScreen;
     ALLEGRO_FONT * actionsFont;
     ImageLoader imageLoader;
+    bool showingHelp;
     bool onZoom;
     int floorZoomed;
     int guardZoomed;
     PlayerId lootZoomed;
     PlayerId playerZoomed;
+    GraphicHelp help;
 
 };
 

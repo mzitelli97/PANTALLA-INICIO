@@ -33,9 +33,15 @@ GUI::GUI() {
     }
     quit = false;
     networkEventEnabled=false;
+    prevMouseZ=0;
+    mouseZResolution=MOUSE_Z_STD_RESOLUTION;
 }
 
 GUI::GUI(const GUI& orig) {
+}
+
+void GUI::resetZMouse() {
+    al_set_mouse_z(0);
 }
 
 void GUI::attachController(Controller * controller)
@@ -46,6 +52,10 @@ void GUI::attachNetworkInterface(NetworkInterface * networkingInterface)
 {
     this->networkingInterface=networkingInterface;
     networkEventEnabled=true;
+}
+
+void GUI::setMouseZResolution(int resol) {
+    this->mouseZResolution=resol;
 }
 
 
@@ -88,6 +98,28 @@ bool GUI::hayEvento()
             eventData=(EventData *) auxData;
             event=GUI_EVENT_MOUSE;
             retVal=true;
+        }
+        else if(rawEvent.type == ALLEGRO_EVENT_MOUSE_AXES)
+        {
+            int z=rawEvent.mouse.z;
+            if(z > 0)
+            {
+                al_set_mouse_z(0);
+                z=0;
+            }
+            else if(z < ((-1)* mouseZResolution))
+            {
+                al_set_mouse_z(((-1)* mouseZResolution));
+                z=((-1)* mouseZResolution);
+            }
+            if(z != prevMouseZ)
+            {
+                MouseED *auxData= new MouseED(z);
+                eventData=(EventData *) auxData;
+                event=GUI_EVENT_MOUSE;
+                prevMouseZ=z;
+                retVal=true;
+            }
         }
         else if(rawEvent.type == ALLEGRO_EVENT_KEY_UP)
         {

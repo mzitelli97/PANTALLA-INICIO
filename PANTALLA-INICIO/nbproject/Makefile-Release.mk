@@ -58,6 +58,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/GraphicGDie.o \
 	${OBJECTDIR}/GraphicGuard.o \
 	${OBJECTDIR}/GraphicGuardCards.o \
+	${OBJECTDIR}/GraphicHelp.o \
 	${OBJECTDIR}/GraphicItem.o \
 	${OBJECTDIR}/GraphicLoot.o \
 	${OBJECTDIR}/GraphicMenuItem.o \
@@ -221,6 +222,11 @@ ${OBJECTDIR}/GraphicGuardCards.o: GraphicGuardCards.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicGuardCards.o GraphicGuardCards.cpp
+
+${OBJECTDIR}/GraphicHelp.o: GraphicHelp.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicHelp.o GraphicHelp.cpp
 
 ${OBJECTDIR}/GraphicItem.o: GraphicItem.cpp
 	${MKDIR} -p ${OBJECTDIR}
