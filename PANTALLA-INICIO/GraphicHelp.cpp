@@ -53,7 +53,15 @@ void GraphicHelp::draw() {
     
     float sy= (((float)(al_get_bitmap_height(image)- height)) / ((float)MOUSE_Z_RESOL_REQUIRED))*currentScroll ;
     if(image != nullptr)
-        al_draw_scaled_bitmap(image,0,sy,al_get_bitmap_width(image),height,min.x,min.y,width,height,0);
+    {
+        if(al_get_bitmap_width(image)<totalWidth)
+        {
+            al_draw_filled_rectangle(0, 0, totalWidth, totalHeight,al_map_rgba(0,0,0,180));
+            al_draw_scaled_bitmap(image,0,sy,al_get_bitmap_width(image),height,(totalWidth-al_get_bitmap_width(image))/2.0,0,al_get_bitmap_width(image),height,0);           
+        }
+        else
+            al_draw_scaled_bitmap(image,0,sy,al_get_bitmap_width(image),height,0,0,totalWidth,height,0);           
+    }
 }
 
 GraphicHelp::GraphicHelp(const GraphicHelp& orig) {
