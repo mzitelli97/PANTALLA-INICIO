@@ -49,7 +49,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     guardZoomed = NO_GUARD_ZOOMED;
     playerZoomed = NON_PLAYER;
     lootZoomed = NON_PLAYER;
-    ALLEGRO_BITMAP *helpImg= al_load_bitmap("help.jpg");
+    ALLEGRO_BITMAP *helpImg= al_load_bitmap("help.png");
     if(helpImg != nullptr)
     {
         GraphicHelp temp(helpImg);
