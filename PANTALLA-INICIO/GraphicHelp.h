@@ -19,7 +19,7 @@
 class GraphicHelp: public GraphicItem {
 public:
     GraphicHelp();
-    GraphicHelp(ALLEGRO_BITMAP *helpImage);
+    GraphicHelp(vector<ALLEGRO_BITMAP *> d);
     void init(); 
     void setScroll(unsigned int scroll);
     void resetScroll();
@@ -29,6 +29,7 @@ public:
     virtual ~GraphicHelp();
 private:
     unsigned int currentScroll;
+    vector<ALLEGRO_BITMAP *> allImgs;
 };
 
 #endif /* GRAPHICHELP_H */

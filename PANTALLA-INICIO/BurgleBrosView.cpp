@@ -34,6 +34,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     this->model = model;
 #ifdef FULLSCREEN
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+    
 #endif
     display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
     backScreen = al_load_bitmap("fondo.jpg");
@@ -49,14 +50,10 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     guardZoomed = NO_GUARD_ZOOMED;
     playerZoomed = NON_PLAYER;
     lootZoomed = NON_PLAYER;
-    ALLEGRO_BITMAP *helpImg= al_load_bitmap("help.png");
-    if(helpImg != nullptr)
-    {
-        GraphicHelp temp(helpImg);
-        help=temp;
-        help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
-        help.init();
-    }
+    GraphicHelp temp(imageLoader.getRules());
+    help=temp;
+    help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
+    help.init();
     showingHelp=false;
     #ifdef ICON
     ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              //Falta checkear.

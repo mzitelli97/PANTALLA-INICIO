@@ -24,6 +24,7 @@ string button2Str(buttonAction _button)
 
 ImageLoader::ImageLoader()
 {
+    rules.reserve(RULES_NMBR_OF_PAGES);
 }
 
 string ImageLoader::getError()
@@ -88,9 +89,13 @@ ALLEGRO_BITMAP *ImageLoader::getImageBackP(Loot loot)
 {
 	return lootBack;
 }
+vector<ALLEGRO_BITMAP *> ImageLoader::getRules()
+{
+    return rules;
+}
 bool ImageLoader::initImages()
 {
-	if (loadCharactersCards() && loadCharactersFigures() && loadTokens() && loadLoots() && loadGuard() && loadTiles() && loadWhiteDices() && loadRedDices() && loadButton())
+	if (loadCharactersCards() && loadCharactersFigures() && loadTokens() && loadLoots() && loadGuard() && loadTiles() && loadWhiteDices() && loadRedDices() && loadButton()&& loadRules())
 		initOk = true;
 	else
 		initOk = false;
@@ -354,7 +359,31 @@ bool ImageLoader::loadWhiteDices()
     }
     return retVal;
 }
-        
+
+bool ImageLoader::loadRules() 
+{
+    bool retVal = false;
+    for(unsigned int i=1; i <= RULES_NMBR_OF_PAGES; i++)
+    {
+        char buffer[DICE_MAX_NUMBER];
+	sprintf(buffer, "%d", i);
+        string fullPath = ((string)IMAGE_FOLDER + (string)RULES_SUBFOLDER + (string) "Rules" + (string)buffer + (string)".jpg");
+        ALLEGRO_BITMAP *temp= al_load_bitmap(fullPath.c_str());
+        if(temp!=nullptr)
+        {
+            rules.push_back(temp);
+            retVal=true;
+        }
+        else
+        {
+            errormsg = "The image: " + fullPath + " could not be loaded.\n";
+            retVal = false;
+            break;
+        }
+    }
+    return retVal;
+}
+ 
 
 
 ImageLoader::~ImageLoader()
