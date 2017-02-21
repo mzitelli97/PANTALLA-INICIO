@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/AllegroEG.o \
 	${OBJECTDIR}/BurgleBrosBoard.o \
 	${OBJECTDIR}/BurgleBrosCard.o \
 	${OBJECTDIR}/BurgleBrosController.o \
@@ -52,6 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/CView.o \
 	${OBJECTDIR}/Controller.o \
 	${OBJECTDIR}/EventData.o \
+	${OBJECTDIR}/EventGenerator.o \
 	${OBJECTDIR}/GUI.o \
 	${OBJECTDIR}/GraphicButton.o \
 	${OBJECTDIR}/GraphicEDices.o \
@@ -67,14 +69,17 @@ OBJECTFILES= \
 	${OBJECTDIR}/GraphicTile.o \
 	${OBJECTDIR}/GraphicToken.o \
 	${OBJECTDIR}/GraphicWall.o \
+	${OBJECTDIR}/GroupItem.o \
 	${OBJECTDIR}/ImageLoader.o \
 	${OBJECTDIR}/KeyboardED.o \
+	${OBJECTDIR}/LayerItem.o \
 	${OBJECTDIR}/LibsInit.o \
 	${OBJECTDIR}/Model.o \
 	${OBJECTDIR}/MouseED.o \
 	${OBJECTDIR}/NetworkED.o \
 	${OBJECTDIR}/NetworkInterface.o \
 	${OBJECTDIR}/Networking.o \
+	${OBJECTDIR}/NetworkingEG.o \
 	${OBJECTDIR}/ProtocolFunctions.o \
 	${OBJECTDIR}/SoundManager.o \
 	${OBJECTDIR}/TextBox.o \
@@ -107,6 +112,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pantalla-inicio: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pantalla-inicio ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/AllegroEG.o: AllegroEG.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AllegroEG.o AllegroEG.cpp
 
 ${OBJECTDIR}/BurgleBrosBoard.o: BurgleBrosBoard.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -193,6 +203,11 @@ ${OBJECTDIR}/EventData.o: EventData.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EventData.o EventData.cpp
 
+${OBJECTDIR}/EventGenerator.o: EventGenerator.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EventGenerator.o EventGenerator.cpp
+
 ${OBJECTDIR}/GUI.o: GUI.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -268,6 +283,11 @@ ${OBJECTDIR}/GraphicWall.o: GraphicWall.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GraphicWall.o GraphicWall.cpp
 
+${OBJECTDIR}/GroupItem.o: GroupItem.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GroupItem.o GroupItem.cpp
+
 ${OBJECTDIR}/ImageLoader.o: ImageLoader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -277,6 +297,11 @@ ${OBJECTDIR}/KeyboardED.o: KeyboardED.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/KeyboardED.o KeyboardED.cpp
+
+${OBJECTDIR}/LayerItem.o: LayerItem.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LayerItem.o LayerItem.cpp
 
 ${OBJECTDIR}/LibsInit.o: LibsInit.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -307,6 +332,11 @@ ${OBJECTDIR}/Networking.o: Networking.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Networking.o Networking.cpp
+
+${OBJECTDIR}/NetworkingEG.o: NetworkingEG.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetworkingEG.o NetworkingEG.cpp
 
 ${OBJECTDIR}/ProtocolFunctions.o: ProtocolFunctions.cpp
 	${MKDIR} -p ${OBJECTDIR}

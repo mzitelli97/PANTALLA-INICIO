@@ -355,7 +355,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     break;
                 case HELP_BUTTON_CLICK:
                     //view->cheatCards();
-                    view->showHelp(true);
+//                    view->showHelp(true);
                     resetMouseZ=true;
                     view->update();
                     break;
@@ -373,7 +373,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     quitCause=USER_QUIT;
                     break;
                 case HELP_IMAGE_CLICK:
-                    view->showHelp(false);
+//                    view->showHelp(false);
                     resetMouseZ=true;
                     view->update();
                     break;
@@ -385,8 +385,8 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
         }
         else if( p2MouseData != nullptr && !p2MouseData->isClicked())
         {
-            if(view->isShowingHelp())
-                view->setHelpScroll((-1)*p2MouseData->getZ());
+//            if(view->isShowingHelp())
+  //              view->setHelpScroll((-1)*p2MouseData->getZ());
             view->update();
         }
     }

@@ -52,12 +52,17 @@
         <itemPath>Networking.h</itemPath>
         <itemPath>ProtocolFunctions.h</itemPath>
       </logicalFolder>
+      <itemPath>AllegroEG.h</itemPath>
       <itemPath>BurgleBrosWrapper.h</itemPath>
       <itemPath>Controller.h</itemPath>
+      <itemPath>EventGenerator.h</itemPath>
       <itemPath>GUI.h</itemPath>
       <itemPath>GraphicHelp.h</itemPath>
+      <itemPath>GroupItem.h</itemPath>
+      <itemPath>LayerItem.h</itemPath>
       <itemPath>LibsInit.h</itemPath>
       <itemPath>Model.h</itemPath>
+      <itemPath>NetworkingEG.h</itemPath>
       <itemPath>Observer.h</itemPath>
       <itemPath>SoundManager.h</itemPath>
     </logicalFolder>
@@ -116,12 +121,17 @@
         <itemPath>Networking.cpp</itemPath>
         <itemPath>ProtocolFunctions.cpp</itemPath>
       </logicalFolder>
+      <itemPath>AllegroEG.cpp</itemPath>
       <itemPath>BurgleBrosWrapper.cpp</itemPath>
       <itemPath>Controller.cpp</itemPath>
+      <itemPath>EventGenerator.cpp</itemPath>
       <itemPath>GUI.cpp</itemPath>
       <itemPath>GraphicHelp.cpp</itemPath>
+      <itemPath>GroupItem.cpp</itemPath>
+      <itemPath>LayerItem.cpp</itemPath>
       <itemPath>LibsInit.cpp</itemPath>
       <itemPath>Model.cpp</itemPath>
+      <itemPath>NetworkingEG.cpp</itemPath>
       <itemPath>SoundManager.cpp</itemPath>
       <itemPath>View.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -201,6 +211,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="AllegroEG.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AllegroEG.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="BurgleBrosBoard.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="BurgleBrosBoard.h" ex="false" tool="3" flavor2="0">
@@ -269,6 +283,10 @@
       </item>
       <item path="EventData.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="EventGenerator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EventGenerator.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="GUI.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GUI.h" ex="false" tool="3" flavor2="0">
@@ -329,6 +347,10 @@
       </item>
       <item path="GraphicWall.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="GroupItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GroupItem.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ImageLoader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ImageLoader.h" ex="false" tool="3" flavor2="0">
@@ -336,6 +358,10 @@
       <item path="KeyboardED.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="KeyboardED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LayerItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LayerItem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="LibsInit.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -360,6 +386,10 @@
       <item path="Networking.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Networking.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetworkingEG.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetworkingEG.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Observer.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -408,6 +438,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="AllegroEG.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AllegroEG.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="BurgleBrosBoard.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="BurgleBrosBoard.h" ex="false" tool="3" flavor2="0">
@@ -476,6 +510,10 @@
       </item>
       <item path="EventData.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="EventGenerator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EventGenerator.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="GUI.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GUI.h" ex="false" tool="3" flavor2="0">
@@ -536,6 +574,10 @@
       </item>
       <item path="GraphicWall.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="GroupItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GroupItem.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ImageLoader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ImageLoader.h" ex="false" tool="3" flavor2="0">
@@ -543,6 +585,10 @@
       <item path="KeyboardED.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="KeyboardED.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LayerItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="LayerItem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="LibsInit.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -567,6 +613,10 @@
       <item path="Networking.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Networking.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetworkingEG.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetworkingEG.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Observer.h" ex="false" tool="3" flavor2="0">
       </item>

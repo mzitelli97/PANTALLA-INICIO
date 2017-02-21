@@ -1,32 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   BurgleBrosView.h
- * Author: javier
- *
- * Created on December 24, 2016, 12:58 PM
- */
-
 #ifndef BURGLEBROSVIEW_H
 #define BURGLEBROSVIEW_H
 #include "BurgleBrosModel.h"
 #include "ImageLoader.h"
 #include "Observer.h"
 #include "GraphicItem.h"
-#include "GraphicHelp.h"
+#include "LayerItem.h"
 #include <list>
+
 typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 #define DROPDOWNS_MENUS_LIST 0
 #define INIT_QUANTITY_LAYERS 3
 
-
-
-
-#define FULLSCREEN
+//#define FULLSCREEN
 
 class BurgleBrosView : public Observer{
 public:
@@ -54,16 +39,15 @@ public:
     void toggleVolButton();
     string MessageBox(vector<string> &message);
     int yesNoMessageBox(vector<string> &message);
-    void showHelp(bool yesOrNo);
-    void setHelpScroll(unsigned int scroll);
-    bool isShowingHelp();
     void cheatCards();
     virtual ~BurgleBrosView();
 private:
     BurgleBrosModel * model;
     list<GraphicItem *>::iterator accessGraphicItems(Layers layer, unsigned int itemType);
-    list<list<GraphicItem *>>::iterator deleteList(Layers layer, unsigned int itemList);
-    void drawScreen();
+    list<GroupItem>::iterator deleteList(Layers layer, unsigned int itemList);
+    
+    void setZoom();
+    void resetZoom();
     void updateButtons();
     void updateCharacters();
     void updateCharacterCards();
@@ -72,19 +56,17 @@ private:
     void updateGuards();
     void updateTokens();
     void updateExtraDices();
-    list<list<list<GraphicItem *>>> graphicInterface;                   //layers structure of graphical interface
+    list<LayerItem> graphics;
     vector<GraphicItem*> walls;
     ALLEGRO_DISPLAY * display;
     ALLEGRO_BITMAP * backScreen;
     ALLEGRO_FONT * actionsFont;
     ImageLoader imageLoader;
-    bool showingHelp;
     bool onZoom;
     int floorZoomed;
     int guardZoomed;
     PlayerId lootZoomed;
     PlayerId playerZoomed;
-    GraphicHelp help;
 
 };
 

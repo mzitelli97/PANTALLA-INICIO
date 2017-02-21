@@ -1,63 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   GUI.h
- * Author: user
- *
- * Created on 6 de enero de 2017, 10:50
- */
-
 #ifndef GUI_H
 #define GUI_H
 #include <list>
-#include <allegro5/events.h>
-#include <allegro5/config.h>
 #include "Controller.h"
 #include "NetworkInterface.h"
+#include "EventGenerator.h"
 
-#define TIMEOUT_TIME 60
-
-
-#define MOUSE_Z_STD_RESOLUTION 100
-
-
-
-typedef enum{GUI_EVENT_MOUSE, GUI_EVENT_KEYBOARD,GUI_EVENT_NETWORKING,GUI_EVENT_TIMER,GUI_EVENT_NOEVENT} GuiEvent;
 
 using namespace std;
 
 class GUI {
 public:
+    
+    /*Si guardo los Handle EventGenerator, puedo realizar modificaciones sobre las
+     * condiciones que generan un evento que responden a situaciones externas,
+     * sin modificar la GUI. 
+     * Ejemplo: Tiempo de un timer para generar el evento.
+     */
+    
     GUI();
     GUI(const GUI& orig);
+    /*recorre la lista de eventGenerator y chequea si hubo un evento*/
     bool hayEvento(void);
+    /*Segun el evento trancurrido entrega un eventData al controller*/
     void parseEvento(void);
-    void setMouseZResolution(int resol);
     void attachController (Controller * Controller);
-    void attachNetworkInterface(NetworkInterface * networkingInterface);
-    void enableTimer();
-    void resetTimer();
-    void stopTimer();
-    void playTimer();
-    void resetZMouse();
+    void attachEventGenerator(EventGenerator * evento);
     virtual ~GUI();
     
 private:
+    
     Controller *controller;
-    bool networkEventEnabled;
-    bool error;
-    int prevMouseZ;
-    int mouseZResolution;
-    GuiEvent event;
-    ALLEGRO_TIMER * timer;
-    EventData *eventData;
-    ALLEGRO_EVENT_QUEUE *EventQueue;     
-    NetworkInterface * networkingInterface;
-    bool quit;
+    list<EventGenerator *> evento;
+    GuiEvent eventType;
+    EventData *data;
+    bool error;          //para implementar un chequeo de error
+    
 };
 
 #endif /* GUI_H */

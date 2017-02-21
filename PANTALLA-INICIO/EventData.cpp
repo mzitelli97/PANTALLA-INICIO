@@ -17,6 +17,7 @@ EventData::EventData() {
 }
 
 EventData::EventData(const EventData& orig) {
+
 }
 
 EventData::~EventData() {

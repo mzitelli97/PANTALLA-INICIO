@@ -1,9 +1,12 @@
 #include "BurgleBrosWrapper.h"
+#include "AllegroEG.h"
+#include "NetworkingEG.h"
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
     srand(time(NULL));
     //allegro_startup();
     quit=false;
+    allegroEvent = new AllegroEG;
     CModel *initModel = new CModel;
     CView *initView = new CView(initModel);
     cController *initController = new cController;
@@ -13,16 +16,20 @@ BurgleBrosWrapper::BurgleBrosWrapper() {
     initController->attachSound(&sound);
     initView->update();
     gui.attachController(initController);
+    gui.attachEventGenerator((EventGenerator *) allegroEvent);
     p2Controller=initController;
     p2Model=initModel;
     p2View=initView;
 }
 
-bool BurgleBrosWrapper::gameOnCourse() {
+bool 
+BurgleBrosWrapper::gameOnCourse() {
     return !quit;
 }
 
-void BurgleBrosWrapper::getNameAndIp() {
+void 
+BurgleBrosWrapper::getNameAndIp() {
+
     cController *initController = dynamic_cast<cController *>(p2Controller);
     CModel *initModel = dynamic_cast<CModel *>(p2Model);
     if(initController != nullptr && initModel != nullptr)
@@ -41,11 +48,14 @@ void BurgleBrosWrapper::getNameAndIp() {
        
 }
 
-void BurgleBrosWrapper::connect() 
+void
+BurgleBrosWrapper::connect() 
 {
     cController *initController = dynamic_cast<cController *>(p2Controller);
     BurgleBrosController *bbcontroller = new BurgleBrosController;
+    NetworkingEG * networkEvent= new NetworkingEG;
     bbcontroller->attachNetworkInterface(&networkInterface);
+    
     if(initController != nullptr)
     {
         while(!connect(bbcontroller) && !quit)
@@ -59,7 +69,9 @@ void BurgleBrosWrapper::connect()
             delete p2Controller;
             delete p2Model;
             delete p2View;
-            gui.attachNetworkInterface(&networkInterface);
+            
+            networkEvent->attachNetworkingInterface(&networkInterface);
+            gui.attachEventGenerator(networkEvent);
             BurgleBrosModel *newModel = new BurgleBrosModel;
             BurgleBrosView *newView= new BurgleBrosView(newModel);
             newModel->attach(newView);
@@ -77,10 +89,13 @@ void BurgleBrosWrapper::connect()
     }    
 }
 
-void BurgleBrosWrapper::playGame() {
-    gui.playTimer();
+void
+BurgleBrosWrapper::playGame() {
+
+    
+    allegroEvent->playTimer();
     BurgleBrosController *controller = dynamic_cast<BurgleBrosController *>(p2Controller);
-    gui.setMouseZResolution(MOUSE_Z_RESOL_REQUIRED);
+    //gui.setMouseZResolution(MOUSE_Z_RESOL_REQUIRED);
     bool prev=false;
     if( controller != nullptr)
     {
@@ -91,13 +106,13 @@ void BurgleBrosWrapper::playGame() {
             {
                 gui.parseEvento();
                 if(controller->hasToResetTimeoutTimer())
-                    {gui.resetTimer(); cout<<"Resetie timer"<<endl;}
+                    {allegroEvent->resetTimer(); cout<<"Resetie timer"<<endl;}
                 if(controller->isWaiting4ack() && !prev)
-                    {gui.playTimer();cout<<"Playie timer"<<endl;}
+                    {allegroEvent->playTimer();cout<<"Playie timer"<<endl;}
                 else if (!controller->isWaiting4ack())
-                    {gui.stopTimer(); cout<<"apague timer"<<endl;}
-                if(controller->resetZMouse())
-                    gui.resetZMouse();
+                    {allegroEvent->stopTimer(); cout<<"apague timer"<<endl;}
+                if(controller->resetZMouse());
+                    //gui.resetZMouse();
             }
         }
     }
