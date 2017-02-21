@@ -5,11 +5,15 @@
 #include "Observer.h"
 #include "GraphicItem.h"
 #include "LayerItem.h"
+#include "GraphicHelp.h"
 #include <list>
 
 typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 #define DROPDOWNS_MENUS_LIST 0
 #define INIT_QUANTITY_LAYERS 3
+
+
+
 
 //#define FULLSCREEN
 
@@ -62,6 +66,8 @@ private:
     ALLEGRO_BITMAP * backScreen;
     ALLEGRO_FONT * actionsFont;
     ImageLoader imageLoader;
+    GraphicHelp help;
+    bool showingHelp;
     bool onZoom;
     int floorZoomed;
     int guardZoomed;

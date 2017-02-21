@@ -21,8 +21,11 @@ using namespace std;
 #define DICES_SUBFOLDER "Dices/"
 #define BUTTON_SUBFOLDER "Buttons/"
 #define IMAGE_EXTENSION ".png"
+#define RULES_SUBFOLDER "Rules/"
 
 #define DICE_MAX_NUMBER 6
+
+#define RULES_NMBR_OF_PAGES 14
 
 /* Estos irian en otros lados, pero por ahora quedan aca*/
 /********************************************************/
@@ -48,6 +51,7 @@ public:
 	ALLEGRO_BITMAP * getImageBackP(CardName tile);
 	ALLEGRO_BITMAP * getImageBackP(CardLocation guardCard);
 	ALLEGRO_BITMAP * getImageBackP(Loot loot);
+        vector<ALLEGRO_BITMAP *> getRules();
 	string getError();
 	~ImageLoader();
 private:
@@ -60,6 +64,7 @@ private:
 	bool loadTiles();
         bool loadRedDices();
         bool loadWhiteDices();
+        bool loadRules();
 	bool initOk;
 	string errormsg;
 	void destroyImages();
@@ -71,6 +76,7 @@ private:
 	map<Token, ALLEGRO_BITMAP *> tokens;
 	map<CharacterName, ALLEGRO_BITMAP *> characterCards;
 	map<CharacterName, ALLEGRO_BITMAP *> character;
+        vector<ALLEGRO_BITMAP *> rules;
 	ALLEGRO_BITMAP * tileBack;
 	ALLEGRO_BITMAP * guardBack;
 	ALLEGRO_BITMAP * guard;

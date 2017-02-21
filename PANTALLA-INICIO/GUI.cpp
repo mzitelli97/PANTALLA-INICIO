@@ -5,7 +5,6 @@
 
 
 GUI::GUI() {
-    quit = false;
 }
 
 GUI::GUI(const GUI& orig) {

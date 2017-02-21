@@ -13,6 +13,7 @@
 #include "GraphicMenuItem.h"
 #include "GraphicWall.h"
 #include "GraphicButton.h"
+#include "GraphicHelp.h"
 #include "LayerItem.h"
 #include <time.h>
 
@@ -34,7 +35,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
 #ifdef FULLSCREEN
     
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-
+    
 #endif
     
     display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
@@ -51,7 +52,11 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     guardZoomed = NO_GUARD_ZOOMED;
     playerZoomed = NON_PLAYER;
     lootZoomed = NON_PLAYER;
-    
+    GraphicHelp temp(imageLoader.getRules());
+    help=temp;
+    help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
+    help.init();
+    showingHelp=false;
     #ifdef ICON
     ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              //Falta checkear.
     al_set_display_icon(display,icon);
