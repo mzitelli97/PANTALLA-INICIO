@@ -1,7 +1,7 @@
 #include <list>
 
 #include "BurgleBrosSound.h"
-//#define MUTE
+#define MUTE
 
 using namespace std;
 
