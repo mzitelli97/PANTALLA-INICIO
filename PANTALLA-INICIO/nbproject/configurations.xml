@@ -128,11 +128,9 @@
         <itemPath>Networking.cpp</itemPath>
         <itemPath>ProtocolFunctions.cpp</itemPath>
       </logicalFolder>
-      <itemPath>Controller.cpp</itemPath>
       <itemPath>GUI.cpp</itemPath>
       <itemPath>LibsInit.cpp</itemPath>
       <itemPath>Model.cpp</itemPath>
-      <itemPath>SoundManager.cpp</itemPath>
       <itemPath>View.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -275,8 +273,6 @@
       </item>
       <item path="CView.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Controller.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="EventData.cpp" ex="false" tool="1" flavor2="0">
@@ -396,8 +392,6 @@
       <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SoundManager.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="SoundManager.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -502,8 +496,6 @@
       </item>
       <item path="CView.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Controller.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Controller.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="EventData.cpp" ex="false" tool="1" flavor2="0">
@@ -623,8 +615,6 @@
       <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SoundManager.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="SoundManager.h" ex="false" tool="3" flavor2="0">
       </item>

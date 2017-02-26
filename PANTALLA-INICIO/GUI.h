@@ -11,6 +11,7 @@ using namespace std;
 class GUI {
 public:
     
+    
     /*Si guardo los Handle EventGenerator, puedo realizar modificaciones sobre las
      * condiciones que generan un evento que responden a situaciones externas,
      * sin modificar la GUI. 

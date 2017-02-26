@@ -23,18 +23,20 @@
 class cController:public Controller {
 public:
     cController();
-    void attachSound(BurgleBrosSound *sound);
-    void parseMouseEvent(EventData *mouseEvent);
-    void parseNetworkEvent(EventData *evData);
-    void parseKeyboardEvent(EventData *evData);
-    virtual void parseTimerEvent(EventData *evData);
 
+    void parseMouseEvent(EventData *mouseEvent);
+    void parseKeyboardEvent(EventData *evData);
     bool checkIfConnecting();
+    void attachSound(BurgleBrosSound *sound);
     void attachView(CView* view);
     void attachModel(CModel* model);
     bool userQuit();
     cController(const cController& orig);
     virtual ~cController();
+    
+    virtual void parseTimerEvent(EventData *evData);        //No utilizamos las siguientes funciones en el controller
+    virtual void parseNetworkEvent(EventData *evData);      //
+
 private:
     bool connecting;
     CView* view;

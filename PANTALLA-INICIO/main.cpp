@@ -135,6 +135,7 @@ int main(int argc, char** argv)
 {
     allegro_startup();
     BurgleBrosWrapper fullGame;
+ 
     fullGame.getNameAndIp();
   
     if(fullGame.gameOnCourse())

@@ -27,7 +27,7 @@ void cController::attachSound(BurgleBrosSound* sound) {
 }
 
 void cController::parseTimerEvent(EventData* evData) {
-
+//No utilizamos esta función 
 }
 
 void cController::parseMouseEvent(EventData* mouseEvent) {

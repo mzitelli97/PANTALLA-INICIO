@@ -47,6 +47,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     al_draw_text(font,al_map_rgb(0,0,0),al_get_bitmap_width(backScreen)/2.0,TITLE_H/2,ALLEGRO_ALIGN_CENTER, "EDA BURGLE BROS");
     al_destroy_font(font);
     al_set_target_backbuffer(display);
+    
     this->resetZoom();
     floorZoomed = NO_FLOOR_ZOOMED;
     guardZoomed = NO_GUARD_ZOOMED;

@@ -21,6 +21,7 @@ Model::Model(const Model& orig) {
 
 Model::~Model() {
 }
+
 void Model::attach(Observer * view)
 {
     observers.push_back(view);

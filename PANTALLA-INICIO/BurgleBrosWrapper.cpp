@@ -1,6 +1,5 @@
 #include "BurgleBrosWrapper.h"
-#include "AllegroEG.h"
-#include "NetworkingEG.h"
+
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
     srand(time(NULL));
@@ -53,7 +52,7 @@ BurgleBrosWrapper::connect()
 {
     cController *initController = dynamic_cast<cController *>(p2Controller);
     BurgleBrosController *bbcontroller = new BurgleBrosController;
-    NetworkingEG * networkEvent= new NetworkingEG;
+    networkEvent= new NetworkingEG;
     bbcontroller->attachNetworkInterface(&networkInterface);
     
     if(initController != nullptr)
@@ -118,7 +117,7 @@ BurgleBrosWrapper::playGame() {
     }
     delete p2Controller;
     delete p2Model;
-    delete p2View;
+    delete p2View; 
     
     
 }
@@ -145,5 +144,7 @@ BurgleBrosWrapper::BurgleBrosWrapper(const BurgleBrosWrapper& orig) {
 }
 
 BurgleBrosWrapper::~BurgleBrosWrapper() {
+   delete  networkEvent;
+   delete  allegroEvent;
 }
 

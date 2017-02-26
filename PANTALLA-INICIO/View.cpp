@@ -13,12 +13,9 @@
 
 #include "Observer.h"
 
-Observer::Observer() {
-}
+Observer::Observer() {}
 
-Observer::Observer(const Observer& orig) {
-}
+Observer::Observer(const Observer& orig) {}
 
-Observer::~Observer() {
-}
+Observer::~Observer() {}
 

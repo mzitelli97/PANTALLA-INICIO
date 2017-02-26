@@ -24,7 +24,7 @@ class CView: public Observer {
 public:
     CView(CModel * model);
     CView(const CView& orig);
-    virtual ~CView();
+    ~CView();
     void update() override;
     ItemInfo itemFromClick(Point point);
     void toggleButton(buttonAction button);

@@ -51,7 +51,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/BurgleBrosWrapper.o \
 	${OBJECTDIR}/CModel.o \
 	${OBJECTDIR}/CView.o \
-	${OBJECTDIR}/Controller.o \
 	${OBJECTDIR}/EventData.o \
 	${OBJECTDIR}/EventGenerator.o \
 	${OBJECTDIR}/GUI.o \
@@ -81,7 +80,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/Networking.o \
 	${OBJECTDIR}/NetworkingEG.o \
 	${OBJECTDIR}/ProtocolFunctions.o \
-	${OBJECTDIR}/SoundManager.o \
 	${OBJECTDIR}/TextBox.o \
 	${OBJECTDIR}/TimerED.o \
 	${OBJECTDIR}/View.o \
@@ -192,11 +190,6 @@ ${OBJECTDIR}/CView.o: CView.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CView.o CView.cpp
-
-${OBJECTDIR}/Controller.o: Controller.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Controller.o Controller.cpp
 
 ${OBJECTDIR}/EventData.o: EventData.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -342,11 +335,6 @@ ${OBJECTDIR}/ProtocolFunctions.o: ProtocolFunctions.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ProtocolFunctions.o ProtocolFunctions.cpp
-
-${OBJECTDIR}/SoundManager.o: SoundManager.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SoundManager.o SoundManager.cpp
 
 ${OBJECTDIR}/TextBox.o: TextBox.cpp
 	${MKDIR} -p ${OBJECTDIR}

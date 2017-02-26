@@ -28,12 +28,11 @@ GUI::hayEvento()
     bool retVal=false;
     list<EventGenerator*>::iterator it_evento;
 
-    for(it_evento=evento.begin(); it_evento != evento.end() && !retVal;it_evento++)
+    for(it_evento=evento.begin(); it_evento != evento.end() && !retVal;it_evento++) //No guardo el iterador xq cuando sale de scope desaloca la memoria
     {
             retVal=(*it_evento)->hayEvento();
             eventType=(*it_evento)->getType();
             data=(*it_evento)->getData();
-                    
     }
     return retVal;
 }

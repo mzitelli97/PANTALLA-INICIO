@@ -18,10 +18,8 @@ class Observer {
 public:
     Observer();
     Observer(const Observer& orig);
-    virtual ~Observer();
     virtual void update() = 0;
-private:
-
+    virtual ~Observer();
 };
 
 #endif /* VIEW_H */

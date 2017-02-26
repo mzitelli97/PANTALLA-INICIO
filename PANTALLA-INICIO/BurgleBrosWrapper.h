@@ -5,6 +5,7 @@
 #include "BurgleBrosController.h"
 #include "cController.h" 
 #include "AllegroEG.h"
+#include "NetworkingEG.h"
 
 class BurgleBrosWrapper {
 public:
@@ -26,6 +27,7 @@ private:
     /*Guardo el handle para realizar modificaciones sobre el timer que 
      controla los TimeOuts, que responden a variables externas*/
     AllegroEG *allegroEvent; 
+    NetworkingEG * networkEvent;
     NetworkInterface networkInterface;
     BurgleBrosSound sound;
     string name, ipToConnect;
