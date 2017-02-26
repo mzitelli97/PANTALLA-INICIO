@@ -23,7 +23,8 @@ bool cController::checkIfConnecting()
 }
 
 void cController::attachSound(BurgleBrosSound* sound) {
-    this->sound = sound;
+    if(sound !=nullptr)
+        this->sound = sound;
 }
 
 void cController::parseTimerEvent(EventData* evData) {
@@ -31,6 +32,7 @@ void cController::parseTimerEvent(EventData* evData) {
 }
 
 void cController::parseMouseEvent(EventData* mouseEvent) {
+    
     MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
     if( p2MouseData != nullptr && p2MouseData->isClicked()) //Si fue un click
     {
@@ -102,6 +104,9 @@ void cController::parseKeyboardEvent(EventData* evData)
                     break;
             }
         }
+    }else
+    { 
+       // no es un eventData
     }
 }
 
@@ -113,12 +118,14 @@ void cController::parseNetworkEvent(EventData* evData) {
 
 void cController::attachModel(CModel* model)
 {
-    this->model = model;
+    if(model !=nullptr)
+        this->model = model;
 }
 
 void cController::attachView(CView* view)
-{
-    this->view=view;
+{   
+    if(view != nullptr)
+        this->view=view;
 }
 
 bool cController::userQuit()

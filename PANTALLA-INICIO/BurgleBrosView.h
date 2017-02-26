@@ -45,6 +45,7 @@ public:
     int yesNoMessageBox(vector<string> &message);
     void cheatCards();
     virtual ~BurgleBrosView();
+
 private:
     BurgleBrosModel * model;
     list<GraphicItem *>::iterator accessGraphicItems(Layers layer, unsigned int itemType);

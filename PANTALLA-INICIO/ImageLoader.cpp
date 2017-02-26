@@ -93,12 +93,14 @@ vector<ALLEGRO_BITMAP *> ImageLoader::getRules()
 {
     return rules;
 }
+
 bool ImageLoader::initImages()
 {
 	if (loadCharactersCards() && loadCharactersFigures() && loadTokens() && loadLoots() && loadGuard() && loadTiles() && loadWhiteDices() && loadRedDices() && loadButton()&& loadRules())
 		initOk = true;
 	else
 		initOk = false;
+
 	return initOk;
 }
 bool ImageLoader::loadCharactersCards()

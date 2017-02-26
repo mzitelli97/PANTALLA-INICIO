@@ -18,47 +18,98 @@
 
 CView::CView(CModel * model)
 {
-    this->model = model;
-    imageLoader.initImages();           //Falta checkear.
-#ifdef FULLSCREEN
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-#endif
-    display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
-    backScreen = al_load_bitmap("begin.jpg");
-    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-    al_set_window_title(display,"EDA Burgle Bros");
-    ALLEGRO_FONT * auxFont = al_load_font("title.ttf",BOX_HEIGHT/1.5,0);
-        
-    /*al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
-    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
-    al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");*/
-    
-    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
-    al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
-    
-    al_destroy_font(auxFont);
-    font = al_load_font("fonts.ttf",BOX_HEIGHT/1.2, 0);
-    //Creo las cajas de texto
-    for(int i = 0; i < N_BOXES; i++)
+    error=false;
+    if(model != nullptr)                       
+    {    
+        this->model = model;               //attach model
+        backScreen=nullptr;                 
+        display=nullptr;
+        font=nullptr;
+
+        if(imageLoader.initImages())
+        {
+            display =al_create_display(SCREEN_W,SCREEN_H);           
+            if(display != nullptr)
+            {
+                backScreen = al_load_bitmap("begin.jpg");
+                if(backScreen != nullptr)
+                {
+                    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
+                    al_set_window_title(display,"EDA Burgle Bros");
+                    
+                    ALLEGRO_FONT * auxFont =nullptr;
+                    auxFont = al_load_font("title.ttf",BOX_HEIGHT/1.5,0);
+
+                    if(auxFont != nullptr)
+                    {
+                        /*al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
+                        al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
+                        al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");*/
+
+                        al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
+                        al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
+                        al_destroy_font(auxFont);
+                        
+                        font = al_load_font("fonts.ttf",BOX_HEIGHT/1.2, 0);
+                        if(font != nullptr)
+                        {
+                            //Creo las cajas de texto
+                            for(int i = 0; i < N_BOXES; i++)
+                            {
+                                TextBox * box = new TextBox(BOX_WIDTH,BOX_HEIGHT,font, (textSelected)i);
+                                box->setPosition(BOX_MIN_X, BOX_MIN_Y + SPACE_Y* (i%N_BOXES) + (i%N_BOXES) * BOX_HEIGHT);
+                                gList.push_back((GraphicItem*) box);
+                            }
+
+                            //Creo los botones
+                            /*El boton del volumen*/
+                            GraphicButton * auxButton = new GraphicButton(imageLoader.getImageP(MUTE_BUTTON), imageLoader.getImageP(UNMUTE_BUTTON), MUTE_BUTTON, al_get_display_width(display), al_get_display_height(display));
+                            gList.push_back(auxButton);
+                            /*EL boton de conectar*/
+                            auxButton = new GraphicButton(imageLoader.getImageP(CONNECT_BUTTON), imageLoader.getImageP(CONNECTING_BUTTON), CONNECT_BUTTON, al_get_display_width(display), al_get_display_height(display));
+                            gList.push_back(auxButton);
+                            /*Los demas botones*/
+                            for(int i = (int)HELP_BUTTON; i <= (int)QUIT_BUTTON; i++)
+                            {
+                                auxButton = new GraphicButton(imageLoader.getImageP((buttonAction)i), nullptr, (buttonAction)i, al_get_display_width(display), al_get_display_height(display));
+                                gList.push_back(auxButton);
+                            }
+                        }else 
+                        {   
+                            //error al crear la fuente
+                            error=true;
+                            al_destroy_bitmap(backScreen);
+                            al_destroy_display(display);
+                        }
+                    }else
+                    {   
+                        //error al crear la fuente auxiliar
+                        error=true;
+                        al_destroy_bitmap(backScreen);
+                        al_destroy_display(display);
+                    }
+                }else
+                {
+                    //Error al crear el backScreen
+                    error=true;
+                    al_destroy_display(display);
+                }
+            }else
+            {
+                //error al crear el display
+                error=true;
+            }
+        }else
+        {
+            //error al inicializar las imagenes 
+            error=true;
+        }
+    }else
     {
-        TextBox * box = new TextBox(BOX_WIDTH,BOX_HEIGHT,font, (textSelected)i);
-        box->setPosition(BOX_MIN_X, BOX_MIN_Y + SPACE_Y* (i%N_BOXES) + (i%N_BOXES) * BOX_HEIGHT);
-        gList.push_back((GraphicItem*) box);
+        //Error al attachear el modelo, se encontraba vacio.
+        error=true;
     }
     
-    //Creo los botones
-    /*El boton del volumen*/
-    GraphicButton * auxButton = new GraphicButton(imageLoader.getImageP(MUTE_BUTTON), imageLoader.getImageP(UNMUTE_BUTTON), MUTE_BUTTON, al_get_display_width(display), al_get_display_height(display));
-    gList.push_back(auxButton);
-    /*EL boton de conectar*/
-    auxButton = new GraphicButton(imageLoader.getImageP(CONNECT_BUTTON), imageLoader.getImageP(CONNECTING_BUTTON), CONNECT_BUTTON, al_get_display_width(display), al_get_display_height(display));
-    gList.push_back(auxButton);
-    /*Los demas botones*/
-    for(int i = (int)HELP_BUTTON; i <= (int)QUIT_BUTTON; i++)
-    {
-        auxButton = new GraphicButton(imageLoader.getImageP((buttonAction)i), nullptr, (buttonAction)i, al_get_display_width(display), al_get_display_height(display));
-        gList.push_back(auxButton);
-    }
 }
 
 CView::CView(const CView& orig) {
@@ -66,12 +117,15 @@ CView::CView(const CView& orig) {
 
 CView::~CView()
 {
-    al_destroy_font(font);
-    list<GraphicItem*>::iterator it;
-    for(it = gList.begin(); it != gList.end(); it++)
-        if(*it != nullptr) delete *it;
-    al_destroy_bitmap(backScreen);
-    al_destroy_display(display);
+    if(error != true)   // si no hay error 
+    {
+        al_destroy_font(font);
+        list<GraphicItem*>::iterator it;
+        for(it = gList.begin(); it != gList.end(); it++)
+            if(*it != nullptr) delete *it;
+        al_destroy_bitmap(backScreen);
+        al_destroy_display(display);
+    }
 }
 
 void CView::update()

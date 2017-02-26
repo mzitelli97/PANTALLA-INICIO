@@ -28,6 +28,7 @@ public:
     void update() override;
     ItemInfo itemFromClick(Point point);
     void toggleButton(buttonAction button);
+    
 private:
     CModel * model;
     std:: list<GraphicItem*> gList;
@@ -35,6 +36,7 @@ private:
     ALLEGRO_BITMAP * backScreen;
     ALLEGRO_DISPLAY * display;
     ALLEGRO_FONT * font;
+    bool error;
 
 };
 

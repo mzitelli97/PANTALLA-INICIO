@@ -144,7 +144,7 @@ BurgleBrosWrapper::BurgleBrosWrapper(const BurgleBrosWrapper& orig) {
 }
 
 BurgleBrosWrapper::~BurgleBrosWrapper() {
-   delete  networkEvent;
-   delete  allegroEvent;
+  // delete  networkEvent;                     // mirar esto
+  // delete  allegroEvent;
 }
 

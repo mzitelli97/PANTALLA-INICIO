@@ -24,7 +24,8 @@ Model::~Model() {
 
 void Model::attach(Observer * view)
 {
-    observers.push_back(view);
+    if(view != nullptr)
+        observers.push_back(view);
 }
 
 void Model::notifyAllObservers() 

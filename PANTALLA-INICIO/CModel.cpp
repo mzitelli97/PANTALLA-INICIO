@@ -12,6 +12,7 @@
  */
 
 #include "CModel.h"
+
 #define MAX_SIZE_IP 15
 #define MAX_SIZE_NAME 15
 
