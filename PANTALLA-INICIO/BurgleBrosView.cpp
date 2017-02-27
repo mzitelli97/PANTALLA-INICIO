@@ -30,48 +30,78 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 
 
 BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
-    
+    error=false;
     if(imageLoader.initImages())
     {
         showingHelp = false;
         if(model != nullptr)
         {
             this->model = model;
-
             #ifdef FULLSCREEN
             al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
             #endif
-
             display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
-            backScreen = al_load_bitmap("fondo.jpg");
-            al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-            actionsFont=al_load_font("fonts.ttf",ACTIONS_FONT_H,0);
-            ALLEGRO_FONT * font = al_load_font("title.ttf",TITLE_H,0);
-            al_set_target_bitmap(backScreen);
-            al_draw_text(font,al_map_rgb(0,0,0),al_get_bitmap_width(backScreen)/2.0,TITLE_H/2,ALLEGRO_ALIGN_CENTER, "EDA BURGLE BROS");
-            al_destroy_font(font);
-            al_set_target_backbuffer(display);
-
-            this->resetZoom();
-            floorZoomed = NO_FLOOR_ZOOMED;
-            guardZoomed = NO_GUARD_ZOOMED;
-            playerZoomed = NON_PLAYER;
-            lootZoomed = NON_PLAYER;
-            GraphicHelp temp(imageLoader.getRules());
-            help=temp;
-            help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
-            help.init();
-            showingHelp=false;
-            #ifdef ICON
-            ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              //Falta checkear.
-            al_set_display_icon(display,icon);
-            al_destroy_bitmap(icon);
-            #endif
-            al_set_window_title(display,"EDA Burgle Bros");
-            al_flip_display();
+            if(display != nullptr)
+            {
+                backScreen = al_load_bitmap("fondo.jpg");
+                if(backScreen != nullptr)
+                {
+                    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
+                    actionsFont=al_load_font("fonts.ttf",ACTIONS_FONT_H,0);
+                    ALLEGRO_FONT * font = al_load_font("title.ttf",TITLE_H,0);
+                    if(actionsFont != nullptr && font != nullptr)
+                    {
+                        al_set_target_bitmap(backScreen);
+                        al_draw_text(font,al_map_rgb(0,0,0),al_get_bitmap_width(backScreen)/2.0,TITLE_H/2,ALLEGRO_ALIGN_CENTER, "EDA BURGLE BROS");
+                        al_destroy_font(font);
+                        al_set_target_backbuffer(display);
+                        this->resetZoom();
+                        floorZoomed = NO_FLOOR_ZOOMED;
+                        guardZoomed = NO_GUARD_ZOOMED;
+                        playerZoomed = NON_PLAYER;
+                        lootZoomed = NON_PLAYER;
+                        GraphicHelp temp(imageLoader.getRules());
+                        help=temp;
+                        help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
+                        help.init();
+                        showingHelp=false;
+                        #ifdef ICON
+                        ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              //Falta checkear.
+                        al_set_display_icon(display,icon);
+                        al_destroy_bitmap(icon);
+                        #endif
+                        al_set_window_title(display,"EDA Burgle Bros");
+                        al_flip_display();
+                    }
+                    else
+                        {error=true; errorMsg= "Fonts couldnt be loaded.";}
+                }
+                else
+                    {error=true; errorMsg= "Background picture couldnt be loaded.";}
+            }
+            else
+                {error=true; errorMsg= "Display couldnt be created";}
         }
+        else 
+            {error=true; errorMsg= "Wrong model attached";}
     }
+    else 
+        error=true;
 }
+
+bool BurgleBrosView::initOk() {
+    return !error;
+}
+
+string BurgleBrosView::getErrorMsg() {
+    string retVal;
+    if(errorMsg.empty())
+        retVal= imageLoader.getError();
+    else
+        retVal= errorMsg;
+    return retVal;
+}
+
 
 
 BurgleBrosView::~BurgleBrosView()

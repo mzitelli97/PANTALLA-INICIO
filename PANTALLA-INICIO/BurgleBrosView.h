@@ -47,6 +47,8 @@ public:
     void showHelp(bool yesOrNo); 
     void setHelpScroll(unsigned int scroll); 
     void cheatCards();
+    bool initOk();
+    string getErrorMsg();
     virtual ~BurgleBrosView();
 
 private:
@@ -77,7 +79,8 @@ private:
     int guardZoomed;
     PlayerId lootZoomed;
     PlayerId playerZoomed;
-
+    bool error;
+    string errorMsg;
 };
 
 #endif /* BURGLEBROSVIEW_H */

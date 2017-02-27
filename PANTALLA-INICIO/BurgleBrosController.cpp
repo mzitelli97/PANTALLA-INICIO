@@ -65,7 +65,15 @@ void BurgleBrosController::attachModel(BurgleBrosModel *gamePointer)
 void BurgleBrosController::attachView(BurgleBrosView *view)
 {
     if(view!=nullptr)
+    {
         this->view=view;
+        if(!view->initOk())
+        {
+            quit=true;
+            cout<< view->getErrorMsg();
+            networkInterface->sendPacket(ERRORR);
+        }
+    }
 }
 
 void BurgleBrosController::attachSound(BurgleBrosSound* sound)
@@ -543,6 +551,12 @@ void BurgleBrosController::parseNetworkEvent(EventData *networkEvent)
                 break;
             case PLAYING:
                 interpretNetworkAction(p2NetworkData);  //Si esta jugando, se interpreta la jugada del otro jugador.
+                if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg().find("ERROR") != std::string::npos)
+                {
+                    quit=true;
+                    cout<< modelPointer->getFinishMsg();
+                    networkInterface->sendPacket(ERRORR);
+                }
                 break;
             default:
                 break;
