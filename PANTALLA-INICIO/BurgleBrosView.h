@@ -43,6 +43,9 @@ public:
     void toggleVolButton();
     string MessageBox(vector<string> &message);
     int yesNoMessageBox(vector<string> &message);
+    bool isShowingHelp();
+    void showHelp(bool yesOrNo); 
+    void setHelpScroll(unsigned int scroll); 
     void cheatCards();
     virtual ~BurgleBrosView();
 

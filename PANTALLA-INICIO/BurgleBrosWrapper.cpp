@@ -110,8 +110,8 @@ BurgleBrosWrapper::playGame() {
                     {allegroEvent->playTimer();cout<<"Playie timer"<<endl;}
                 else if (!controller->isWaiting4ack())
                     {allegroEvent->stopTimer(); cout<<"apague timer"<<endl;}
-                if(controller->resetZMouse());
-                    //gui.resetZMouse();
+                if(controller->resetZMouse())
+                    allegroEvent->resetZMouse();
             }
         }
     }
