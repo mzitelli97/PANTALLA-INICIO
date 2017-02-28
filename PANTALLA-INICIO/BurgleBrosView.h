@@ -74,6 +74,7 @@ private:
     int guardZoomed;
     PlayerId lootZoomed;
     PlayerId playerZoomed;
+    bool error;
 
 };
 

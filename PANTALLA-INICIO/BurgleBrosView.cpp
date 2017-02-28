@@ -31,8 +31,14 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 
 BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     
+    error=false;
+    
     if(imageLoader.initImages())
     {
+        display=nullptr;
+        backScreen=nullptr;
+        actionsFont=nullptr;
+        
         
         if(model != nullptr)
         {
@@ -42,42 +48,92 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
             al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
             #endif
 
-            display =al_create_display(SCREEN_W,SCREEN_H);           //Falta checkear.
-            backScreen = al_load_bitmap("fondo.jpg");
-            al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-            actionsFont=al_load_font("fonts.ttf",ACTIONS_FONT_H,0);
-            ALLEGRO_FONT * font = al_load_font("title.ttf",TITLE_H,0);
-            al_set_target_bitmap(backScreen);
-            al_draw_text(font,al_map_rgb(0,0,0),al_get_bitmap_width(backScreen)/2.0,TITLE_H/2,ALLEGRO_ALIGN_CENTER, "EDA BURGLE BROS");
-            al_destroy_font(font);
-            al_set_target_backbuffer(display);
+            display =al_create_display(SCREEN_W,SCREEN_H);           
+            if(display != nullptr)
+            {
+                backScreen = al_load_bitmap("fondo.jpg");
+                if(backScreen != nullptr)
+                {
+                    al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
+                    actionsFont=al_load_font("fonts.ttf",ACTIONS_FONT_H,0);
+                    if(actionsFont !=nullptr)
+                    {
+                        ALLEGRO_FONT * font = al_load_font("title.ttf",TITLE_H,0);
+                        if(font != nullptr)
+                        {
+                            al_set_target_bitmap(backScreen);
+                            al_draw_text(font,al_map_rgb(0,0,0),al_get_bitmap_width(backScreen)/2.0,TITLE_H/2,ALLEGRO_ALIGN_CENTER, "EDA BURGLE BROS");
+                            al_destroy_font(font);
+                            al_set_target_backbuffer(display);
 
-            this->resetZoom();
-            floorZoomed = NO_FLOOR_ZOOMED;
-            guardZoomed = NO_GUARD_ZOOMED;
-            playerZoomed = NON_PLAYER;
-            lootZoomed = NON_PLAYER;
-            GraphicHelp temp(imageLoader.getRules());
-            help=temp;
-            help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
-            help.init();
-            showingHelp=false;
-            #ifdef ICON
-            ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              //Falta checkear.
-            al_set_display_icon(display,icon);
-            al_destroy_bitmap(icon);
-            #endif
-            al_set_window_title(display,"EDA Burgle Bros");
-            al_flip_display();
+                            this->resetZoom();
+                            floorZoomed = NO_FLOOR_ZOOMED;
+                            guardZoomed = NO_GUARD_ZOOMED;
+                            playerZoomed = NON_PLAYER;
+                            lootZoomed = NON_PLAYER;
+                            GraphicHelp temp(imageLoader.getRules());
+                            help=temp;
+                            help.setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
+                            help.init();
+                            showingHelp=false;
+                            #ifdef ICON
+                            ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              
+                            if(icon != nullptr)
+                            {
+                                al_set_display_icon(display,icon);
+                                al_destroy_bitmap(icon);
+                            }
+                            #endif
+                            al_set_window_title(display,"EDA Burgle Bros");
+                            al_flip_display();
+                        }else
+                        {
+                            //No se pudo crear fuente auxiliar
+                            al_destroy_bitmap(backScreen);
+                            al_destroy_display(display);
+                            al_destroy_font(actionsFont);
+                            error=true;
+                        }
+                    }else
+                    {
+                     //No se pudo crear actionFont
+                        al_destroy_bitmap(backScreen);
+                        al_destroy_display(display);
+                        error=true;
+                    }
+                }else
+                {
+                    //No se pudo crear backscreen
+                     al_destroy_display(display);
+                     error=true;
+                }
+            }else
+            {
+                //No se pudo crear display
+                error=true;
+            }
+        }else
+        {
+            //Puntero de model vacio
+            error=true;
         }
+    }else
+    {
+        //No se pudo inicializar las imagenes
+        error=true;
     }
+    
 }
 
 
 BurgleBrosView::~BurgleBrosView()
 {
-    al_destroy_display(display);
-    al_destroy_bitmap(backScreen);
+    if(error != true)
+    {
+        al_destroy_display(display);
+        al_destroy_bitmap(backScreen);
+        al_destroy_font(actionsFont);
+    }
 }
 
 void BurgleBrosView::reset()
@@ -467,8 +523,10 @@ void BurgleBrosView::updateGuards()
                 guard++;
             }
             guard++;    //point to next floor
+            
             if(onZoom && i == floorZoomed) zoom = true;
             else zoom = false;
+            
             guard_item->setZoom(zoom);
             guard_item->setInitialized(info_guard.initialized);
             guard_item->setPosition(info_guard.position);
@@ -524,8 +582,6 @@ list<GroupItem>::iterator BurgleBrosView::deleteList(Layers layer, unsigned int 
 {
     list<LayerItem>::iterator aux= graphics.begin();
     advance(aux, layer);
-       
-    
     return aux->erese(itemList);
 }
 
@@ -624,26 +680,29 @@ void BurgleBrosView::zoomFloor(unsigned int floor, Model * auxModel)
     for(int i = 0; i < NUMBER_OF_WALLS; it++, i++)
     {
         GraphicWall * wall = dynamic_cast<GraphicWall *> (*it);
-        wall->toggleZoom();
-        wall->setLocation(infoWalls[i+NUMBER_OF_WALLS * floor].FrontCard, infoWalls[i+NUMBER_OF_WALLS * floor].RearCard);
+        if(wall !=nullptr)
+        {
+            wall->toggleZoom();
+            wall->setLocation(infoWalls[i+NUMBER_OF_WALLS * floor].FrontCard, infoWalls[i+NUMBER_OF_WALLS * floor].RearCard);
+        }
     }
     
     //Info2DrawPlayer player = model->getInfo2DrawPlayer(model->getPlayerOnTurn());
     it = accessGraphicItems(FIRST_LAYER, BUTTONS_LIST);
     advance(it, floor);                                             //go to the zoom icon of the floor zoomed
     GraphicButton * button = dynamic_cast<GraphicButton *> (*it);
-    button->toggleZoom();
-    button->setLocation();
-    advance(it,BOARD_STANDARD_FLOORS-floor);                            //go to the rest of the buttons
-    for(int i = (int)MUTE_BUTTON; i <= (int)QUIT_BUTTON; i++, it++)
+    if(button != nullptr)
     {
-        button = dynamic_cast<GraphicButton *> (*it);
         button->toggleZoom();
-        if(i == (int)MUTE_BUTTON) i++;         //this is because there are the MUTE and the UNMUTE buttons
+        button->setLocation();
+        advance(it,BOARD_STANDARD_FLOORS-floor);                            //go to the rest of the buttons
+        for(int i = (int)MUTE_BUTTON; i <= (int)QUIT_BUTTON; i++, it++)
+        {
+            button = dynamic_cast<GraphicButton *> (*it);
+            button->toggleZoom();
+            if(i == (int)MUTE_BUTTON) i++;         //this is because there are the MUTE and the UNMUTE buttons
+        }
     }
-    
-    
-    
 }
 
 void BurgleBrosView::zoomLoot(PlayerId owner)
@@ -656,14 +715,15 @@ void BurgleBrosView::zoomLoot(PlayerId owner)
     playerZoomed = NON_PLAYER;
     list<GraphicItem *>::iterator it = accessGraphicItems(FIRST_LAYER, (unsigned int) BUTTONS_LIST);
     advance(it,BOARD_STANDARD_FLOORS);      //the zoom buttons do not appear here
-    GraphicButton * button;
+    GraphicButton * button=nullptr;
     for(int i = (int)MUTE_BUTTON; i <= (int)QUIT_BUTTON; i++, it++)
     {
         if( i != (int)PASS_BUTTON)      //the pass button do not appear here
         {
             button = dynamic_cast<GraphicButton *> (*it);
-            button->toggleZoom();
+            if(button !=nullptr) button->toggleZoom();
             if(i == (int)MUTE_BUTTON) i++;         //this is because there are the MUTE and the UNMUTE buttons
+            
         }
     }   
 }
@@ -677,14 +737,15 @@ void BurgleBrosView::zoomPlayerCard(PlayerId player)
     playerZoomed = player;
     list<GraphicItem *>::iterator it = accessGraphicItems(FIRST_LAYER, (unsigned int) BUTTONS_LIST);
     advance(it,BOARD_STANDARD_FLOORS);      //the zoom buttons do not appear here
-    GraphicButton * button;
+    GraphicButton * button=nullptr;
     for(int i = (int)MUTE_BUTTON; i <= (int)QUIT_BUTTON; i++, it++)
     {
         if( i != (int)PASS_BUTTON)      //the pass button do not appear here
         {
             button = dynamic_cast<GraphicButton *> (*it);
-            button->toggleZoom();
+            if(button !=nullptr)    button->toggleZoom();
             if(i == (int)MUTE_BUTTON) i++;         //this is because there are the MUTE and the UNMUTE buttons
+            
         }
     }   
 }
@@ -714,10 +775,9 @@ void BurgleBrosView::toggleVolButton()
 {
     list<GraphicItem *>::iterator it = accessGraphicItems(FIRST_LAYER, (unsigned int) BUTTONS_LIST);
     advance(it,BOARD_STANDARD_FLOORS);      //avanzo  hasta el boton del volumen(primero estan los de zoom)
-    GraphicButton * button;
+    GraphicButton * button=nullptr;
     button = dynamic_cast<GraphicButton *> (*it);
-    if(button != nullptr)
-            button->toggleMute();
+    if(button != nullptr)   button->toggleMute();
 }
 
 void BurgleBrosView::cheatCards()
@@ -726,6 +786,6 @@ void BurgleBrosView::cheatCards()
     for(unsigned int i=0; i < BOARD_STANDARD_FLOORS * FLOOR_RAWS * FLOOR_COLUMNS ; i++, it++)
     {
         GraphicTile * tile = dynamic_cast<GraphicTile *>(*it);
-        tile->setVisible(imageLoader.getImageP(3));
+       if(tile != nullptr) tile->setVisible(imageLoader.getImageP(3));
     }
 }

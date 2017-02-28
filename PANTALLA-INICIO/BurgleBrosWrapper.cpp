@@ -5,6 +5,7 @@ BurgleBrosWrapper::BurgleBrosWrapper() {
     srand(time(NULL));
     //allegro_startup();
     quit=false;
+    
     allegroEvent = new AllegroEG;
     CModel *initModel = new CModel;
     CView *initView = new CView(initModel);
