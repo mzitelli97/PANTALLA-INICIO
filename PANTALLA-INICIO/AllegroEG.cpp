@@ -42,7 +42,7 @@ AllegroEG::hayEvento() {
             }
             else if(z < ((-1)* mouseZResolution))
             {
-         //       al_set_mouse_z(((-1)p* mouseZResolution));
+                al_set_mouse_z(((-1)* mouseZResolution));
                 z=((-1)* mouseZResolution);
             }
             if(z != prevMouseZ)
@@ -98,6 +98,10 @@ AllegroEG::hayEvento() {
 void 
 AllegroEG::playTimer() {
     al_start_timer(timer);
+}
+
+void AllegroEG::resetZMouse() {
+    al_set_mouse_z(0);
 }
 
 void 

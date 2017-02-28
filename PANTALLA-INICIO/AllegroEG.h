@@ -8,7 +8,7 @@
 #include <allegro5/mouse.h>
 #include <allegro5/timer.h>
 
-#define MOUSE_Z_STD_RESOLUTION 100
+#define MOUSE_Z_STD_RESOLUTION 300
 #define SECONDS 1.0
 #define TIMEOUT_TIME 60
 
@@ -20,6 +20,7 @@ public:
     void resetTimer();
     void stopTimer();
     void playTimer();
+    void resetZMouse();
     virtual ~AllegroEG();
 private:
 

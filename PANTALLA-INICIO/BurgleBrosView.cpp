@@ -30,11 +30,10 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 
 
 BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
-    
     error=false;
-    
     if(imageLoader.initImages())
     {
+        showingHelp = false;
         display=nullptr;
         backScreen=nullptr;
         actionsFont=nullptr;
@@ -43,12 +42,10 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
         if(model != nullptr)
         {
             this->model = model;
-
             #ifdef FULLSCREEN
             al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
             #endif
-
-            display =al_create_display(SCREEN_W,SCREEN_H);           
+           display =al_create_display(SCREEN_W,SCREEN_H);           
             if(display != nullptr)
             {
                 backScreen = al_load_bitmap("fondo.jpg");
@@ -93,6 +90,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                             al_destroy_display(display);
                             al_destroy_font(actionsFont);
                             error=true;
+                            errorMsg= "Fonts couldnt be loaded.";
                         }
                     }else
                     {
@@ -100,30 +98,42 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                         al_destroy_bitmap(backScreen);
                         al_destroy_display(display);
                         error=true;
+                        errorMsg= "Background picture couldnt be loaded.";
                     }
                 }else
                 {
                     //No se pudo crear backscreen
                      al_destroy_display(display);
                      error=true;
+                     errorMsg= "Background picture couldnt be loaded.";
                 }
             }else
             {
                 //No se pudo crear display
                 error=true;
+                errorMsg= "Display couldnt be created";
             }
         }else
         {
             //Puntero de model vacio
             error=true;
         }
-    }else
-    {
-        //No se pudo inicializar las imagenes
-        error=true;
     }
-    
 }
+
+bool BurgleBrosView::initOk() {
+    return !error;
+}
+
+string BurgleBrosView::getErrorMsg() {
+    string retVal;
+    if(errorMsg.empty())
+        retVal= imageLoader.getError();
+    else
+        retVal= errorMsg;
+    return retVal;
+}
+
 
 
 BurgleBrosView::~BurgleBrosView()
@@ -149,6 +159,7 @@ void BurgleBrosView::reset()
     guardZoomed = NO_GUARD_ZOOMED;
     playerZoomed = NON_PLAYER;
     lootZoomed = NON_PLAYER;
+    showingHelp = false;
 }
 
 void BurgleBrosView::resetZoom() {
@@ -336,6 +347,19 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     
 }
 
+bool BurgleBrosView::isShowingHelp() {
+    return showingHelp;
+}
+
+void BurgleBrosView::showHelp(bool yesOrNo) {
+    if(yesOrNo != showingHelp)
+        help.resetScroll();
+    this->showingHelp = yesOrNo;
+}
+
+void BurgleBrosView::setHelpScroll(unsigned int scroll) {
+    help.setScroll(scroll);
+}
 void BurgleBrosView::update()
 {
     /*Update all*/
@@ -356,9 +380,13 @@ void BurgleBrosView::update()
     /*Draw all*/
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     list<LayerItem>::iterator it_layers;
-    
-    for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-       it_layers->draw();
+    if(!showingHelp)
+    {
+       for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
+            it_layers->draw();
+    }
+    else
+        help.draw();
     
     al_flip_display();
     //after=clock();
@@ -370,9 +398,13 @@ ItemInfo BurgleBrosView::itemFromClick(Point point)
 {
     ItemInfo retVal = {NO_ITEM_CLICK, nullptr};
     list<LayerItem>::reverse_iterator it_layer;   
-        
-    for(it_layer=graphics.rbegin(); it_layer!= graphics.rend() && retVal.type==NO_ITEM_CLICK; it_layer++)
-        retVal=it_layer->itemFromClick(point);
+    if(!showingHelp)
+    {  
+        for(it_layer=graphics.rbegin(); it_layer!= graphics.rend() && retVal.type==NO_ITEM_CLICK; it_layer++)
+            retVal=it_layer->itemFromClick(point);
+    }
+    else
+        retVal=help.IAm();
    
     return retVal;
 }
@@ -789,3 +821,9 @@ void BurgleBrosView::cheatCards()
        if(tile != nullptr) tile->setVisible(imageLoader.getImageP(3));
     }
 }
+        else 
+            {error=true; errorMsg= "Wrong model attached";}
+    }else
+    {
+        //No se pudo inicializar las imagenes
+        error=true;

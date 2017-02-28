@@ -92,7 +92,7 @@ BurgleBrosWrapper::connect()
 void
 BurgleBrosWrapper::playGame() {
 
-    
+    string aux;
     allegroEvent->playTimer();
     BurgleBrosController *controller = dynamic_cast<BurgleBrosController *>(p2Controller);
     //gui.setMouseZResolution(MOUSE_Z_RESOL_REQUIRED);
@@ -111,15 +111,15 @@ BurgleBrosWrapper::playGame() {
                     {allegroEvent->playTimer();cout<<"Playie timer"<<endl;}
                 else if (!controller->isWaiting4ack())
                     {allegroEvent->stopTimer(); cout<<"apague timer"<<endl;}
-                if(controller->resetZMouse());
-                    //gui.resetZMouse();
+                if(controller->resetZMouse())
+                    allegroEvent->resetZMouse();
             }
         }
     }
     delete p2Controller;
     delete p2Model;
     delete p2View; 
-    
+    cin >> aux;     //Para poder ver si hubo un error.
     
 }
 
