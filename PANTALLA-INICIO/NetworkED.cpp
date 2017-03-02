@@ -1,4 +1,6 @@
 #include "NetworkED.h"
+#include <string>
+#include <regex>
 
 NetworkED::NetworkED(PerezProtocolHeader header,unsigned char * buffer, unsigned int length) 
 {
@@ -10,7 +12,25 @@ NetworkED::NetworkED(PerezProtocolHeader header,unsigned char * buffer, unsigned
 
 bool NetworkED::isPacketOk()
 {
-    return true; //Por ahora confiamos que todos los paquetes se van a mandar bien.
+    bool retVal = false;
+    if(packetHasNoDataField(header))
+    {
+        if(len == 0) retVal = true;
+    }
+    else
+    {
+        /*regex e;
+        string s(buffer,len);
+        switch(header)
+        {
+            case INITIAL_G_POS:
+                e = "([A-D][1-4]F[1-3]){2}";
+                break;
+        }
+        if(regex_match(s,e))*/
+            retVal = true;
+    }
+    return retVal; //Por ahora confiamos que todos los paquetes se van a mandar bien.
 }
 PerezProtocolHeader NetworkED::getHeader()
 {

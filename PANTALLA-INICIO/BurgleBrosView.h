@@ -16,6 +16,7 @@ typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 
 
 //#define FULLSCREEN
+//#define CARDS_CHEAT
 
 class BurgleBrosView : public Observer{
 public:
@@ -46,7 +47,6 @@ public:
     bool isShowingHelp();
     void showHelp(bool yesOrNo); 
     void setHelpScroll(unsigned int scroll); 
-    void cheatCards();
     bool initOk();
     string getErrorMsg();
     virtual ~BurgleBrosView();
@@ -56,6 +56,7 @@ private:
     list<GraphicItem *>::iterator accessGraphicItems(Layers layer, unsigned int itemType);
     list<GroupItem>::iterator deleteList(Layers layer, unsigned int itemList);
     
+    void cheatCards();
     void setZoom();
     void resetZoom();
     void updateButtons();
