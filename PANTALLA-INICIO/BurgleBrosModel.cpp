@@ -11,10 +11,12 @@ typedef struct
     CardLocation target;
     unsigned int length;
 }AuxStruct;
-bool sortAuxStruct(AuxStruct &item1, AuxStruct &item2)
+
+bool sortAuxStruct(AuxStruct &item1, AuxStruct &item2)      //se podria hacer con sobrecarga de operadores
 {
     return item1.length<item2.length;
 }
+
 BurgleBrosModel::BurgleBrosModel()
 {
     BurgleBrosGuard aux1(0);
@@ -24,6 +26,8 @@ BurgleBrosModel::BurgleBrosModel()
     guards[1]= aux2;
     guards[2]= aux3;
     board.initBoard();
+    controller=nullptr;
+    soundManager=nullptr;
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;

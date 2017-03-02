@@ -90,7 +90,6 @@ CardLocation BurgleBrosBoard::getOtherServiceDuctPos(CardLocation secretDoor1)
 {
     CardLocation retVal = secretDoor1;
     CardLocation aux;
-    CardName auxCardName;
     for(aux.floor=0;aux.floor<BOARD_STANDARD_FLOORS; aux.floor++ )
     {
         for(aux.row=0;aux.row<FLOOR_RAWS; aux.row++ )

@@ -16,6 +16,11 @@
 
 #define TEXT_COLOR al_map_rgb(255,255,255)
 
+#define PATH_BACKSCREEN     "Images/Begin/begin.jpg"
+#define PATH_FONT           "Font/title.ttf"
+#define PATH_ACTIONFONT     "Font/fonts.ttf"  
+
+
 CView::CView(CModel * model)
 {
     error=false;
@@ -31,14 +36,14 @@ CView::CView(CModel * model)
             display =al_create_display(SCREEN_W,SCREEN_H);           
             if(display != nullptr)
             {
-                backScreen = al_load_bitmap("begin.jpg");
+                backScreen = al_load_bitmap(PATH_BACKSCREEN);
                 if(backScreen != nullptr)
                 {
                     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
                     al_set_window_title(display,"EDA Burgle Bros");
                     
                     ALLEGRO_FONT * auxFont =nullptr;
-                    auxFont = al_load_font("title.ttf",BOX_HEIGHT/1.5,0);
+                    auxFont = al_load_font(PATH_FONT,BOX_HEIGHT/1.5,0);
 
                     if(auxFont != nullptr)
                     {
@@ -50,7 +55,7 @@ CView::CView(CModel * model)
                         al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
                         al_destroy_font(auxFont);
                         
-                        font = al_load_font("fonts.ttf",BOX_HEIGHT/1.2, 0);
+                        font = al_load_font(PATH_ACTIONFONT,BOX_HEIGHT/1.2, 0);
                         if(font != nullptr)
                         {
                             //Creo las cajas de texto

@@ -125,6 +125,7 @@ class BurgleBrosModel : public Model
         void attachSoundManager(SoundManager * soundManager);
 	~BurgleBrosModel();
     private:
+
         void makeGuardMove(list<GuardMoveInfo> &guardMovement);
         void copyGuardMove(list<GuardMoveInfo> &guardMovement); //Faltaría checkear que el move sea correcto.
         void checkTurns();
@@ -140,6 +141,7 @@ class BurgleBrosModel : public Model
         bool playerSpentFreeAction;
         BurgleBrosPlayer * getP2Player(PlayerId playerId);
         BurgleBrosPlayer * getP2OtherPlayer(PlayerId playerId);
+
         BurgleBrosPlayer myPlayer;
 	BurgleBrosPlayer otherPlayer;
 	BurgleBrosBoard board;

@@ -28,6 +28,10 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 #define NO_FLOOR_ZOOMED -1
 #define NO_GUARD_ZOOMED -1
 
+#define PATH_BACKSCREEN     "Images/Backscreen/fondo.jpg"
+#define PATH_FONT           "Font/title.ttf"
+#define PATH_ACTIONFONT     "Font/fonts.ttf"  
+
 
 BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
     error=false;
@@ -48,14 +52,14 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
            display =al_create_display(SCREEN_W,SCREEN_H);           
             if(display != nullptr)
             {
-                backScreen = al_load_bitmap("fondo.jpg");
+                backScreen = al_load_bitmap(PATH_BACKSCREEN);
                 if(backScreen != nullptr)
                 {
                     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-                    actionsFont=al_load_font("fonts.ttf",ACTIONS_FONT_H,0);
+                    actionsFont=al_load_font(PATH_ACTIONFONT,ACTIONS_FONT_H,0);
                     if(actionsFont !=nullptr)
                     {
-                        ALLEGRO_FONT * font = al_load_font("title.ttf",TITLE_H,0);
+                        ALLEGRO_FONT * font = al_load_font(PATH_FONT,TITLE_H,0);
                         if(font != nullptr)
                         {
                             al_set_target_bitmap(backScreen);
@@ -485,6 +489,7 @@ void BurgleBrosView::updateButtons()
 
 
 void BurgleBrosView::updateCharacters() {
+    
     list<GraphicItem*>::iterator it = accessGraphicItems(SECOND_LAYER, PLAYER_INFO_LIST);
     //First Player
     Info2DrawPlayer player = model->getInfo2DrawPlayer(THIS_PLAYER);
@@ -570,7 +575,9 @@ void BurgleBrosView::updateGuards()
             GraphicGuardCards * it_cards = dynamic_cast<GraphicGuardCards *> (*(++it));
             if(onZoom && i == guardZoomed) it_cards->setZoom(true);
             else it_cards->setZoom(false);
-            it_cards->setTopOfNonVisibleDeck(info_guard.isTopOfNotShownDeckVisible, imageLoader.getImageP(info_guard.topOfNotShownDeck));
+     //       it_cards->setTopOfNonVisibleDeck(info_guard.isTopOfNotShownDeckVisible, imageLoader.getImageP(info_guard.topOfNotShownDeck));
+            it_cards->setTopOfNonVisibleDeck(true, imageLoader.getImageP(info_guard.topOfNotShownDeck));
+
             it_cards->clearShownCards();
             while(!info_guard.shownDeck.empty())
             {         
@@ -581,6 +588,7 @@ void BurgleBrosView::updateGuards()
         }
     }
 }
+
 void BurgleBrosView::updateExtraDices()
 {
     vector<unsigned int> info_dices = model->getInfo2DrawExtraDices();
@@ -821,9 +829,4 @@ void BurgleBrosView::cheatCards()
        if(tile != nullptr) tile->setVisible(imageLoader.getImageP(3));
     }
 }
-        else 
-            {error=true; errorMsg= "Wrong model attached";}
-    }else
-    {
-        //No se pudo inicializar las imagenes
-        error=true;
+       
