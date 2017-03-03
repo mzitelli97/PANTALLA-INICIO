@@ -10,6 +10,7 @@ BurgleBrosWrapper::BurgleBrosWrapper() {
     quit=false;
     error=false;
     allegroEvent=nullptr;
+    networkEvent=nullptr;
     p2Controller=nullptr;
     p2Model=nullptr;
     p2View=nullptr;
@@ -195,7 +196,7 @@ BurgleBrosWrapper::BurgleBrosWrapper(const BurgleBrosWrapper& orig) {
 
 BurgleBrosWrapper::~BurgleBrosWrapper() {
     
-  if(networkEvent != nullptr) delete  networkEvent;                     // mirar esto
+  if(networkEvent != nullptr) delete  networkEvent;                     
   if(allegroEvent != nullptr) delete  allegroEvent;
 }
 
