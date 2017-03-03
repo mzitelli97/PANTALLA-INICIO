@@ -28,6 +28,8 @@ public:
     void update() override;
     ItemInfo itemFromClick(Point point);
     void toggleButton(buttonAction button);
+    string geterrorMsg();
+    bool DidAnErrorStarting();
     
 private:
     CModel * model;
@@ -37,7 +39,7 @@ private:
     ALLEGRO_DISPLAY * display;
     ALLEGRO_FONT * font;
     bool error;
-
+    string errorMsg;
 };
 
 #endif /* CVIEW_H */

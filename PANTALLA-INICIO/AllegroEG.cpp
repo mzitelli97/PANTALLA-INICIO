@@ -6,6 +6,10 @@
 
 AllegroEG::AllegroEG() {
     
+    error=false;
+    prevMouseZ=0;
+    mouseZResolution=MOUSE_Z_STD_RESOLUTION;
+    
     this->EventQueue=al_create_event_queue();
     timer=al_create_timer(SECONDS);     //Pongo el timer a contar segundos.
     if(EventQueue != nullptr)
@@ -13,9 +17,20 @@ AllegroEG::AllegroEG() {
         al_register_event_source(EventQueue,al_get_mouse_event_source());
         al_register_event_source(EventQueue,al_get_keyboard_event_source());
     }
-    prevMouseZ=0;
-    mouseZResolution=MOUSE_Z_STD_RESOLUTION;
+    else { error=true; errorMsg="Error al crear EventQueue";}
+    
 }
+
+bool 
+AllegroEG::initOk() {
+    return !error;
+}
+
+std::string 
+AllegroEG::getErrorMsg() {
+    return errorMsg;
+}
+
 
 bool
 AllegroEG::hayEvento() {

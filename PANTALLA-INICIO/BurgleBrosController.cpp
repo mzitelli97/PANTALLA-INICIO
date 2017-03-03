@@ -64,10 +64,11 @@ void BurgleBrosController::attachModel(BurgleBrosModel *gamePointer)
 }
 void BurgleBrosController::attachView(BurgleBrosView *view)
 {
-    if(view!=nullptr)
+    if(view !=nullptr)
     {
         this->view=view;
-        if(!view->initOk())
+       
+        if(view->didAnErrorStarting())
         {
             quit=true;
             cout<< view->getErrorMsg();

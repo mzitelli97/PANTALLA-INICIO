@@ -4,12 +4,13 @@
 #define BLACK al_map_rgb(0,0,0)
 #define MENU_ITEM_WIDTH 150.0
 #define MENU_ITEM_HEIGHT 20.0
+#define PATH_FONT           "Font/font6.ttf" 
 
 GraphicMenuItem::GraphicMenuItem(Point point, CardLocation tile, int number)
 {
 	min = point;
         this->properties.location = tile;
-        font = al_load_font("fonts.ttf",10,0);
+        font = al_load_font(PATH_FONT,10,0);
         //definir alto y ancho del cuadrado
         width = MENU_ITEM_WIDTH;
         height = MENU_ITEM_HEIGHT;

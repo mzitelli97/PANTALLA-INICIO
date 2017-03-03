@@ -7,10 +7,13 @@
 #include <allegro5/keyboard.h>
 #include <allegro5/mouse.h>
 #include <allegro5/timer.h>
+#include <string>
 
 #define MOUSE_Z_STD_RESOLUTION 300
 #define SECONDS 1.0
 #define TIMEOUT_TIME 60
+
+
 
 class AllegroEG: public EventGenerator {
 public:
@@ -21,9 +24,12 @@ public:
     void stopTimer();
     void playTimer();
     void resetZMouse();
+    bool initOk();
+    std::string getErrorMsg();
     virtual ~AllegroEG();
 private:
-
+    
+    std::string errorMsg;
     bool error;
     int prevMouseZ;
     int mouseZResolution;

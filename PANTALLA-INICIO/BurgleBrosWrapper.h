@@ -15,12 +15,16 @@ public:
     void connect();
     void playGame();
     bool gameOnCourse();
+    string getErrorMsg();
+    bool wasAnError();
+    void showError();
     
     virtual ~BurgleBrosWrapper();
 private:
     bool connect(BurgleBrosController * controller);
     bool quit;
     GUI gui;
+    
     Model *p2Model;
     Observer *p2View;
     Controller *p2Controller;
@@ -31,6 +35,8 @@ private:
     NetworkInterface networkInterface;
     BurgleBrosSound sound;
     string name, ipToConnect;
+    bool error;
+    string errorMsg;
 };
 
 #endif /* BURGLEBROSWRAPPER_H */

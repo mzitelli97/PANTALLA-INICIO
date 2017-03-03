@@ -1,25 +1,44 @@
 #include "BurgleBrosWrapper.h"
 
-
 BurgleBrosWrapper::BurgleBrosWrapper() {
     srand(time(NULL));
     //allegro_startup();
+    
     quit=false;
+    error=false;
+    allegroEvent=nullptr;
+    p2Controller=nullptr;
+    p2Model=nullptr;
+    p2View=nullptr;
+    errorMsg="Errores ocurridos: \n";        
     
     allegroEvent = new AllegroEG;
+        if(allegroEvent == nullptr){error=true; quit=true; errorMsg+="Error al crear AllegroEvent\n";}
     CModel *initModel = new CModel;
+        if( initModel == nullptr){error=true; quit=true; errorMsg+="Error al crear el CModel\n";}
     CView *initView = new CView(initModel);
+        if(initView == nullptr){error=true; quit=true; errorMsg+="Error al crear CView\n";}
+        if(initView != nullptr && initView->DidAnErrorStarting()){
+            error=true; quit=true; errorMsg+="Error al inicializar cView:"+initView->geterrorMsg();}
     cController *initController = new cController;
-    initModel->attach(initView);
-    initController->attachView(initView);
-    initController->attachModel(initModel);
-    initController->attachSound(&sound);
-    initView->update();
-    gui.attachController(initController);
-    gui.attachEventGenerator((EventGenerator *) allegroEvent);
-    p2Controller=initController;
-    p2Model=initModel;
-    p2View=initView;
+        if(initController == nullptr){error=true; quit=true; errorMsg+="Error al crear cController \n";}
+
+    
+    if(!error)        //si no ocurrio un error 
+    {
+        initModel->attach(initView);
+        initController->attachView(initView);
+        initController->attachModel(initModel);
+        initController->attachSound(&sound);
+        initView->update();
+        gui.attachController(initController);
+        gui.attachEventGenerator((EventGenerator *) allegroEvent);
+
+        p2Controller=initController;
+        p2Model=initModel;
+        p2View=initView;
+    }
+            
 }
 
 bool 
@@ -52,9 +71,16 @@ void
 BurgleBrosWrapper::connect() 
 {
     cController *initController = dynamic_cast<cController *>(p2Controller);
+   
     BurgleBrosController *bbcontroller = new BurgleBrosController;
+        
+    if(bbcontroller != nullptr)
+            bbcontroller->attachNetworkInterface(&networkInterface);
+        else{ error=true; quit=true; errorMsg+="Error al crear BurgleBrosController \n";}
+
     networkEvent= new NetworkingEG;
-    bbcontroller->attachNetworkInterface(&networkInterface);
+        if(networkEvent == nullptr) {error=true; quit=true; errorMsg+="Error al crear NetworkEvent\n";}
+    
     
     if(initController != nullptr)
     {
@@ -64,7 +90,7 @@ BurgleBrosWrapper::connect()
             if(gui.hayEvento())
                 gui.parseEvento();
         }
-        if(!quit)
+        if(!quit )  //Si el usuario no salio 
         {
             delete p2Controller;
             delete p2Model;
@@ -73,18 +99,25 @@ BurgleBrosWrapper::connect()
             networkEvent->attachNetworkingInterface(&networkInterface);
             gui.attachEventGenerator(networkEvent);
             BurgleBrosModel *newModel = new BurgleBrosModel;
+                if(newModel == nullptr){error=true; quit=true; errorMsg+="Error al crear BurgleBrosModel\n";}
             BurgleBrosView *newView= new BurgleBrosView(newModel);
-            newModel->attach(newView);
-            newModel->attach(&sound);
-            newModel->attachController(bbcontroller);
-            sound.attachModel(newModel);
-            bbcontroller->attachSound(&sound);
-            bbcontroller->attachModel(newModel);
-            bbcontroller->attachView(newView);
-            gui.attachController(bbcontroller);
-            p2Controller = bbcontroller;
-            p2Model = newModel;
-            p2View = newView;
+                if(newView == nullptr){error=true; quit=true; errorMsg+="Error al crear BurgleBrosView\n";}
+                if(newView != nullptr && newView->didAnErrorStarting()){error=true; quit=true; errorMsg+="Error al inciliazar BurgleBrosview:"+newView->getErrorMsg();}
+            
+            if(!error)    //y no ocurrio un error
+            {
+                newModel->attach(newView);
+                newModel->attach(&sound);
+                newModel->attachController(bbcontroller);
+                sound.attachModel(newModel);
+                bbcontroller->attachSound(&sound);
+                bbcontroller->attachModel(newModel);
+                bbcontroller->attachView(newView);
+                gui.attachController(bbcontroller);
+                p2Controller = bbcontroller;
+                p2Model = newModel;
+                p2View = newView;
+            }
         }
     }    
 }
@@ -119,12 +152,13 @@ BurgleBrosWrapper::playGame() {
     delete p2Controller;
     delete p2Model;
     delete p2View; 
-    cin >> aux;     //Para poder ver si hubo un error.
+    //cin >> aux;     //Para poder ver si hubo un error.
     
 }
 
 
 bool BurgleBrosWrapper::connect(BurgleBrosController* controller) {
+    
     bool retVal = false;
     if(networkInterface.standardConnectionStart(ipToConnect))
     {
@@ -133,19 +167,27 @@ bool BurgleBrosWrapper::connect(BurgleBrosController* controller) {
     }
     if(networkInterface.checkError())    //Si hubo un error tratando de hacer la connection start:
     {
-        cout<<networkInterface.getErrorMsg();
+        errorMsg+="\nError de networking:\n"+networkInterface.getErrorMsg();
         quit=true;
     }
     return retVal;
 }
 
+bool BurgleBrosWrapper::wasAnError() {
+    return error;
+}
+
+void BurgleBrosWrapper::showError() {
+    cout<<errorMsg;
+}
 
 
 BurgleBrosWrapper::BurgleBrosWrapper(const BurgleBrosWrapper& orig) {
 }
 
 BurgleBrosWrapper::~BurgleBrosWrapper() {
-  // delete  networkEvent;                     // mirar esto
-  // delete  allegroEvent;
+    
+  if(networkEvent != nullptr) delete  networkEvent;                     // mirar esto
+  if(allegroEvent != nullptr) delete  allegroEvent;
 }
 

@@ -14,11 +14,11 @@
 #define SPACE_X al_get_display_width(display)/50.0
 #define SPACE_Y al_get_display_height(display)/5.7
 
-#define TEXT_COLOR al_map_rgb(255,255,255)
+#define TEXT_COLOR al_map_rgb(0,0,0)
 
 #define PATH_BACKSCREEN     "Images/Begin/begin.jpg"
-#define PATH_FONT           "Font/title.ttf"
-#define PATH_ACTIONFONT     "Font/fonts.ttf"  
+#define PATH_TITLEFONT      "Font/font2.ttf"
+#define PATH_FONT           "Font/font6.ttf"  
 
 
 CView::CView(CModel * model)
@@ -43,19 +43,15 @@ CView::CView(CModel * model)
                     al_set_window_title(display,"EDA Burgle Bros");
                     
                     ALLEGRO_FONT * auxFont =nullptr;
-                    auxFont = al_load_font(PATH_FONT,BOX_HEIGHT/1.5,0);
+                    auxFont = al_load_font(PATH_TITLEFONT,BOX_HEIGHT,0);
 
                     if(auxFont != nullptr)
                     {
-                        /*al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y,ALLEGRO_ALIGN_LEFT,"YOUR IP:");
-                        al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT,ALLEGRO_ALIGN_LEFT,"FRIEND'S IP:");
-                        al_draw_text(auxFont,TEXT_COLOR,SPACE_X,BOX_MIN_Y+ 2*(SPACE_Y+BOX_HEIGHT),ALLEGRO_ALIGN_LEFT,"ENTER YOUR NAME:");*/
-
-                        al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
-                        al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
+                        al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y/1.1-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"FRIEND'S IP:");
+                        al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y/1.1 + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
                         al_destroy_font(auxFont);
                         
-                        font = al_load_font(PATH_ACTIONFONT,BOX_HEIGHT/1.2, 0);
+                        font = al_load_font(PATH_FONT,BOX_HEIGHT/1.2, 0);
                         if(font != nullptr)
                         {
                             //Creo las cajas de texto
@@ -83,12 +79,14 @@ CView::CView(CModel * model)
                         {   
                             //error al crear la fuente
                             error=true;
+                            errorMsg="No se pudo crear la fuente\n";
                             al_destroy_bitmap(backScreen);
                             al_destroy_display(display);
                         }
                     }else
                     {   
                         //error al crear la fuente auxiliar
+                        errorMsg="No se pudo crear la fuente auxiliar\n";
                         error=true;
                         al_destroy_bitmap(backScreen);
                         al_destroy_display(display);
@@ -96,22 +94,26 @@ CView::CView(CModel * model)
                 }else
                 {
                     //Error al crear el backScreen
+                    errorMsg="No se pudo crear backScreen\n";
                     error=true;
                     al_destroy_display(display);
                 }
             }else
             {
                 //error al crear el display
+                errorMsg="No se pudo crear display\n";
                 error=true;
             }
         }else
         {
             //error al inicializar las imagenes 
+            errorMsg="No se pudo incializar imagenes\n"+imageLoader.getError();
             error=true;
         }
     }else
     {
         //Error al attachear el modelo, se encontraba vacio.
+        errorMsg="Error al attachear modelo\n";
         error=true;
     }
     
@@ -132,6 +134,15 @@ CView::~CView()
         al_destroy_display(display);
     }
 }
+
+string CView::geterrorMsg() {
+    return errorMsg;
+}
+
+bool CView::DidAnErrorStarting() {
+    return error;
+}
+
 
 void CView::update()
 {

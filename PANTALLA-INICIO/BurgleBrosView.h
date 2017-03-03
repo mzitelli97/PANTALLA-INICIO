@@ -30,7 +30,7 @@ public:
      MENU_ITEM -> AUXINFO (string y cardLocation)*/
     ItemInfo itemFromClick(Point point);
     
-    virtual void update();
+    virtual void update() override;
     void reset();
     void ViewInit(BurgleBrosModel* model);
     void showMenu(list<string> options, Point click, CardLocation tile);
@@ -47,7 +47,7 @@ public:
     void showHelp(bool yesOrNo); 
     void setHelpScroll(unsigned int scroll); 
     void cheatCards();
-    bool initOk();
+    bool didAnErrorStarting();
     string getErrorMsg();
     virtual ~BurgleBrosView();
 

@@ -17,6 +17,7 @@
 #include "LayerItem.h"
 #include <time.h>
 
+
 typedef enum {TILES_LIST, BUTTONS_LIST, CHARACTER_CARDS_LIST, LOOT_SHOW_LIST, EXTRA_DICES_LIST, GUARD_CARDS_LIST} FirstLayerLists;
 typedef enum {TOKENS_LIST, GUARD_INFO_LIST, PLAYER_INFO_LIST, STATIC_ITEMS} SecondeLayerLists;
 typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
@@ -29,20 +30,21 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 #define NO_GUARD_ZOOMED -1
 
 #define PATH_BACKSCREEN     "Images/Backscreen/fondo.jpg"
-#define PATH_FONT           "Font/title.ttf"
-#define PATH_ACTIONFONT     "Font/fonts.ttf"  
+#define PATH_FONT           "Font/font3.ttf"
+#define PATH_ACTIONFONT     "Font/font6.ttf"  
 
 
 BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
+   
     error=false;
+    
     if(imageLoader.initImages())
     {
         showingHelp = false;
         display=nullptr;
         backScreen=nullptr;
         actionsFont=nullptr;
-        
-        
+                
         if(model != nullptr)
         {
             this->model = model;
@@ -57,6 +59,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                 {
                     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
                     actionsFont=al_load_font(PATH_ACTIONFONT,ACTIONS_FONT_H,0);
+
                     if(actionsFont !=nullptr)
                     {
                         ALLEGRO_FONT * font = al_load_font(PATH_FONT,TITLE_H,0);
@@ -85,7 +88,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                                 al_destroy_bitmap(icon);
                             }
                             #endif
-                            al_set_window_title(display,"EDA Burgle Bros");
+                            al_set_window_title(display," EDA Burgle Bros");
                             al_flip_display();
                         }else
                         {
@@ -94,7 +97,7 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                             al_destroy_display(display);
                             al_destroy_font(actionsFont);
                             error=true;
-                            errorMsg= "Fonts couldnt be loaded.";
+                            errorMsg= " Fonts couldnt be loaded.";
                         }
                     }else
                     {
@@ -102,40 +105,40 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                         al_destroy_bitmap(backScreen);
                         al_destroy_display(display);
                         error=true;
-                        errorMsg= "Background picture couldnt be loaded.";
+                        errorMsg= " Background picture couldnt be loaded.";
                     }
                 }else
                 {
                     //No se pudo crear backscreen
                      al_destroy_display(display);
                      error=true;
-                     errorMsg= "Background picture couldnt be loaded.";
+                     errorMsg= " Background picture couldnt be loaded.";
                 }
             }else
             {
                 //No se pudo crear display
                 error=true;
-                errorMsg= "Display couldnt be created";
+                errorMsg= " Display couldnt be created";
             }
         }else
         {
             //Puntero de model vacio
             error=true;
         }
+    }else
+    {
+        error=true;
+        errorMsg="ImageLoad failed\n\t"+imageLoader.getError();
     }
 }
 
-bool BurgleBrosView::initOk() {
-    return !error;
+bool BurgleBrosView::didAnErrorStarting() {
+    return error;
 }
 
 string BurgleBrosView::getErrorMsg() {
-    string retVal;
-    if(errorMsg.empty())
-        retVal= imageLoader.getError();
-    else
-        retVal= errorMsg;
-    return retVal;
+    
+    return errorMsg;
 }
 
 
@@ -494,6 +497,7 @@ void BurgleBrosView::updateCharacters() {
     //First Player
     Info2DrawPlayer player = model->getInfo2DrawPlayer(THIS_PLAYER);
     GraphicPlayer* gPlayer = dynamic_cast<GraphicPlayer*> (*it); //ASUMI QUE EL PRIMERO ES THIS_PLAYER
+    
     if(gPlayer!=NULL)
     {
         if(onZoom && player.position.floor == floorZoomed) gPlayer->setZoom(true);

@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   main.cpp
- * Author: javier
- *
- * Created on December 29, 2016, 4:15 PM
- */
-
 #include <cstdlib>
 #include "BurgleBrosSound.h"
 #include "BurgleBrosModel.h"
@@ -23,12 +10,28 @@
 #include "BurgleBrosWrapper.h"
 using namespace std;
 
-/*Estas funciones luego pertenecerían a un wrapper que las une para simplificar el main.*/
-bool connect(bool *quit, NetworkInterface * networkInterface, BurgleBrosController * Controller, string &ipToConnect, string &ipToListen, string &userName );
-bool gameStillPlaying(BurgleBrosController &controller);
-/*
- * 
- */
+int main(int argc, char** argv)
+{
+    allegro_startup();
+    BurgleBrosWrapper fullGame;
+    
+    
+    fullGame.getNameAndIp();
+
+    if(fullGame.gameOnCourse())
+    {
+        fullGame.connect();
+        if(fullGame.gameOnCourse())
+            fullGame.playGame();
+    }
+
+    if(fullGame.wasAnError())
+        fullGame.showError();
+    
+    return 0;
+}
+
+
 /*int main(int argc, char** argv) {
 
     srand(time(NULL));
@@ -126,31 +129,5 @@ bool gameStillPlaying(BurgleBrosController &controller)
 {
     return !(controller.checkIfGameFinished());
 }*/
-
-
-
-//el main ahora seria :
-
-int main(int argc, char** argv)
-{
-    allegro_startup();
-    BurgleBrosWrapper fullGame;
- 
-    fullGame.getNameAndIp();
-  
-    if(fullGame.gameOnCourse())
-    {
-        fullGame.connect();
-        if(fullGame.gameOnCourse())
-            fullGame.playGame();
-    }
-    //if(fullGame.wasAnError())
-      //  fullGame.showError();
-    
-    return 0;
-}
-
-
-
  
  

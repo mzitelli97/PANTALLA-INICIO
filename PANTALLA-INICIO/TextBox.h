@@ -21,8 +21,8 @@ public:
     TextBox(double width, double height,ALLEGRO_FONT * font, textSelected id);
     TextBox(const TextBox& orig);
     virtual ~TextBox();
-    virtual ItemInfo IAm();
-    virtual void draw();
+    virtual ItemInfo IAm() override;
+    virtual void draw() override;
     void setText(std::string text);
     void select();
     void unselect();

@@ -16,8 +16,8 @@ public:
     GraphicMenuItem(Point point, CardLocation tile, int number);
     virtual ~GraphicMenuItem();
     void setOption(string option);
-    virtual void draw();
-    virtual ItemInfo IAm();
+    virtual void draw() override;
+    virtual ItemInfo IAm() override;
     CardLocation getTile();
     string getOption();
 private:
