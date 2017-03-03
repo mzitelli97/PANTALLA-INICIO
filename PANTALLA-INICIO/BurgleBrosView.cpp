@@ -88,7 +88,10 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                                 al_destroy_bitmap(icon);
                             }
                             #endif
-                            al_set_window_title(display," EDA Burgle Bros");
+                            al_set_window_title(display,"EDA Burgle Bros");
+                            #ifdef CARDS_CHEAT
+                            cheatCards();
+                            #endif
                             al_flip_display();
                         }else
                         {
@@ -576,7 +579,14 @@ void BurgleBrosView::updateGuards()
             guard_die->setPosition(info_guard.diePosition);
             guard_die->setNumber(imageLoader.getImageP(RED_DICE, info_guard.dieNumber));
 
-            GraphicGuardCards * it_cards = dynamic_cast<GraphicGuardCards *> (*(++it));
+            GraphicGuardCards * it_cards = dynamic_cast<GraphicGuardCards *> (*it);
+            /*First the non shown deck*/
+            if(info_guard.shownDeck.size() >= NUMBER_OF_CARDS_TO_PLAY) it_cards->setVisible(false);
+            else it_cards->setVisible(true);
+            
+            /*Then the shown deck*/
+            it_cards = dynamic_cast<GraphicGuardCards *> (*(++it));
+            it_cards->setVisible(info_guard.initialized);
             if(onZoom && i == guardZoomed) it_cards->setZoom(true);
             else it_cards->setZoom(false);
      //       it_cards->setTopOfNonVisibleDeck(info_guard.isTopOfNotShownDeckVisible, imageLoader.getImageP(info_guard.topOfNotShownDeck));
@@ -830,7 +840,6 @@ void BurgleBrosView::cheatCards()
     for(unsigned int i=0; i < BOARD_STANDARD_FLOORS * FLOOR_RAWS * FLOOR_COLUMNS ; i++, it++)
     {
         GraphicTile * tile = dynamic_cast<GraphicTile *>(*it);
-       if(tile != nullptr) tile->setVisible(imageLoader.getImageP(3));
+        if(tile != nullptr) tile->setVisible(imageLoader.getImageP(3));
     }
 }
-       

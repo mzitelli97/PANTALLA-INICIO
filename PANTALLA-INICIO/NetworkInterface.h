@@ -12,6 +12,7 @@
 typedef enum {CLIENT, SERVER} CommunicationRole;
 
 using namespace std;
+bool packetHasNoDataField(PerezProtocolHeader header); //Devuelve si el header no requiere ningún dato extra, por ejemplo ack
 
 class NetworkInterface
 {

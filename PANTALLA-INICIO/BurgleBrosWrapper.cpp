@@ -1,4 +1,7 @@
 #include "BurgleBrosWrapper.h"
+#include <ostream>
+#include <fstream>
+
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
     srand(time(NULL));
@@ -178,6 +181,11 @@ bool BurgleBrosWrapper::wasAnError() {
 }
 
 void BurgleBrosWrapper::showError() {
+    
+    std::ofstream archivo;
+       
+    archivo.open("errores.txt",std::ios::app);
+    
     cout<<errorMsg;
 }
 

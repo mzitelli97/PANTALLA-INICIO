@@ -3,9 +3,6 @@
 #define DIFF_TIME_CLOCK(X,Y) (((double)((X)-(Y)))/((double) CLOCKS_PER_SEC))
 #define RAND_IN_RANGE_DOUBLE(x,y) y+((((double)rand())/((double)(RAND_MAX)))*((x)-(y))) //y<x
 
-bool packetHasNoDataField(PerezProtocolHeader header); //Devuelve si el header no requiere ningún dato extra, por ejemplo ack
-
-
 bool packetHasNoDataField(PerezProtocolHeader h)
 {
     return (h==ACK || h==AGREE || h==DISAGREE || h==NAME || h==YOU_START || h==I_START || h==PASS || h==WE_WON || h==WE_LOST || h==GAME_OVER  || h==PLAY_AGAIN || h==QUIT || h==ERRORR || h==PICK_UP_LOOT);

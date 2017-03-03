@@ -363,7 +363,6 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     view->update();
                     break;
                 case HELP_BUTTON_CLICK:
-                    //view->cheatCards();
                     view->showHelp(true);
                     resetMouseZ=true;
                     view->setHelpScroll(0);
