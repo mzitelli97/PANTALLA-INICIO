@@ -17,20 +17,65 @@ bool NetworkED::isPacketOk()
     {
         if(len == 0) retVal = true;
     }
+    else if(header == I_AM)
+    {
+        unsigned int aux = buffer[0];
+        if(aux >= 20 && aux <= 26) retVal = true;
+    }/*
+    else if(header == NAME_IS)
+    {}*/
     else
     {
-        /*regex e;
-        string s(buffer,len);
+        regex e("");
+        string s((const char*)buffer,(size_t)len);
+        char aux;
         switch(header)
         {
+            /*case START_INFO:
+                e = "";
+                break;*/
             case INITIAL_G_POS:
                 e = "([A-D][1-4]F[1-3]){2}";
                 break;
+            case MOVE: case PEEK:
+                e = "^[A-D][1-4]F[1-3][0-6]$";
+                break;
+            case SPENT_OK:
+                e = "^[YN]$";
+                break;
+            case ADD_TOKEN: case USE_TOKEN: case CREATE_ALARM: case PLACE_CROW:
+                e = "^[A-D][1-4]F[1-3]$";
+                break;
+            case THROW_DICE:
+                e = "([0-6]){6}";
+                break;
+            case SAFE_OPENED: case OFFER_LOOT: case REQUEST_LOOT:
+                e = "^[0-9]$";
+                break;
+            case SPY_PATROL:
+                e = "^[A-D][1-4]F[1-3][TB]$";
+                break;
+            case ROLL_DICE_FOR_LOOT:
+                e = "^[1-6]$";
+                break;
+            /*case GUARD_MOVEMENT:
+                aux = s[0];
+                if(aux >= 0x04)
+                {
+                    s = s.substr(1);
+                    for(unsigned int i = 0; i < s.size(); i++)
+                        if(s[i] == 0xFF) s[i] = 'X';       //this is to make the regex easier
+                    e = "(([A-D][1-4]F[1-3])+[X]?)+";
+                }
+                break;*/
+            default:
+                retVal = true;
+                break;
         }
-        if(regex_match(s,e))*/
+        if(regex_match(s,e))
             retVal = true;
     }
-    return retVal; //Por ahora confiamos que todos los paquetes se van a mandar bien.
+    return retVal;
 }
 PerezProtocolHeader NetworkED::getHeader()
 {
