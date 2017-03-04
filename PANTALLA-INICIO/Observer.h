@@ -16,10 +16,10 @@
 
 class Observer {
 public:
-    Observer();
-    Observer(const Observer& orig);
+    Observer() {};
+    Observer(const Observer& orig) {};
     virtual void update() = 0;
-    virtual ~Observer();
+    virtual ~Observer() {};
 };
 
 #endif /* VIEW_H */

@@ -17,12 +17,6 @@ EventGenerator::getType() {
     return this->event;
 }
 
-void EventGenerator::deleteEventData() {
-
-    delete data;
-    
-}
-
 EventGenerator::~EventGenerator() {
 }
 

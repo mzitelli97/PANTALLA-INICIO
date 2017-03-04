@@ -1,0 +1,10 @@
+#Eda Burgle Bros:	Fri Mar  3 01:10:42 2017
+
+Errores ocurridos: 
+Error al inicializar cView:No se pudo crear display
+
+#Eda Burgle Bros:	Sat Mar  4 11:14:32 2017
+
+Errores ocurridos: 
+Error al inicializar cView:No se pudo crear display
+

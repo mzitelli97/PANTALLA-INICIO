@@ -131,7 +131,6 @@
       <itemPath>GUI.cpp</itemPath>
       <itemPath>LibsInit.cpp</itemPath>
       <itemPath>Model.cpp</itemPath>
-      <itemPath>View.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -403,8 +402,6 @@
       </item>
       <item path="TimerED.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="View.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="cController.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="cController.h" ex="false" tool="3" flavor2="0">
@@ -625,8 +622,6 @@
       <item path="TimerED.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="TimerED.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="View.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="cController.cpp" ex="false" tool="1" flavor2="0">
       </item>

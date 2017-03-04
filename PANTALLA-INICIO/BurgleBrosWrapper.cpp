@@ -1,6 +1,7 @@
 #include "BurgleBrosWrapper.h"
 #include <ostream>
 #include <fstream>
+#include <ctime>
 
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
@@ -183,11 +184,23 @@ bool BurgleBrosWrapper::wasAnError() {
 
 void BurgleBrosWrapper::showError() {
     
-    std::ofstream archivo;
-       
-    archivo.open("errores.txt",std::ios::app);
+  time_t rawtime;
+  struct tm * timeinfo;
+  time ( &rawtime );
+  timeinfo = localtime ( &rawtime );
+  
+  string auxError="#Eda Burgle Bros:\t";
+  auxError+=asctime (timeinfo);
+  
+  auxError+="\n" + errorMsg;
     
-    cout<<errorMsg;
+  std::ofstream archivo;
+  archivo.open("Error/errores.txt",std::ios::app);
+  
+  archivo<<auxError + "\n";
+  cout<<auxError;
+  
+  archivo.close();
 }
 
 

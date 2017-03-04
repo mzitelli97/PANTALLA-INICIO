@@ -96,10 +96,10 @@ bool Networking::prepareToConnect(std::string &ip)
 			
 		}
 		else
-			printf("\nCANNOT CREATE SOCKET TO CONNECT");
+                    errorMsg="Cannot create socket to connect\n";
 	}
 	else
-		printf("\nCANNOT GET SERVER INFO\n");
+            errorMsg="Cannot get server info\n";
 	return retVal;
 }
 bool Networking::tryToConnect()
@@ -120,6 +120,10 @@ void Networking::abortConnecting()
 	apr_socket_shutdown(principalSocket, APR_SHUTDOWN_READWRITE);
 	apr_socket_close(principalSocket);
 	principalSocket = NULL;
+}
+
+string Networking::getErrorMsg() {
+    return errorMsg;
 }
 
 
@@ -147,18 +151,18 @@ bool Networking::prepareToListen()
 					retVal = true;
 				}
 				else
-					printf("\nNOT LISTENING");
+                                    errorMsg="Not listening\n";
 			}
 			else
-				printf("\nfailed to bind socket");
+                            errorMsg="Failed to bind socket\n";
 
 		}
 		else
-			printf("\ncannot create socket");
+                    errorMsg="Cannot create socket\n";
 
 	}
 	else
-		printf("\ncannot get info?");
+            errorMsg="Cannot get info\n";
 
 	return retVal;
 }

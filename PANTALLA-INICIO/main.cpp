@@ -28,6 +28,8 @@ int main(int argc, char** argv)
     if(fullGame.wasAnError())
         fullGame.showError();
     
+    allegro_shut_down();
+    
     return 0;
 }
 

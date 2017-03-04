@@ -18,6 +18,7 @@ NetworkInterface::NetworkInterface()
     prevClock = currClock;
     error=false;
 }
+
 NetworkInterface::NetworkInterface(Networking &networking)
 {
 	p2networking = &networking;
@@ -28,6 +29,7 @@ NetworkInterface::NetworkInterface(Networking &networking)
 	prevClock = currClock;
         error=false;
 }
+
 bool NetworkInterface::standardConnectionStart(string &ip)
 {
 	bool connected = false;
@@ -39,7 +41,7 @@ bool NetworkInterface::standardConnectionStart(string &ip)
                 currClock = clock();
                 prevClock = currClock;
                 if(error)
-                    errorMsg = "Ip to connect was forbidden, check ip entered. Example: 127.0.0.1";
+                    errorMsg = "Networking error:"+ p2networking->getErrorMsg();
 	}
 	switch (currentRole)
 	{
@@ -54,7 +56,7 @@ bool NetworkInterface::standardConnectionStart(string &ip)
 			p2networking->abortConnecting();
 			error=!(p2networking->prepareToListen());
                         if(error)
-                            errorMsg = "Ip to listen was forbidden, check ip entered. Example: 127.0.0.1";
+                            errorMsg = "Networking error:"+ p2networking->getErrorMsg();
                         cout<<"YA SOY SERVER" << endl;
 		}
                 break;
@@ -65,6 +67,8 @@ bool NetworkInterface::standardConnectionStart(string &ip)
 	}
 	return connected;
 }
+
+
 CommunicationRole NetworkInterface::getCommunicationRole()
 {
 	return currentRole;
@@ -77,7 +81,6 @@ bool NetworkInterface::checkError() {
 string NetworkInterface::getErrorMsg() {
     return errorMsg;
 }
-
 
 bool NetworkInterface::recievePacket(PerezProtocolHeader *header, unsigned char * msg, unsigned int *len)
 {
@@ -93,7 +96,7 @@ bool NetworkInterface::sendPacket(PerezProtocolHeader header)
     else
     {
         error=true;
-        errorMsg= "ERROR: NetworkInterface error: tried to send a message that has data field without data field.";
+        errorMsg= "NetworkInterface error: tried to send a message that has data field without data field.";
     }
     return retVal;
 }

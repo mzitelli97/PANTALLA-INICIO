@@ -25,7 +25,6 @@ public:
     virtual bool hayEvento()=0;
     GuiEvent getType();
     EventData * getData();
-    void deleteEventData();
     virtual ~EventGenerator();
     
 protected:
