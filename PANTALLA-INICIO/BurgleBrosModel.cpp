@@ -6,13 +6,14 @@
 #include <thread>
 
 #define KEYPAD_CRACK_NUMBER 6
+void addWithoutRepeating(list<CardLocation> &alarmList, CardLocation item);
 typedef struct
 {
     CardLocation target;
     unsigned int length;
 }AuxStruct;
 
-bool sortAuxStruct(AuxStruct &item1, AuxStruct &item2)      //se podria hacer con sobrecarga de operadores
+bool sortAuxStruct(AuxStruct &item1, AuxStruct &item2)
 {
     return item1.length<item2.length;
 }
@@ -26,8 +27,6 @@ BurgleBrosModel::BurgleBrosModel()
     guards[1]= aux2;
     guards[2]= aux3;
     board.initBoard();
-    controller=nullptr;
-    soundManager=nullptr;
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;
@@ -71,18 +70,9 @@ void BurgleBrosModel::reset()
     specialMotionCase=false;
     finishMsg.clear();
     auxMsgsToShow.clear();
-    //soundManager->reset();
     iE = NO_IE;
 }
 
-void BurgleBrosModel::attachController(Controller * controller)
-{
-    this->controller = controller;
-}
-void BurgleBrosModel::attachSoundManager(SoundManager * soundManager)
-{
-    this->soundManager=soundManager;
-}
 bool BurgleBrosModel::moveRequiresToInitGuard(CardLocation locationToMove)
 {
     return !guards[locationToMove.floor].checkIfInitialized();
@@ -1383,13 +1373,22 @@ BurgleBrosPlayer * BurgleBrosModel::getP2OtherPlayer(PlayerId playerId)
 }
 void BurgleBrosModel::guardMove(list<GuardMoveInfo> &guardMovement)
 {
-    if(guardMovement.empty())//Si se mandó una lista vacía, se hace el movimiento del guardia 
+    /*if(gWholePath.first.empty())    //Si se mandó una lista vacía, se hace el movimiento del guardia
+    {
+        generateGuardPath();
+    }*/
+    if(guardMovement.empty())
         makeGuardMove(guardMovement);
     else
         copyGuardMove(guardMovement);
     guardFinishedMoving=true;
     checkTurns();
 }
+
+void BurgleBrosModel::setGuardWholePath() {
+
+}
+
 void BurgleBrosModel::makeGuardMove(list<GuardMoveInfo> &guardMovement)
 {
     GuardMoveInfo auxiliarInfoToReport;
@@ -1547,6 +1546,119 @@ void BurgleBrosModel::copyGuardMove(list<GuardMoveInfo> &guardMovement)
     }
     setGuardsNewPath(guardFloor, guardMoving->getTargetPosition());//Para que no quede sin un camino  si la próxima vez se ejecuta desde esta cpu.
 }
+list<GuardMoveInfo> BurgleBrosModel::generateGuardPath() 
+{
+    BurgleBrosGuard *guardMoving= new BurgleBrosGuard;
+    unsigned int guardFloor = getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;
+    *guardMoving = guards[guardFloor];
+    list<CardLocation> alarmList = tokens.getAlarmsList();
+    GuardMoveInfo auxiliarInfoToReport;
+    list<GuardMoveInfo> retVal;
+    //unsigned int stepsToMove= tokens.howManyAlarmsOnFloor(guardFloor) + guardMoving->getDiceNumber(); //El guardia se mueve en su turno los pasos de sus dados + la cantidad de alarmas en su piso
+    if(status==WAITING_FOR_ACTION)
+        guardMoving->setSteps(tokens.howManyAlarmsOnFloor(guardFloor) + guardMoving->getDiceNumber());
+    
+    bool targetReached=false;
+    while(guardMoving->hasStepsLeft() && !gameFinished)
+    {
+        targetReached = guardMoving->step();//step ya decrementa los steps left
+  
+        if(board.isCardVisible(guardMoving->getPosition()))
+        {   
+            if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
+                if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
+                    addWithoutRepeating(alarmList, myPlayer.getPosition());
+            if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(otherPlayer.getPosition()) == CAMERA && board.isCardVisible(otherPlayer.getPosition()))
+                if(guardMoving->getPosition() != otherPlayer.getPosition())
+                    addWithoutRepeating(alarmList, otherPlayer.getPosition());
+        }
+
+        /*Armo el paquete para informar del movimiento:*/
+        auxiliarInfoToReport.meaning=GUARD_STEP_TO;        //Se hizo un movimiento de guardia
+        auxiliarInfoToReport.cardLocation=guardMoving->getPosition();   //A la posición que está ahora
+        retVal.push_back(auxiliarInfoToReport);  //pusheo
+        /*Si el guardia llegó a la posición objetivo, busca un nuevo objetivo*/
+        if(targetReached)
+        {
+            for(auto& alarm : alarmList)
+            {
+                if(alarm == guardMoving->getPosition()) alarmList.remove(alarm);
+            }
+            list<CardLocation> cardsTaken=setGuardsNewPath(alarmList, guardMoving); //Setea un nuevo path y devuelve la lista de cartas que tomó del mazo. ( pueden ser 1 o 2 si tomo una carta que apuntaba a donde estaba parado).
+            auxiliarInfoToReport.meaning=GUARD_CARD_PICK;   
+            for(list<CardLocation>::iterator it=cardsTaken.begin(); it!=cardsTaken.end();it++)
+            {
+                auxiliarInfoToReport.cardLocation=*it;
+                retVal.push_back(auxiliarInfoToReport);  //Guardo que cartas se tomaron del mazo.
+            }
+        }
+        /*Si había un crow token en el tile donde se encuentra*/
+        if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
+            guardMoving->decSteps();//si no habia steps la funcion no hace nada
+    }
+}
+void addWithoutRepeating(list<CardLocation> &alarmList, CardLocation item)
+{
+    bool isRepeated = false;
+    for(auto& alarm : alarmList)
+    {
+        if(alarm == item)
+        {
+            isRepeated = true;
+            break;
+        }
+    }
+    if(!isRepeated) alarmList.push_back(item);
+}
+
+list<CardLocation> BurgleBrosModel::setGuardsNewPath(list<CardLocation> &alarmList, BurgleBrosGuard *p2Guard)
+{
+    list<CardLocation> retVal;
+    list<AuxStruct> alarmsOnSameFloor;
+    CardLocation newTargetLocation;
+    unsigned int aux=0;
+    for(list<CardLocation>::iterator it=alarmList.begin(); it !=alarmList.end(); it++)
+    {
+        AuxStruct aux;
+        if(it->floor == p2Guard->getPosition().floor)
+        {
+             aux.target=*it;
+             alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
+        }
+    }
+    if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
+    {
+        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++)
+            it->length=board.getShortestPathLength(p2Guard->getPosition(), it->target);    //obtengo el largo de cada camino.
+        alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
+        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++) 
+        {
+            if(it->length == alarmsOnSameFloor.front().length)
+                aux++;  //Cuento cuantas alarmas estan a la misma distancia.
+        }
+        if(aux==1)  //Si hay una que este a la minima distancia
+            newTargetLocation=alarmsOnSameFloor.front().target; //Esa va a ser el nuevo objetivo
+        else
+        {
+            int temp = rand() % aux;            //Sino, se elige random entre las que tienen el mismo largo de camino
+            list<AuxStruct>::iterator it = alarmsOnSameFloor.begin();
+            advance(it, temp);
+            newTargetLocation = it->target;
+        }
+    }
+    else        //Si no había alarmas, se toma una carta  que no sea en la que esté parado
+    {
+        do{
+            newTargetLocation = p2Guard->drawCardTarget();     //Toma una nueva carta objetivo
+            retVal.push_back(newTargetLocation);                //la guarda en el retval
+        }while(newTargetLocation == p2Guard->getPosition());      //si era la misma posición que la del guardia, saca otra carta del mazo.
+    }
+    p2Guard->setNewTarget(newTargetLocation);
+    list<CardLocation> temp = board.getShortestPath(p2Guard->getPosition(), newTargetLocation);
+    p2Guard->setNewPathToTarget(temp);
+    return retVal;
+}
+
 list<CardLocation> BurgleBrosModel::setGuardsNewPath(unsigned int floor)
 {
     list<CardLocation> retVal;

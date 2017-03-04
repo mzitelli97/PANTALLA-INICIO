@@ -890,7 +890,38 @@ void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
     }
     
 }
-
+void BurgleBrosController::handleGuardMove()
+{
+    list<GuardMoveInfo> guardMovement;
+    modelPointer->guardMove(guardMovement);         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
+    if(modelPointer->getModelStatus() == WAITING_FOR_ACTION)
+        networkInterface->sendGMove(guardMovement);     //Se envía esa información.//Que pasa si la lista es
+    else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
+    {
+        vector<string> aux= modelPointer->getMsgToShow();
+        string userChoice =view->MessageBox(aux);
+        modelPointer->userDecidedTo(userChoice);
+        this->checkForNonOrderedPackets();
+        if(!quit)
+        {
+            if(userChoice == USE_LAVATORY_TOKEN_TEXTB)
+            {
+                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
+                resetTimeoutTimer = true;
+            }
+            else
+            {
+                
+            }   
+        }  
+        
+    }
+    else if(modelPointer->getModelStatus() == DESPUES_VEMOS_B)
+    {
+        
+    }
+    //resetTimeoutTimer=true;
+}
 
 
 void BurgleBrosController::analizeIfModelRequiresMoreActions(NetworkED *networkEvent)

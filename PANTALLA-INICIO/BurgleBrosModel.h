@@ -39,7 +39,7 @@
 
 //#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
 
-typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT} ModelStatus;
+typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT, DESPUES_VEMOS_A, DESPUES_VEMOS_B} ModelStatus;
 typedef enum {GUARD_STEP_TO, GUARD_CARD_PICK} LocationMeaning;
 typedef struct{
     LocationMeaning meaning;
@@ -120,9 +120,8 @@ class BurgleBrosModel : public Model
         bool moveWillRequireSpecifications(PlayerId playerId, CardLocation locationToMove, int safeNumber); //devuelve true si el model necesitara info extra, por ejemplo si necesita el input de responder el allegro native dialog box o si necesita saber los dados que tiró el otro jugador.
         list<string> getPosibleActionsToTile(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
         list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
-        
-        void attachController(Controller * controller);
-        void attachSoundManager(SoundManager * soundManager);
+        void setGuardWholePath();
+        list<GuardMoveInfo> generateGuardPath();
 	~BurgleBrosModel();
     private:
 
@@ -138,6 +137,7 @@ class BurgleBrosModel : public Model
         bool GuardInCamera();
         list<CardLocation> setGuardsNewPath(unsigned int floor);
         list<CardLocation> setGuardsNewPath(unsigned int floor,CardLocation thisTarget);
+        list<CardLocation> setGuardsNewPath(list<CardLocation> &alarmList, BurgleBrosGuard *p2Guard);
         bool playerSpentFreeAction;
         BurgleBrosPlayer * getP2Player(PlayerId playerId);
         BurgleBrosPlayer * getP2OtherPlayer(PlayerId playerId);
@@ -149,8 +149,6 @@ class BurgleBrosModel : public Model
 	BurgleBrosTokens tokens;
 	BurgleBrosLoots loots;
 	BurgleBrosDices dice;
-        Controller * controller;
-        SoundManager * soundManager;
         importantEvents iE;
         bool gameFinished;
         string finishMsg;       //Si el juego terminó indica como termino (por ejemplo WON, LOST o MODEL ERROR:"(errormsg)"
@@ -164,6 +162,7 @@ class BurgleBrosModel : public Model
         bool specialMotionCase;
         vector<string> auxMsgsToShow;
         CardLocation spyGuardCard;
+        pair<list<GuardMoveInfo>,list<GuardMoveInfo>::iterator> gWholePath;
         
 };
 #endif

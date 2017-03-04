@@ -65,7 +65,6 @@ bool NetworkED::isPacketOk()
                 {
                     e = "(([A-D][1-4]F[1-3])+[\xFF]?)+";
                     s = s.substr(1);
-                    retVal = true;
                 }
                 break;
             default:
@@ -163,7 +162,6 @@ CardLocation NetworkED::getTokenPos()
     {
         buffer[len]= '\0';               
         string aux =(char *) buffer;
-       //string aux =(char *) buffer + '\0'; //perro, lo había puesto así porque no hay nada que asegure que venga con terminador el buffer, entonces esta linea podría fallar
         retVal=protocolToCardLocation(aux);
     }
     else
@@ -189,7 +187,6 @@ CardLocation NetworkED::getCreateAlarmPos()
     { 
         buffer[len]= '\0'; 
         string aux =(char *) buffer;
-        //string aux = (char *) buffer + '\0'; //perro, lo había puesto así porque no hay nada que asegure que venga con terminador el buffer, entonces esta linea podría fallar
         retVal=protocolToCardLocation(aux); 
     }
     else

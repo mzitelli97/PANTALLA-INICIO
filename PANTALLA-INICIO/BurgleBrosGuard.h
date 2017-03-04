@@ -21,8 +21,8 @@ typedef struct{
 
 class BurgleBrosGuard
 {
-public:
-	BurgleBrosGuard();
+public:        
+        BurgleBrosGuard();
         BurgleBrosGuard(unsigned int floor);
 	CardLocation getTopCard();
         void setPosition(CardLocation location);
@@ -41,13 +41,19 @@ public:
         void pushCardToTheBottom(CardLocation thisCard);
         void pushCardToTheTop(CardLocation thisCard);
         void setTopOfNotShownDeckVisible(bool whichState);
-        bool step();                                        //DESARROLLAR (devuelve 1 si llego al objetivo)
-        void setNewTarget(CardLocation alarm);              //DESARROLLAR
-        void setNewPathToTarget(list<CardLocation> &pathToTarget);   //DESARROLLAR
+        bool step();                                        //devuelve 1 si llego al objetivo
+        void setNewTarget(CardLocation alarm);
+        void setNewPathToTarget(list<CardLocation> &pathToTarget);
         CardLocation drawCardTarget();      //Devuelve una copia la que agarró
 	bool drawCardTarget(CardLocation targetCard);   //Devuelve true si encontró la carta en el mazo de las no mostradas.
+        
+        void setSteps(unsigned int steps);
+        void decSteps();
+        bool hasStepsLeft();
 	~BurgleBrosGuard();
+        
 private:
+        unsigned int stepsLeft; 
         void setPosition();
         void initCardDeck();
         void shuffleCardDeck();

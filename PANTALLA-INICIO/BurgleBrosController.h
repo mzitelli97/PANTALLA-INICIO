@@ -56,6 +56,7 @@ private:
     string processOtherPlayerBasicChoice(vector<string> &message);
     void handlePlayAgain();
     void handleLootsExchange(NetworkED * networkEvent);
+    void handleGuardMove();
     void clientInitRoutine(NetworkED *networkEvent);
     void serverInitRoutine(NetworkED *networkEvent);
     void firstDecidedRoutine(NetworkED *networkEvent);

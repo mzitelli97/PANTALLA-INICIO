@@ -112,8 +112,6 @@ BurgleBrosWrapper::connect()
             if(!error)    //y no ocurrio un error
             {
                 newModel->attach(newView);
-                newModel->attach(&sound);
-                newModel->attachController(bbcontroller);
                 sound.attachModel(newModel);
                 bbcontroller->attachSound(&sound);
                 bbcontroller->attachModel(newModel);

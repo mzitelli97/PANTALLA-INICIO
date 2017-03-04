@@ -4,6 +4,7 @@
 #include <chrono>       // std::chrono::system_clock
 #include <algorithm>    // std::shuffle
 
+#define MAX_GUARD_STEPS 6
 
 static void list2Vector(list<CardLocation> &list, vector<CardLocation> &vector);
 static void vector2List(vector<CardLocation> &vector, list<CardLocation> &list );
@@ -13,15 +14,41 @@ BurgleBrosGuard::BurgleBrosGuard()
     initialized=false;
     topOfNotShownDeckVisible=false;
 }
+
 bool BurgleBrosGuard::step()
 {
     bool retVal=false;
     position=pathToTarget.front();
+    decSteps();
     if(position== currentTarget)
         retVal=true;
     pathToTarget.pop_front();
     return retVal;
 }
+
+void BurgleBrosGuard::decSteps() 
+{
+    if(stepsLeft>0)
+        stepsLeft--;
+}
+
+bool BurgleBrosGuard::hasStepsLeft() 
+{
+    bool retVal=false;
+    if(stepsLeft>0)
+        retVal=true;
+    return retVal;
+}
+
+void BurgleBrosGuard::setSteps(unsigned int steps) 
+{
+    if(steps<=MAX_GUARD_STEPS)
+        stepsLeft=steps;
+    else
+        stepsLeft=MAX_GUARD_STEPS;
+
+}
+
 void BurgleBrosGuard::setNewTarget(CardLocation alarm)
 {
     currentTarget=alarm;
