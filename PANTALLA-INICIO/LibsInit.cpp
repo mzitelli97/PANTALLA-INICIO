@@ -8,8 +8,8 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include "LibsInit.h"
-
-using namespace std;
+    
+using namespace std;       
 
 
 int allegro_startup(void)
@@ -29,15 +29,14 @@ int allegro_startup(void)
 						{
                                                     if(al_install_audio())
                                                     {
-                                                        if(al_init_acodec_addon())
+                                                        if(al_init_acodec_addon())               //No tiene funcion para desinicializar
                                                             return AL_STARTUP_SUCCESS;
                                                         else
                                                             cout << "ERROR: Failed to init acodec addon\n";
-                                                        al_shutdown_ttf_addon();
+                                                        al_uninstall_audio();
                                                     }
                                                     else
                                                         cout << "ERROR: Failed to install audio\n";
-                                                    al_shutdown_ttf_addon();
 						}
 						else
 							cout << "ERROR: Failed to initialize ttf addon\n";
@@ -58,7 +57,7 @@ int allegro_startup(void)
 		}
 		else
 			cout <<  "ERROR: Failed to load primitives addon\n";
-		al_uninstall_system();
+		
 	}
 	else
 		cout <<  "ERROR: Failed to initialize allegro system\n";
@@ -66,11 +65,15 @@ int allegro_startup(void)
 }
 void allegro_shut_down(void)
 {
-	al_shutdown_ttf_addon();
-	al_shutdown_font_addon();
+        al_uninstall_audio();
+        al_shutdown_font_addon();
 	al_shutdown_image_addon();
 	al_uninstall_mouse();
-	al_uninstall_keyboard();
+        al_uninstall_keyboard();
 	al_shutdown_primitives_addon();
-	al_uninstall_system();
+
+     
 }
+
+/*	//al_uninstall_system(); il se fait automatiquement
+*/

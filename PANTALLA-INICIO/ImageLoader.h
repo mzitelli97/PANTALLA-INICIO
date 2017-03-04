@@ -12,19 +12,19 @@
 using namespace std;
 
 #ifdef WIN32
-/*
-    #define IMAGE_FOLDER "Images\"
-    #define CHARACTER_CARD_SUBFOLDER "Characters Cards\"
-    #define CHARACTER_FIGURES_SUBFOLDER "Characters Figures\"
-    #define GUARD_SUBFOLDER "Guard\"
-    #define LOOT_SUBFOLDER "Loots\"
-    #define TILES_SUBFOLDER "Tiles\"
-    #define TOKENS_SUBFOLDER "Tokens\"
-    #define DICES_SUBFOLDER "Dices\"
-    #define BUTTON_SUBFOLDER "Buttons\"
+
+    #define IMAGE_FOLDER "Images\\"
+    #define CHARACTER_CARD_SUBFOLDER "Characters Cards\\"
+    #define CHARACTER_FIGURES_SUBFOLDER "Characters Figures\\"
+    #define GUARD_SUBFOLDER "Guard\\"
+    #define LOOT_SUBFOLDER "Loots\\"
+    #define TILES_SUBFOLDER "Tiles\\"
+    #define TOKENS_SUBFOLDER "Tokens\\"
+    #define DICES_SUBFOLDER "Dices\\"
+    #define BUTTON_SUBFOLDER "Buttons\\"
     #define IMAGE_EXTENSION ".png"
-    #define RULES_SUBFOLDER "Rules\"
-*/
+    #define RULES_SUBFOLDER "Rules\\"
+
  #elif __linux__
     #define IMAGE_FOLDER "Images/"
     #define CHARACTER_CARD_SUBFOLDER "Characters Cards/"

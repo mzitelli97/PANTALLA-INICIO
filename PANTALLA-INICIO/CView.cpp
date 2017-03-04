@@ -122,18 +122,7 @@ CView::CView(CModel * model)
 CView::CView(const CView& orig) {
 }
 
-CView::~CView()
-{
-    if(error != true)   // si no hay error 
-    {
-        al_destroy_font(font);
-        list<GraphicItem*>::iterator it;
-        for(it = gList.begin(); it != gList.end(); it++)
-            if(*it != nullptr) delete *it;
-        al_destroy_bitmap(backScreen);
-        al_destroy_display(display);
-    }
-}
+
 
 string CView::geterrorMsg() {
     return errorMsg;
@@ -191,4 +180,17 @@ void CView::toggleButton(buttonAction button)
     auxButton = dynamic_cast<GraphicButton *> (*it);
     if(auxButton != nullptr)
             auxButton->toggleMute();
+}
+
+CView::~CView()
+{
+    if(error != true)   // si no hay error 
+    {
+        al_destroy_font(font);
+        list<GraphicItem*>::iterator it;
+        for(it = gList.begin(); it != gList.end(); it++)
+            if(*it != nullptr) delete *it;
+        al_destroy_bitmap(backScreen);
+        al_destroy_display(display);
+    }
 }

@@ -960,7 +960,6 @@ string BurgleBrosModel::peekGuardsCard(PlayerId playerId, CardLocation **guardCa
         if(prevChoice == SPOTTER_NO_PREV_CHOICE && playerId==THIS_PLAYER)   //Para este jugador le pregunta por patalla
         {
             vector<string>msgToShow({SPOTTER_SPECIAL_ACTION_TEXT,SPOTTER_TOP,SPOTTER_BOTTOM});
-           // userChoice = controller->askForSpentOK(msgToShow);//Le pregunto si la quiere arriba o abajo
             this->msgsToShow=msgToShow;
             status=WAITING_FOR_USER_CONFIRMATION;
         }
@@ -976,16 +975,7 @@ string BurgleBrosModel::peekGuardsCard(PlayerId playerId, CardLocation **guardCa
             playerSpentFreeAction=true;
             notifyAllObservers();
             checkTurns();
-        }    
-       /*
-        guards[guardsFloor].setTopOfNotShownDeckVisible(false); //Dejo de mostrarla.
-        if(userChoice==SPOTTER_BOTTOM)
-            guards[guardsFloor].pushTopCardToTheBottom();
-        getP2Player(playerId)->decActions();
-        playerSpentFreeAction=true;
-        notifyAllObservers();
-        
-        checkTurns();*/
+        }
         actionOk=true;
     }
     if(actionOk==false)

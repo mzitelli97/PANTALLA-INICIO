@@ -32,7 +32,7 @@ typedef enum {MENU_ITEM_LIST} ThirdLayerLists;
 #define PATH_BACKSCREEN     "Images/Backscreen/fondo.jpg"
 #define PATH_FONT           "Font/font3.ttf"
 #define PATH_ACTIONFONT     "Font/font6.ttf"  
-
+#define ICON                "icon/burglebros.tga"
 
 BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
    
@@ -81,12 +81,14 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                             help.init();
                             showingHelp=false;
                             #ifdef ICON
-                            ALLEGRO_BITMAP *icon = al_load_bitmap(ICON);                              
+                            ALLEGRO_BITMAP *icon =nullptr; 
+                            icon=al_load_bitmap(ICON);                              
                             if(icon != nullptr)
                             {
                                 al_set_display_icon(display,icon);
-                                al_destroy_bitmap(icon);
+                                //al_destroy_bitmap(icon);
                             }
+                            else cout<<"COMO EL CULO\n";
                             #endif
                             al_set_window_title(display,"EDA Burgle Bros");
                             #ifdef CARDS_CHEAT
@@ -589,8 +591,7 @@ void BurgleBrosView::updateGuards()
             it_cards->setVisible(info_guard.initialized);
             if(onZoom && i == guardZoomed) it_cards->setZoom(true);
             else it_cards->setZoom(false);
-     //       it_cards->setTopOfNonVisibleDeck(info_guard.isTopOfNotShownDeckVisible, imageLoader.getImageP(info_guard.topOfNotShownDeck));
-            it_cards->setTopOfNonVisibleDeck(true, imageLoader.getImageP(info_guard.topOfNotShownDeck));
+            it_cards->setTopOfNonVisibleDeck(info_guard.isTopOfNotShownDeckVisible, imageLoader.getImageP(info_guard.topOfNotShownDeck));
 
             it_cards->clearShownCards();
             while(!info_guard.shownDeck.empty())

@@ -19,18 +19,63 @@ bool NetworkED::isPacketOk()
     }
     else
     {
-        /*regex e;
-        string s(buffer,len);
+        regex e("");
+        string s((const char*)buffer,(size_t)len);
         switch(header)
         {
+            case I_AM:
+                e = "[\x20-\x26]";
+                break;
+            case NAME_IS:
+                if(len == s[0]+1)           //this checks if the name has the size especify in the packet
+                {
+                    s = s.substr(1);        //the first character is always a counter(hex value)
+                    e = "[\x20-\x7F]+";     //printable characters are from 0x20 to 0x7F
+                }
+                break;
+            case START_INFO:
+                e = "([\x01-\x14]){48}[A-D][1-4]F[1-3][0-6]";
+                break;
             case INITIAL_G_POS:
                 e = "([A-D][1-4]F[1-3]){2}";
                 break;
+            case MOVE: case PEEK:
+                e = "^[A-D][1-4]F[1-3][0-6]$";
+                break;
+            case SPENT_OK:
+                e = "^[YN]$";
+                break;
+            case ADD_TOKEN: case USE_TOKEN: case CREATE_ALARM: case PLACE_CROW:
+                e = "^[A-D][1-4]F[1-3]$";
+                break;
+            case THROW_DICE:
+                e = "([0-6]){6}";
+                break;
+            case SAFE_OPENED: case OFFER_LOOT: case REQUEST_LOOT:
+                e = "^[0-9]$";
+                break;
+            case SPY_PATROL:
+                e = "^[A-D][1-4]F[1-3][TB]$";
+                break;
+            case ROLL_DICE_FOR_LOOT:
+                e = "^[1-6]$";
+                break;
+            case GUARD_MOVEMENT:
+                if(s[0] >= 4)
+                {
+                    e = "(([A-D][1-4]F[1-3])+[\xFF]?)+";
+                    s = s.substr(1);
+                    retVal = true;
+                }
+                break;
+            default:
+                retVal = false;
+                break;
         }
-        if(regex_match(s,e))*/
+        if(regex_match(s,e))
             retVal = true;
     }
-    return retVal; //Por ahora confiamos que todos los paquetes se van a mandar bien.
+    return retVal;
 }
 PerezProtocolHeader NetworkED::getHeader()
 {
@@ -162,7 +207,6 @@ CardLocation NetworkED::getPlaceCrowPos()
     {
         buffer[len]= '\0'; 
         string aux =(char *) buffer;
-        //string aux = (char *) buffer + '\0'; //perro, lo había puesto así porque no hay nada que asegure que venga con terminador el buffer, entonces esta linea podría fallar
         retVal=protocolToCardLocation(aux);
     }
     else

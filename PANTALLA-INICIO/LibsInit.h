@@ -7,6 +7,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include "allegro5/allegro_native_dialog.h"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 #define AL_STARTUP_ERROR -1
 #define AL_STARTUP_SUCCESS 0
