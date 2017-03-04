@@ -5,8 +5,8 @@
 
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
+   
     srand(time(NULL));
-    //allegro_startup();
     
     quit=false;
     error=false;
