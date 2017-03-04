@@ -17,23 +17,26 @@ bool NetworkED::isPacketOk()
     {
         if(len == 0) retVal = true;
     }
-    else if(header == I_AM)
-    {
-        unsigned int aux = buffer[0];
-        if(aux >= 20 && aux <= 26) retVal = true;
-    }/*
-    else if(header == NAME_IS)
-    {}*/
     else
     {
         regex e("");
         string s((const char*)buffer,(size_t)len);
-        char aux;
+        //char aux;
         switch(header)
         {
-            /*case START_INFO:
-                e = "";
-                break;*/
+            case I_AM:
+                e = "[\x20-\x26]";
+                break;
+            case NAME_IS:
+                if(len == s[0]+1)           //this checks if the name has the size especify in the packet
+                {
+                    s = s.substr(1);        //the first character is always a counter(hex value)
+                    e = "[\x20-\x7F]+";     //printable characters are from 0x20 to 0x7F
+                }
+                break;
+            case START_INFO:
+                e = "([\x01-\x14]){48}[A-D][1-4]F[1-3][0-6]";
+                break;
             case INITIAL_G_POS:
                 e = "([A-D][1-4]F[1-3]){2}";
                 break;
@@ -58,18 +61,22 @@ bool NetworkED::isPacketOk()
             case ROLL_DICE_FOR_LOOT:
                 e = "^[1-6]$";
                 break;
-            /*case GUARD_MOVEMENT:
-                aux = s[0];
+            case GUARD_MOVEMENT:
+                /*aux = s[0];
                 if(aux >= 0x04)
                 {
                     s = s.substr(1);
                     for(unsigned int i = 0; i < s.size(); i++)
                         if(s[i] == 0xFF) s[i] = 'X';       //this is to make the regex easier
                     e = "(([A-D][1-4]F[1-3])+[X]?)+";
-                }
-                break;*/
-            default:
+                }*/
+                cout << "THE GUARD PACKET WAS: " << s << endl;
+                e = /*"[\x04-\xFF]*/"(([A-D][1-4]F[1-3])+[\xFF]?)+";
+                s = s.substr(1);
                 retVal = true;
+                break;
+            default:
+                retVal = false;
                 break;
         }
         if(regex_match(s,e))

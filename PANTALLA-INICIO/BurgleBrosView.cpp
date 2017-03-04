@@ -590,7 +590,6 @@ void BurgleBrosView::updateGuards()
             if(onZoom && i == guardZoomed) it_cards->setZoom(true);
             else it_cards->setZoom(false);
             it_cards->setTopOfNonVisibleDeck(info_guard.isTopOfNotShownDeckVisible, imageLoader.getImageP(info_guard.topOfNotShownDeck));
-            it_cards->setTopOfNonVisibleDeck(true, imageLoader.getImageP(info_guard.topOfNotShownDeck));
 
             it_cards->clearShownCards();
             while(!info_guard.shownDeck.empty())

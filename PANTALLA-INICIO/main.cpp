@@ -1,12 +1,6 @@
 #include <cstdlib>
-#include "BurgleBrosSound.h"
-#include "BurgleBrosModel.h"
-#include "BurgleBrosController.h"
-#include "BurgleBrosView.h"
+
 #include "LibsInit.h"
-#include "GUI.h"
-#include "CView.h"
-#include "cController.h"
 #include "BurgleBrosWrapper.h"
 using namespace std;
 
