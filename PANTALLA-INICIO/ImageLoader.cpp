@@ -385,9 +385,42 @@ bool ImageLoader::loadRules()
     }
     return retVal;
 }
- 
+
+void ImageLoader::destroyImages() {
+
+    for(auto &tile : tiles)
+            if(tile.second != nullptr ) al_destroy_bitmap(tile.second);
+    for(auto &safeNumber : safeNumbers)
+        if(safeNumber.second != nullptr) al_destroy_bitmap(safeNumber.second);
+    for(auto &guardCard: guardCards)
+        if(guardCard != nullptr) al_destroy_bitmap(guardCard.second);
+    for(auto &loot : loots)
+        if(loot.second != nullptr) al_destroy_bitmap(loot.second);
+    for(auto &buton : button)
+        if(buton.second != nullptr) al_destroy_bitmap(buton.second);
+    for(auto &token : tokens)
+        if(token.second != nullptr) al_destroy_bitmap(token.second);
+    for(auto &characterCard : characterCards)
+        if(characterCard.second != nullptr) al_destroy_bitmap(characterCard.second);
+    for(auto &characte : character)
+        if(characte != nullptr) al_destroy_bitmap(character.second);
+    for(auto &rule : rules)
+        if(rule.second != nullptr) al_destroy_bitmap(rule.second);
+    
+    if(tileBack != nullptr ) al_destroy_bitmap(tileBack);
+    if(guardBack != nullptr) al_destroy_bitmap(guardBack);
+    if(guard != nullptr ) al_destroy_bitmap(guard);
+    if(lootBack != nullptr) al_destroy_bitmap(lootBack);
+    
+    for(int i =0; i< DICE_MAX_NUMBER; i++)
+    {
+        if(whiteDices[i] != nullptr) al_destroy_bitmap(whiteDices[i]);
+        if(redDices[i] != nullptr) al_destroy_bitmap(redDices[i]);
+    }
+}
 
 
 ImageLoader::~ImageLoader()
 {
+    destroyImages();
 }
