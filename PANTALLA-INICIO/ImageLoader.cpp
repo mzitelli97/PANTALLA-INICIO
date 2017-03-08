@@ -403,9 +403,9 @@ void ImageLoader::destroyImages() {
     for(auto &characterCard : characterCards)
         if(characterCard.second != nullptr) al_destroy_bitmap(characterCard.second);
     for(auto &characte : character)
-        if(characte != nullptr) al_destroy_bitmap(character.second);
-    for(auto &rule : rules)
-        if(rule.second != nullptr) al_destroy_bitmap(rule.second);
+        if(characte != nullptr) al_destroy_bitmap(characte.second);
+    for(auto &rul : rules)
+        if(rul != nullptr) al_destroy_bitmap(rul);
     
     if(tileBack != nullptr ) al_destroy_bitmap(tileBack);
     if(guardBack != nullptr) al_destroy_bitmap(guardBack);
