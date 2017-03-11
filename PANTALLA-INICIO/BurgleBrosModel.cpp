@@ -444,14 +444,37 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
     }
     else if(msgsToShow[2]==lavatory[2])
     {
-        if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+        if(status==WAITING_FOR_USER_CONFIRMATION)
         {
-            movingPlayer->decLives();
-            if(movingPlayer->getcurrentActions() == 0 && getPlayerOnTurn() == THIS_PLAYER) //SI es de este player justo cuando termina su turno, se tiene que enviar el paquete del guardia.
-                    guardHasToMove=true;
+            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+            {
+                movingPlayer->decLives();
+                if(movingPlayer->getcurrentActions() == 0 && getPlayerOnTurn() == THIS_PLAYER) //SI es de este player justo cuando termina su turno, se tiene que enviar el paquete del guardia.
+                        guardHasToMove=true;
+            }
+            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
+                tokens.useLavatoryToken();
         }
-        else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
-            tokens.useLavatoryToken();
+        else if(status==DESPUES_VEMOS_A)
+        {
+            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+                myPlayer.decLives();
+            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
+                tokens.useLavatoryToken();
+        }
+        else if(DESPUES_VEMOS_B)
+        {
+            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+                otherPlayer.decLives();
+            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
+                tokens.useLavatoryToken();
+            nmbrOfPendingQuestions--; 
+            if(nmbrOfPendingQuestions==0)
+            {
+                status=WAITING_FOR_ACTION;
+                //endGuardMove();
+            }    
+        }    
     }
     else if(msgsToShow[0]==askForLoot[0])       //Si se estaba esperando por la respuesta a un ask for loot
     {
