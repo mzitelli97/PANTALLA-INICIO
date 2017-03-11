@@ -657,7 +657,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             {
               //  modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
                // networkInterface->sendGMove(guardMovement);     //Se envía esa información.
-                handleGuardMove();
+                handleGuardMove(true);
                 resetTimeoutTimer=true;
             }
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
@@ -729,7 +729,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
         case GUARD_MOVEMENT:
             networkEvent->getGuardMovement(guardMovement);  //Obtengo el movimiento del guardia
             modelPointer->setGuardWholePath(guardMovement);
-            handleGuardMove();
+            handleGuardMove(false);
             /*modelPointer->guardMove(); //Y hago que el modelo lo procese.
             if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
             {
@@ -892,7 +892,7 @@ void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
     }
     
 }
-void BurgleBrosController::handleGuardMove()
+void BurgleBrosController::handleGuardMove(bool sendPacket)
 {
     while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B )
     {    
@@ -910,7 +910,7 @@ void BurgleBrosController::handleGuardMove()
             }    
         }
     }    
-    if(modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving())
+    if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && sendPacket)
         networkInterface->sendGMove(modelPointer->getWGuardPath());
     /*list<GuardMoveInfo> guardMovement;
     modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
