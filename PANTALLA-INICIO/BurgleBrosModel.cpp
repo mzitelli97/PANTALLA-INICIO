@@ -486,7 +486,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             loots.setNewLootOwner(lootOfferedOrAskedFor,playerOnTurn);
         }
     }
-    else if(msgsToShow[0]== offerLoot[0])
+    else if(msgsToShow[0] == offerLoot[0])
     {
         if(userChoice==ACCEPT_TEXTB)
         {    
