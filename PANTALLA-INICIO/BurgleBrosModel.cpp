@@ -1417,8 +1417,7 @@ void BurgleBrosModel::guardMove()
 {
     if(gWholePath.first.empty())    //Si se mandó una lista vacía, se hace el movimiento del guardia
     {
-        gWholePath.first = generateGuardPath();
-        gWholePath.second = gWholePath.first.begin();
+        setGuardWholePath(generateGuardPath());
     }
     copyGuardMove();
     //guardFinishedMoving=true;
@@ -1428,6 +1427,7 @@ void BurgleBrosModel::guardMove()
 void BurgleBrosModel::setGuardWholePath(list<GuardMoveInfo> wholePath)
 {
     this->gWholePath.first = wholePath;
+    this->gWholePath.second=gWholePath.first.begin();
 }
 
 bool BurgleBrosModel::anotherLavatoryInGPath()
@@ -1624,6 +1624,7 @@ list<GuardMoveInfo> BurgleBrosModel::generateGuardPath()
         /*Si había un crow token en el tile donde se encuentra*/
         if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
             guardMoving->decSteps();//si no habia steps la funcion no hace nada
+        return retVal;
     }
 }
 void addWithoutRepeating(list<CardLocation> &alarmList, CardLocation item)
