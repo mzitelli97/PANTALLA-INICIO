@@ -462,7 +462,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
                 tokens.useLavatoryToken();
         }
-        else if(DESPUES_VEMOS_B)
+        else if(status == DESPUES_VEMOS_B)
         {
             if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
                 otherPlayer.decLives();
