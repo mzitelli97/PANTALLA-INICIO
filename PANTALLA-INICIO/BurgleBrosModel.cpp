@@ -1110,7 +1110,7 @@ void BurgleBrosModel::checkTurns()
         playerSpentFreeAction=false;
         board.deActivateMotion();
     }
-    else if(isGuardsTurn() && guardFinishedMoving==true)
+    else if(isGuardsTurn() && !isGuardMoving())
     {
         BurgleBrosPlayer *nextPlayerOnTurn=getP2OtherPlayer(playerOnTurnBeforeGuardMove); //El jugador que termina ahora el turno va a ser el que no terminó antes que el guardia
         if(nextPlayerOnTurn->isOnHelicopter())
