@@ -1421,6 +1421,8 @@ void BurgleBrosModel::setGuardWholePath(list<GuardMoveInfo> wholePath)
 {
     this->gWholePath.first = wholePath;
     this->gWholePath.second=gWholePath.first.begin();
+    BurgleBrosGuard *guardMoving=&guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor];
+    guardMoving->setSteps(tokens.howManyAlarmsOnFloor(guardMoving->getPosition().floor) + guardMoving->getDiceNumber());
 }
 
 bool BurgleBrosModel::anotherLavatoryInGPath()
@@ -1448,6 +1450,7 @@ void BurgleBrosModel::endGuardMove()
     {
         if(gWholePath.second->meaning==GUARD_STEP_TO)
         {
+            guardMoving->decSteps();
             guardMoving->setPosition(gWholePath.second->cardLocation);
             if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
                 tokens.turnOffAlarm(guardMoving->getPosition());
@@ -1474,7 +1477,7 @@ void BurgleBrosModel::endGuardMove()
             if(board.getCardType(myPlayer.getPosition()) == FOYER && board.isCardVisible(myPlayer.getPosition()) && board.adjacentCards(myPlayer.getPosition(), guardMoving->getPosition()))
                 myPlayer.decLives();
             if(board.getCardType(otherPlayer.getPosition()) == FOYER && board.isCardVisible(otherPlayer.getPosition()) && board.adjacentCards(otherPlayer.getPosition(), guardMoving->getPosition()))
-                otherPlayer.decLives();   
+                otherPlayer.decLives();  
         }
         else if(gWholePath.second->meaning==GUARD_CARD_PICK)
             guardMoving->drawCardTarget(gWholePath.second->cardLocation);
@@ -1521,6 +1524,7 @@ void BurgleBrosModel::copyGuardMove()
     {
         if(gWholePath.second->meaning==GUARD_STEP_TO)
         {
+            guardMoving->decSteps();
             guardMoving->setPosition(gWholePath.second->cardLocation);
             if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
                 tokens.turnOffAlarm(guardMoving->getPosition());
