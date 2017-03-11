@@ -23,7 +23,7 @@ public:
 	bool isCardVisible(CardLocation location);
 	unsigned int getCardSafeNumber(CardLocation location);
         bool isSafeCracked(unsigned int floor);
-        bool setSafeCracked(unsigned int floor);
+        void setSafeCracked(unsigned int floor);
         bool isAWallBetween(CardLocation tile1, CardLocation tile2);            
 	CardName getCardType(CardLocation location);                                    //Devuelve de que tipo era una carta
         CardLocation getOtherServiceDuctPos(CardLocation secretDoor1);                  //Dada una secret Door, devuelve la posición de la otra.

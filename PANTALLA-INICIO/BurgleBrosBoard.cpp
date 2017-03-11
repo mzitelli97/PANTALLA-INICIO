@@ -203,7 +203,7 @@ bool BurgleBrosBoard::isSafeCracked(unsigned int floor)
 {
     return floors[floor].isSafeCracked();
 }
-bool BurgleBrosBoard::setSafeCracked(unsigned int floor)
+void BurgleBrosBoard::setSafeCracked(unsigned int floor)
 {
     floors[floor].crackSafe();
 }
