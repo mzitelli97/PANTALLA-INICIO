@@ -207,24 +207,24 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
         retVal.push_back(toPush);
     }
     toPush.token=DOWNSTAIRS_TOKEN;
-    for(vector<CardLocation>::iterator it=downstairsTokens.begin(); it!=downstairsTokens.end(); it++)
+    for(auto& token : downstairsTokens)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
     
     toPush.token=ALARM_TOKEN;
-    for(list<CardLocation>::iterator it=auxList.begin(); it!=auxList.end(); it++)
+    for(auto& token : auxList)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
     
     auxList = tokens.getCrackedCards();
     toPush.token= SAFE_TOKEN;
-    for(list<CardLocation>::iterator it=auxList.begin(); it!=auxList.end(); it++)
+    for(auto& token : auxList)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
     pair<CardLocation, unsigned int> temp = tokens.getStealthTokensOnFloor();
@@ -238,9 +238,9 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
     //keypad tokens
     auxList= tokens.getKeypadTokens();
     toPush.token= KEYPAD_TOKEN;
-    for(list<CardLocation>::iterator it=auxList.begin(); it!=auxList.end(); ++it)    
+    for(auto& token : auxList)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
 
@@ -281,7 +281,7 @@ list<Info2DrawLoot> BurgleBrosModel::getInfo2DrawLoot()
 
 Info2DrawGuard BurgleBrosModel::getInfo2DrawGuard(unsigned int floor)
 {
-    Info2DrawGuard info;//CONTROLAR ERROR
+    Info2DrawGuard info;
     if(floor<=2)
     { 
         info.dieNumber=guards[floor].getDiceNumber();
@@ -1462,9 +1462,9 @@ void BurgleBrosModel::makeGuardMove(list<GuardMoveInfo> &guardMovement)
                 tokens.turnOffAlarm(guardMoving->getPosition());
             list<CardLocation> cardsTaken=setGuardsNewPath(guardFloor); //Setea un nuevo path y devuelve la lista de cartas que tomó del mazo. ( pueden ser 1 o 2 si tomo una carta que apuntaba a donde estaba parado).
             auxiliarInfoToReport.meaning=GUARD_CARD_PICK;   
-            for(list<CardLocation>::iterator it=cardsTaken.begin(); it!=cardsTaken.end();it++)
+            for(auto& card : cardsTaken)
             {
-                auxiliarInfoToReport.cardLocation=*it;
+                auxiliarInfoToReport.cardLocation=card;
                 guardMovement.push_back(auxiliarInfoToReport);  //Guardo que cartas se tomaron del mazo.
             }
         }
@@ -1586,9 +1586,9 @@ list<GuardMoveInfo> BurgleBrosModel::generateGuardPath()
             }
             list<CardLocation> cardsTaken=setGuardsNewPath(alarmList, guardMoving); //Setea un nuevo path y devuelve la lista de cartas que tomó del mazo. ( pueden ser 1 o 2 si tomo una carta que apuntaba a donde estaba parado).
             auxiliarInfoToReport.meaning=GUARD_CARD_PICK;   
-            for(list<CardLocation>::iterator it=cardsTaken.begin(); it!=cardsTaken.end();it++)
+            for(auto& card : cardsTaken)
             {
-                auxiliarInfoToReport.cardLocation=*it;
+                auxiliarInfoToReport.cardLocation=card;
                 retVal.push_back(auxiliarInfoToReport);  //Guardo que cartas se tomaron del mazo.
             }
         }
@@ -1617,23 +1617,23 @@ list<CardLocation> BurgleBrosModel::setGuardsNewPath(list<CardLocation> &alarmLi
     list<AuxStruct> alarmsOnSameFloor;
     CardLocation newTargetLocation;
     unsigned int aux=0;
-    for(list<CardLocation>::iterator it=alarmList.begin(); it !=alarmList.end(); it++)
+    for(auto& alarm : alarmList)
     {
         AuxStruct aux;
-        if(it->floor == p2Guard->getPosition().floor)
+        if(alarm.floor == p2Guard->getPosition().floor)
         {
-             aux.target=*it;
+             aux.target=alarm;
              alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
         }
     }
     if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
     {
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++)
-            it->length=board.getShortestPathLength(p2Guard->getPosition(), it->target);    //obtengo el largo de cada camino.
+        for(auto& alarm : alarmsOnSameFloor)
+            alarm.length=board.getShortestPathLength(p2Guard->getPosition(), alarm.target);    //obtengo el largo de cada camino.
         alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++) 
+        for(auto& alarm : alarmsOnSameFloor)
         {
-            if(it->length == alarmsOnSameFloor.front().length)
+            if(alarm.length == alarmsOnSameFloor.front().length)
                 aux++;  //Cuento cuantas alarmas estan a la misma distancia.
         }
         if(aux==1)  //Si hay una que este a la minima distancia
@@ -1666,23 +1666,23 @@ list<CardLocation> BurgleBrosModel::setGuardsNewPath(unsigned int floor)
     list<AuxStruct> alarmsOnSameFloor;
     CardLocation newTargetLocation;
     unsigned int aux=0;
-    for(list<CardLocation>::iterator it=alarmList.begin(); it !=alarmList.end(); it++)
+    for(auto& alarm : alarmList)
     {
         AuxStruct aux;
-        if(it->floor == floor)
+        if(alarm.floor == floor)
         {
-             aux.target=*it;
+             aux.target=alarm;
              alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
         }
     }
     if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
     {
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++)
-            it->length=board.getShortestPathLength(guards[floor].getPosition(), it->target);    //obtengo el largo de cada camino.
+        for(auto& alarm : alarmsOnSameFloor)
+            alarm.length=board.getShortestPathLength(guards[floor].getPosition(), alarm.target);    //obtengo el largo de cada camino.
         alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++) 
+        for(auto& alarm : alarmsOnSameFloor)
         {
-            if(it->length == alarmsOnSameFloor.front().length)
+            if(alarm.length == alarmsOnSameFloor.front().length)
                 aux++;  //Cuento cuantas alarmas estan a la misma distancia.
         }
         if(aux==1)  //Si hay una que este a la minima distancia
@@ -1714,23 +1714,23 @@ list<CardLocation> BurgleBrosModel::setGuardsNewPath(unsigned int floor, CardLoc
     list<AuxStruct> alarmsOnSameFloor;
     CardLocation newTargetLocation;
     unsigned int aux=0;
-    for(list<CardLocation>::iterator it=alarmList.begin(); it !=alarmList.end(); it++)
+    for(auto& alarm : alarmList)
     {
         AuxStruct aux;
-        if(it->floor == floor)
+        if(alarm.floor == floor)
         {
-             aux.target=*it;
+             aux.target=alarm;
              alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
         }
     }
     if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
     {
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++)
-            it->length=board.getShortestPathLength(guards[floor].getPosition(), it->target);    //obtengo el largo de cada camino.
+        for(auto& alarm : alarmsOnSameFloor)
+            alarm.length=board.getShortestPathLength(guards[floor].getPosition(), alarm.target);    //obtengo el largo de cada camino.
         alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++) 
+        for(auto& alarm : alarmsOnSameFloor)
         {
-            if(it->length == alarmsOnSameFloor.front().length)
+            if(alarm.length == alarmsOnSameFloor.front().length)
                 aux++;  //Cuento cuantas alarmas estan a la misma distancia.
         }
         if(aux==1)  //Si hay una que este a la minima distancia
@@ -1855,12 +1855,6 @@ void BurgleBrosModel::triggerAlarm(CardLocation tile)
         //soundManager->playSoundEffect(ALARM_TRIGGERED);
     }
 }
-
-void BurgleBrosModel::toggleVol()
-{
-    //soundManager->toggleMute();
-}
-
 
 BurgleBrosModel::~BurgleBrosModel()
 {

@@ -15,11 +15,12 @@ ItemInfo
 LayerItem::itemFromClick(Point point) {
     
     ItemInfo retVal = {NO_ITEM_CLICK, nullptr};
-    list<GroupItem>::iterator it_groups;
     
-    for(it_groups=Groups.begin(); it_groups != Groups.end() && retVal.type == NO_ITEM_CLICK; it_groups++)
-        retVal=it_groups->itemFromClick(point);
-        
+    for(auto& group : Groups)
+    {
+        retVal=group.itemFromClick(point);
+        if(retVal.type != NO_ITEM_CLICK) break; //si lo encuentro, paro
+    }
     return retVal;
 }
 
@@ -37,27 +38,23 @@ LayerItem::accessGraphicItems(unsigned int itemType) {
 void 
 LayerItem::setZoom() {
     
-    list<GroupItem>::iterator it_groups;
-    for(it_groups=Groups.begin(); it_groups!=Groups.end(); it_groups++)
-        it_groups->setZoom();
+    for(auto& item : Groups)
+        item.setZoom();
     
 }
 
 void
 LayerItem::resetZoom() {
    
-    list<GroupItem>::iterator it_groups;
-    for(it_groups=Groups.begin(); it_groups!=Groups.end(); it_groups++)
-        it_groups->resetZoom();
+    for(auto& item : Groups)
+        item.resetZoom();
 }
 
 void
 LayerItem::erase() {
 
-    list<GroupItem>::iterator it_groups;
-    
-    for(it_groups=Groups.begin();it_groups!= Groups.end();it_groups++)
-        it_groups->erase();
+    for(auto& item : Groups)
+        item.erase();
     
     Groups.clear();
     
@@ -77,11 +74,9 @@ LayerItem::erese(unsigned int itemList) {
 
 void LayerItem::draw() {
     
-    list<GroupItem>::iterator it_groups;
-    for(it_groups=Groups.begin(); it_groups!=Groups.end(); it_groups++)
+    for(auto& item : Groups)
     {
-        it_groups->draw();
-  //      std::cout<<"entre a grupo \n";
+        item.draw();
     }
 }
 

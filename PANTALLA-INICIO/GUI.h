@@ -2,7 +2,6 @@
 #define GUI_H
 #include <list>
 #include "Controller.h"
-#include "NetworkInterface.h"
 #include "EventGenerator.h"
 
 

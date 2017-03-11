@@ -51,7 +51,7 @@ CView::CView(CModel * model)
                         al_draw_text(auxFont,TEXT_COLOR,BOX_MIN_X +BOX_WIDTH/2,BOX_MIN_Y/1.1 + SPACE_Y+BOX_HEIGHT-BOX_HEIGHT,ALLEGRO_ALIGN_CENTER,"ENTER YOUR NAME:");
                         al_destroy_font(auxFont);
                         
-                        font = al_load_font(PATH_FONT,BOX_HEIGHT/1.2, 0);
+                        font = al_load_font(PATH_FONT,BOX_HEIGHT/1.4, 0);
                         if(font != nullptr)
                         {
                             //Creo las cajas de texto
@@ -150,8 +150,8 @@ void CView::update()
             
     }
     //Draw all the items
-    for(it = gList.begin(); it != gList.end(); it++)
-        (*it)->draw();
+    for(auto& item : gList)
+        item->draw();
     al_flip_display();
 }
 
@@ -159,12 +159,11 @@ void CView::update()
 ItemInfo CView::itemFromClick(Point point)
 {
     ItemInfo retVal;
-    list<GraphicItem *>::iterator it;
-    for(it = gList.begin(); it != gList.end(); it++)
+    for(auto& item : gList)
     {
-        if((*it)->isPointIn(point))
+        if(item->isPointIn(point))
         {
-            retVal = (*it)->IAm();
+            retVal = item->IAm();
             break;
         }
     }
@@ -187,9 +186,8 @@ CView::~CView()
     if(error != true)   // si no hay error 
     {
         al_destroy_font(font);
-        list<GraphicItem*>::iterator it;
-        for(it = gList.begin(); it != gList.end(); it++)
-            if(*it != nullptr) delete *it;
+        for(auto& item : gList)
+            if(item != nullptr) delete item;
         al_destroy_bitmap(backScreen);
         al_destroy_display(display);
     }

@@ -133,9 +133,9 @@ void BurgleBrosPlayer::deattachLoot(Loot loot)
 bool BurgleBrosPlayer::hasLoot(Loot loot)
 {
     bool retVal=false;
-    for(list<Loot>::iterator it=lootCarried.begin(); it != lootCarried.end(); it++)
+    for(auto& l : lootCarried)
     {
-        if(*it == loot)
+        if(l == loot)
         {
             retVal=true;
             break;

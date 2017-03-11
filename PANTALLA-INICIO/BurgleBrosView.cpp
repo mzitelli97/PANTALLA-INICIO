@@ -160,10 +160,8 @@ BurgleBrosView::~BurgleBrosView()
 
 void BurgleBrosView::reset()
 {
-    list<LayerItem>::iterator it_layers;
-    
-    for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-        it_layers->erase();
+    for(auto& layer : graphics)
+        layer.erase();
     graphics.clear();
     
     resetZoom();
@@ -176,11 +174,10 @@ void BurgleBrosView::reset()
 
 void BurgleBrosView::resetZoom() {
 
-    list<LayerItem>::iterator it_layers;
     onZoom=false;
     
-    for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-        it_layers->resetZoom();
+    for(auto& layer : graphics)
+        layer.resetZoom();
 }
 
 
@@ -191,9 +188,7 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     Info2DrawGuard infoGuard[3];
     
     for(int i = 0; i < BOARD_STANDARD_FLOORS; i++)
-    {
         infoGuard[i] = model->getInfo2DrawGuard(i);
-    }
     list<Info2DrawLoot> infoLoot= model-> getInfo2DrawLoot();
     Info2DrawPlayer infoThisPlayer= model->getInfo2DrawPlayer(THIS_PLAYER);
     Info2DrawPlayer infoOtherPlayer= model->getInfo2DrawPlayer(OTHER_PLAYER);
@@ -384,18 +379,15 @@ void BurgleBrosView::update()
     updateGuards();
     updateExtraDices();
     
-    
     //after=clock();
     //cout << "Update tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC<< " segundos."<<endl; 
     
-    
     /*Draw all*/
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-    list<LayerItem>::iterator it_layers;
     if(!showingHelp)
     {
-       for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-            it_layers->draw();
+       for(auto& layer : graphics)
+            layer.draw();
     }
     else
         help.draw();
@@ -446,14 +438,13 @@ BurgleBrosView::updateTokens()
     
     map<CardLocation, unsigned int> tokensCount;
     
-    list<Info2DrawTokens>::iterator it;
-    for( it = info_tokens.begin(); it != info_tokens.end(); it++)
+    for(auto& info : info_tokens)
     {
-        GraphicToken * token = new GraphicToken(imageLoader.getImageP(it->token));
+        GraphicToken * token = new GraphicToken(imageLoader.getImageP(info.token));
         token->setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
-        if(onZoom && it->position.floor == floorZoomed)
+        if(onZoom && info.position.floor == floorZoomed)
             token->setZoom(true);
-        token->setPosition(it->position, tokensCount[it->position]++);
+        token->setPosition(info.position, tokensCount[info.position]++);
         it_itemType->atachGraphicsItem(token);
     }
 }
@@ -626,12 +617,10 @@ void BurgleBrosView::updateExtraDices()
 
 list<GraphicItem *>::iterator BurgleBrosView::accessGraphicItems(Layers layer, unsigned int itemType)
 {
-    
     list<LayerItem>::iterator it_layers= graphics.begin();
     advance(it_layers,layer);
     return it_layers->accessGraphicItems(itemType);
 }
-
 
 list<GroupItem>::iterator BurgleBrosView::deleteList(Layers layer, unsigned int itemList)
 {
@@ -666,12 +655,11 @@ void BurgleBrosView::showMenu(list<string> options, Point click, CardLocation ti
     list<GroupItem>::iterator menu_items;
     menu_items = deleteList(THIRD_LAYER,(unsigned int) MENU_ITEM_LIST);
     
-    list<string>::iterator it;
     int i = 0;
-    for( it = options.begin(); it != options.end(); i++, it++)
+    for(auto op : options)
     {
-        GraphicMenuItem * option_i = new GraphicMenuItem(click, tile, i);
-        option_i->setOption(*it);
+        GraphicMenuItem * option_i = new GraphicMenuItem(click, tile, i++);
+        option_i->setOption(op);
         option_i->setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
         if(onZoom) option_i->toggleZoom();
         menu_items->atachGraphicsItem((GraphicItem *) option_i);
@@ -704,10 +692,8 @@ void BurgleBrosView::eraseMenu()
 void BurgleBrosView::setZoom() {
     
     onZoom ^= true;
-    list<LayerItem>::iterator it_layer;
-    
-    for(it_layer=graphics.begin();it_layer != graphics.end();it_layer++)
-        it_layer->setZoom();
+    for(auto& layer : graphics)
+        layer.setZoom();
        
 }
 

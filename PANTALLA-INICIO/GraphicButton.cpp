@@ -44,21 +44,12 @@ GraphicButton::GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * butto
     {
         case QUIT_BUTTON:
             center.x=QUIT_CENTER_X;
-            //center.y=QUIT_CENTER_Y;
-            //this->width=BUTTON_WIDTH;
-            //this->height=BUTTON_HEIGHT; 
             break;
         case HELP_BUTTON:
             center.x = HELP_CENTER_X;
-            //center.y = HELP_CENTER_Y;
-            //this->width = BUTTON_WIDTH;
-            //this->height = BUTTON_HEIGHT;
             break;
         case MUTE_BUTTON:
             center.x = MUTE_CENTER_X;
-            //center.y = MUTE_CENTER_Y;
-            //this->width = BUTTON_WIDTH;
-            //this->height = BUTTON_HEIGHT;
             break;
         case PASS_BUTTON:
             center.x=PASS_CENTER_X;

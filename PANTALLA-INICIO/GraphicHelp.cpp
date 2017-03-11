@@ -51,7 +51,7 @@ ItemInfo GraphicHelp::IAm() {
 }
 
 void GraphicHelp::draw() {
-    //Se supone que todas las imgs tienen el mismo height
+    //todas las imgs tienen el mismo height
     int sy= currentScroll * (int)((double)(RULES_NMBR_OF_PAGES * al_get_bitmap_height(allImgs[0])- height) / ((double)MOUSE_Z_RESOL_REQUIRED)) ;
     int currPhoto = sy/al_get_bitmap_height(allImgs[0]);
     int currDisplacement=sy%al_get_bitmap_height(allImgs[0]);

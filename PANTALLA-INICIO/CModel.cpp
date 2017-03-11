@@ -80,22 +80,5 @@ bool CModel::isAnEntryEmpty()
 }
 
 
-/*textSelected operator++(const textSelected& text)
-{
-    textSelected retVal = text;
-    if(text == MY_IP) retVal = OTHER_IP;
-    else if(text == OTHER_IP) retVal = MY_NAME;
-    return retVal;
-}
-
-textSelected operator--(const textSelected& text)
-{
-    textSelected retVal = text;
-    if(text == OTHER_IP) retVal = MY_IP;
-    else if(text == MY_NAME) retVal = OTHER_IP;
-    return retVal;
-}*/
-
-
 
 

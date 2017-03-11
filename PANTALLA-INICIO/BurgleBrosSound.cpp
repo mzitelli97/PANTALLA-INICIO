@@ -1,5 +1,3 @@
-#include <list>
-
 #include "BurgleBrosSound.h"
 #define MUTE
 
@@ -12,7 +10,6 @@ BurgleBrosSound::BurgleBrosSound() {
 #ifndef MUTE
     if(initOK)
          test=al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
-    //cout<<(unsigned int)test;
 #endif   
     onMute = false;
 }

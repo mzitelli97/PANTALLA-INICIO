@@ -43,8 +43,6 @@ void GraphicPlayer::setLocation(CardLocation location)
             height = max.y- min.y;
         }
     }
-    //else
-        //image = nullptr;        //this is for not draw the player when it get to da choppa
 }
 
 GraphicPlayer::~GraphicPlayer() {

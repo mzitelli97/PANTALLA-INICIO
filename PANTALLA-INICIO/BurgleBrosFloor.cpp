@@ -23,13 +23,13 @@ void BurgleBrosFloor::initFloor(unsigned int whichFloor, std::vector<CardName> &
 	{
 		unsigned int row = 0;
 		unsigned int column = 0;
-		for (std::vector<CardName>::iterator it = orderedCards.begin(); it != orderedCards.end(); ++it)
+		for (auto card : orderedCards)
 		{
 			CardLocation auxLocation;
 			auxLocation.floor = floorNumber;
 			auxLocation.row = row;
 			auxLocation.column = column;
-			BurgleBrosCard auxCard(*it, auxLocation);
+			BurgleBrosCard auxCard(card, auxLocation);
 			cards[auxLocation.row][auxLocation.column] = auxCard;
 			if (column == (FLOOR_COLUMNS - 1))
 			{

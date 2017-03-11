@@ -260,9 +260,9 @@ bool BurgleBrosGuard::drawCardTarget(CardLocation targetCard)
         else if(it!=cardDeck.begin()) //salvo para la primer carta, igual esto no debería pasar nunca si esta bien hecho de afeura.
         {   //Si pase por una carta que esta sincronizada la tengo que hacer avanzar 1 lugar en el mazo, para esto se trata este if.
             bool itsAsincroCard=false;
-            for(list<CardLocation>::iterator sincronizedCards=cardSincronized.begin(); sincronizedCards!=cardSincronized.end(); sincronizedCards++) //si no era la que saqué, recorro las cartas sincronizadas,
+            for(auto& card : cardSincronized)
             {
-                if(*it==*sincronizedCards)      //Me fijo si era una de las cartas que estaban sincronizadas.
+                if(*it==card)      //Me fijo si era una de las cartas que estaban sincronizadas.
                     itsAsincroCard=true;
             }
             if(itsAsincroCard)
@@ -292,12 +292,12 @@ static void list2Vector(list<CardLocation> &mylist, vector<CardLocation> &myvect
     myvector.clear();
     myvector.reserve(mylist.size());
     list<CardLocation>::iterator it;
-    for (it=mylist.begin(); it != mylist.end(); ++it)
-        myvector.push_back(*it);     
+    for(auto& item : mylist)
+        myvector.push_back(item);     
 }
 static void vector2List(vector<CardLocation> &myvector, list<CardLocation> &mylist )
 {
     mylist.clear();
-    for (vector<CardLocation>::iterator it=myvector.begin(); it != myvector.end(); ++it)
-        mylist.push_back(*it); 
+    for(auto& item : myvector)
+        mylist.push_back(item); 
 }

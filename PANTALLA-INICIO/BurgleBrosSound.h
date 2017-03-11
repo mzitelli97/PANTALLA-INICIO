@@ -14,7 +14,6 @@
 #ifndef BURGLEBROSSOUND_H
 #define BURGLEBROSSOUND_H
 
-//#include "SoundManager.h"
 #include "Observer.h"
 #include "BurgleBrosModel.h"
 #include <allegro5/allegro5.h>
@@ -25,8 +24,8 @@
 #define MUSIC_FOLDER "Music/"
 #define SOUNDS_FOLDER "Sounds/"
 
-
-#define THEME_1 "Pink panther"
+#define THEME_1 "Burgle Music"
+//#define THEME_1 "Pink panther"
 
 #define THEMES_EXTENSION ".wav"
 

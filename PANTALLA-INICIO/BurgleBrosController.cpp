@@ -282,7 +282,6 @@ string BurgleBrosController::processOtherPlayerBasicChoice(vector<string> &messa
 }
 void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
 {
-    
     if(mouseEvent!=nullptr && status!=INITIALIZING)
     {
         MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);

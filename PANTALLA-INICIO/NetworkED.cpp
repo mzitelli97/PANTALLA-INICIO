@@ -61,7 +61,7 @@ bool NetworkED::isPacketOk()
                 e = "^[1-6]$";
                 break;
             case GUARD_MOVEMENT:
-                if(s[0] >= 4)
+                if(s[0] >= 1)
                 {
                     e = "(([A-D][1-4]F[1-3])+[\xFF]?)+";
                     s = s.substr(1);

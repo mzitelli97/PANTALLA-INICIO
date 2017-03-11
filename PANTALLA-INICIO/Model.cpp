@@ -30,7 +30,6 @@ void Model::attach(Observer * view)
 
 void Model::notifyAllObservers() 
 {
-    std::list<Observer *>::iterator it;
-    for(it = observers.begin(); it != observers.end(); it++)
-        (*it)->update();
+    for(auto& ob : observers)
+        ob->update();
 }

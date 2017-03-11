@@ -12,7 +12,6 @@
  */
 
 #include "GraphicToken.h"
-//#define SEPARATION (totalWidth/135.0)
 
 GraphicToken::GraphicToken() {
 }

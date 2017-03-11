@@ -12,7 +12,6 @@
  */
 
 #include "GraphicTile.h"
-#include "Observer.h"
 
 GraphicTile::GraphicTile(ALLEGRO_BITMAP * front,ALLEGRO_BITMAP * back,CardLocation location,unsigned int width,unsigned int height)
 {

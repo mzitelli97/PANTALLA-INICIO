@@ -80,8 +80,8 @@ void BurgleBrosDices::addDieToSafe(unsigned int safeFloor)
 }
 void BurgleBrosDices::resetKeypadsDice()
 {
-    for(map<CardLocation,unsigned int>::iterator it = diceForKeypad.begin(); it != diceForKeypad.end(); it++)
-        it->second=INIT_KEYPAD_DICE_COUNT;
+    for(auto& item : diceForKeypad)
+        item.second=INIT_KEYPAD_DICE_COUNT;
     for(unsigned int i=0; i<MAX_NMBR_OF_EXTRA_DICES  ; i++)
         dice[i]=NO_DIE;
 }

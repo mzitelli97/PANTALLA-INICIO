@@ -120,12 +120,12 @@ void GraphicGuardCards::setPosition()
 
 void GraphicGuardCards::drawOnZoom()
 {
-    list<ALLEGRO_BITMAP *>::iterator it;
     int i = 0;
-    for(it = cards.begin(); it != cards.end(); it++, i++)
+    for(auto& item : cards)
     {
-        al_draw_scaled_bitmap(*it,0,0,al_get_bitmap_width(*it),al_get_bitmap_height(*it),
+        al_draw_scaled_bitmap(item,0,0,al_get_bitmap_width(item),al_get_bitmap_height(item),
                 min.x +i%4 * width, min.y + (int)i/4 * height, width, height, 0);
+        i++;
     }
     al_draw_rounded_rectangle(min.x,min.y,max.x,max.y,RADIX,RADIX,RED,RADIX);
 }
