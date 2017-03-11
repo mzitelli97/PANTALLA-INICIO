@@ -114,7 +114,6 @@ void BurgleBrosGuard::pushCardToTheBottom(CardLocation thisCard)
 }   
 void BurgleBrosGuard::pushCardToTheTop(CardLocation thisCard)
 {
-    unsigned int newPos = NUMBER_OF_CARDS_TO_PLAY-shownDeck.size(); //Por ejemplo si saqué 6 cartas, jugabamos con 10, su posición nueva va a ser la 4:
     list<CardLocation>::iterator it1;
     for(it1=cardDeck.begin(); it1!=cardDeck.end();it1++)        //busco la carta del deck 
     {
@@ -232,7 +231,6 @@ bool BurgleBrosGuard::drawCardTarget(CardLocation targetCard)
     bool retVal=false;
     list<CardLocation>::iterator it;
     list<CardLocation>::iterator auxIt;
-    CardLocation aux;
     if(shownDeck.size() == NUMBER_OF_CARDS_TO_PLAY) //Si me falta 1 para usar todas las cartas con las que estoy jugando ( 10 para 2 personas) se baraja de vuelta al sacar la primera
     {    
         initCardDeck();                             //Barajo de vuelta 

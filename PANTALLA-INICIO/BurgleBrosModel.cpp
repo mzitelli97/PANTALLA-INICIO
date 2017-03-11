@@ -209,7 +209,6 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
     list<CardLocation> auxList = tokens.getAlarmsList();
     vector<CardLocation> downstairsTokens = tokens.getDownstairs();
     unsigned int aux= tokens.howManyTokensOnCPURoom((CardName)COMPUTER_ROOM_FINGERPRINT);
-    unsigned int  i,j;
     Info2DrawTokens toPush;
     
     if(tokens.getCrowToken().first)
@@ -264,21 +263,21 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
     }
 
     
-    for(i=0; i < aux; i++)
+    for(unsigned int i=0; i < aux; i++)
     {
         toPush.position = board.getComputerRoomLocation(COMPUTER_ROOM_FINGERPRINT);
         toPush.token= HACK_TOKEN;
         retVal.push_back(toPush);
     }
     aux= tokens.howManyTokensOnCPURoom(COMPUTER_ROOM_LASER);
-    for(i= 0; i <  aux; i++)
+    for(unsigned int i= 0; i <  aux; i++)
     {
         toPush.position= board.getComputerRoomLocation(COMPUTER_ROOM_LASER);
         toPush.token= HACK_TOKEN;
         retVal.push_back(toPush);
     }
     aux= tokens.howManyTokensOnCPURoom(COMPUTER_ROOM_MOTION);
-    for(i= 0; i <  aux; i++)
+    for(unsigned int i= 0; i <  aux; i++)
     {
         toPush.position= board.getComputerRoomLocation(COMPUTER_ROOM_MOTION);
         toPush.token= HACK_TOKEN;

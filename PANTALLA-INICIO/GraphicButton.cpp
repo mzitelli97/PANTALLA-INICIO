@@ -75,18 +75,20 @@ GraphicButton::GraphicButton(ALLEGRO_BITMAP * buttonImage,ALLEGRO_BITMAP * butto
 
 ItemInfo GraphicButton::IAm()
 {
+    ItemInfo retVal = {NO_ITEM_CLICK, nullptr};
     if(button == MUTE_BUTTON || button==UNMUTE_BUTTON)
-        return {VOL_BUTTON_CLICK,nullptr};
+        retVal = {VOL_BUTTON_CLICK,nullptr};
     if(button == HELP_BUTTON)
-        return {HELP_BUTTON_CLICK,nullptr};
+        retVal = {HELP_BUTTON_CLICK,nullptr};
     if(button == ZOOM_BUTTON)
-        return {ZOOM_CLICK,&zoomFloor};
+        retVal = {ZOOM_CLICK,&zoomFloor};
     if(button == QUIT_BUTTON)
-        return {EXIT_BUTTON_CLICK,nullptr};
+        retVal = {EXIT_BUTTON_CLICK,nullptr};
     if(button == PASS_BUTTON)
-        return {PASS_BUTTON_CLICK,nullptr};
+        retVal = {PASS_BUTTON_CLICK,nullptr};
     if(button == CONNECT_BUTTON)    
-        return {CONNECT_BUTTON_CLICK,nullptr};
+        retVal = {CONNECT_BUTTON_CLICK,nullptr};
+    return retVal;
 }
 
 buttonAction GraphicButton::getButtonIdentifier()

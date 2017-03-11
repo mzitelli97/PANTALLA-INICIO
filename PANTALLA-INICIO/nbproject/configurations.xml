@@ -233,6 +233,7 @@
       <compileType>
         <ccTool>
           <standard>8</standard>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
           <linkerLibItems>

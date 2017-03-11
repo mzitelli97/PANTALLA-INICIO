@@ -50,6 +50,8 @@ void GUI::parseEvento(){
         case GUI_EVENT_TIMER:
             controller->parseTimerEvent(data);
             break;
+        default:
+            break;
     }
     //elimino el event data
     delete data;

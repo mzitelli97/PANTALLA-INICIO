@@ -13,7 +13,6 @@ ItemInfo
 GroupItem::itemFromClick(Point point) {
 
     ItemInfo retVal = {NO_ITEM_CLICK, nullptr};
-    bool item_flag = false;
     
     for(auto& item : graphicItem)
     {

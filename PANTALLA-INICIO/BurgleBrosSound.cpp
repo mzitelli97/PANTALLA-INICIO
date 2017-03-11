@@ -4,12 +4,11 @@
 using namespace std;
 
 BurgleBrosSound::BurgleBrosSound() {
-    bool test;
     initOK=loadAllSamples();
     al_reserve_samples(3);              //para poder reproducir 3 sonidos a la vez(no va a haber mas)
 #ifndef MUTE
     if(initOK)
-         test=al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
+        al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
 #endif   
     onMute = false;
 }

@@ -214,7 +214,7 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
 
     GroupItem auxTiles_item;
     
-    for(int i=0; i<info_tiles.size();i++)
+    for(unsigned int i=0; i<info_tiles.size();i++)
     {
          GraphicTile *auxTile_element=new GraphicTile(imageLoader.getImageP(info_tiles[i].type),imageLoader.getImageBackP(info_tiles[i].type),info_tiles[i].location,al_get_display_width(display),al_get_display_height(display));
          auxTiles_item.atachGraphicsItem((GraphicItem *) auxTile_element);
@@ -601,7 +601,7 @@ void BurgleBrosView::updateExtraDices()
     list<GroupItem>::iterator it_itemType;
     it_itemType = deleteList(FIRST_LAYER, EXTRA_DICES_LIST);
        
-    for( int i = 0; i < info_dices.size(); i++)
+    for(unsigned int i = 0; i < info_dices.size(); i++)
     {
         if(info_dices[i] != 0)      //if its 0 it means there is no such extra die
         {

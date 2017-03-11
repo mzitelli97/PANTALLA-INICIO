@@ -118,6 +118,8 @@ bool BurgleBrosTokens::isThereAToken(CardLocation location, Token whichToken)
         case CROW_TOKEN:
             retVal=isThereACrowToken(location);
             break;
+        default:
+            break;
     }
     return retVal;
 }

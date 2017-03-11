@@ -52,10 +52,12 @@ ALLEGRO_BITMAP *ImageLoader::getImageP(Token token)
 }
 ALLEGRO_BITMAP *ImageLoader::getImageP(CharacterName character, bool card)
 {
-	if (card == true)
-		return characterCards[character];
-	if (card == false)
-		return this->character[character];
+    ALLEGRO_BITMAP* retVal = nullptr;
+    if (card == true)
+        retVal = characterCards[character];
+    if (card == false)
+        retVal = this->character[character];
+    return retVal;
 }
 ALLEGRO_BITMAP *ImageLoader::getImageP(Loot loot)
 {
