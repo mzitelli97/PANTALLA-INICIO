@@ -897,7 +897,7 @@ void BurgleBrosController::handleGuardMove()
     while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B )
     {    
         modelPointer->guardMove();
-        if(modelPointer->getModelStatus() == DESPUES_VEMOS_A);
+        if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
         {
             vector<string> aux= modelPointer->getMsgToShow();
             string userChoice =view->MessageBox(aux);

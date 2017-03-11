@@ -1624,8 +1624,8 @@ list<GuardMoveInfo> BurgleBrosModel::generateGuardPath()
         /*Si había un crow token en el tile donde se encuentra*/
         if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
             guardMoving->decSteps();//si no habia steps la funcion no hace nada
-        return retVal;
     }
+    return retVal;
 }
 void addWithoutRepeating(list<CardLocation> &alarmList, CardLocation item)
 {
