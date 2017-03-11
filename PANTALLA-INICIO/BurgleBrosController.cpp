@@ -911,7 +911,8 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
         }
     }    
     if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && sendPacket)
-        networkInterface->sendGMove(modelPointer->getWGuardPath());
+        networkInterface->sendGMove(modelPointer->getGuardWholePath());
+    if(!modelPointer->isGuardMoving()) modelPointer->clearGuardWholePath();
     /*list<GuardMoveInfo> guardMovement;
     modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
     if(modelPointer->getModelStatus() == WAITING_FOR_ACTION)

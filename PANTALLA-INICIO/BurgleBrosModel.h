@@ -105,7 +105,8 @@ class BurgleBrosModel : public Model
         bool isGuardMoving();
         void guardMove();
         void setGuardWholePath(list<GuardMoveInfo> wholePath);
-        list<GuardMoveInfo> getWGuardPath();
+        list<GuardMoveInfo> getGuardWholePath();
+        void clearGuardWholePath();
         list<GuardMoveInfo> generateGuardPath();//ver si tiene que ir aca o afuera
         /*Prueba para ver si se pueden realizar ciertas acciones*/
         bool isMovePosible(PlayerId playerId,CardLocation tileToMove);  //Pregunta si una movida es posible

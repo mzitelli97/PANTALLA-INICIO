@@ -29,7 +29,7 @@ bool BurgleBrosModel::isGuardMoving()
     return retVal;
 }
 
-list<GuardMoveInfo> BurgleBrosModel::getWGuardPath() 
+list<GuardMoveInfo> BurgleBrosModel::getGuardWholePath() 
 {
     return gWholePath.first; 
 }
@@ -1112,7 +1112,6 @@ void BurgleBrosModel::checkTurns()
     }
     else if(isGuardsTurn() && !isGuardMoving())
     {
-        gWholePath.first.clear();
         BurgleBrosPlayer *nextPlayerOnTurn=getP2OtherPlayer(playerOnTurnBeforeGuardMove); //El jugador que termina ahora el turno va a ser el que no terminó antes que el guardia
         if(nextPlayerOnTurn->isOnHelicopter())
             nextPlayerOnTurn=getP2Player(playerOnTurnBeforeGuardMove);  //Si el otro jugador estaba en el helicopter vuelve a jugar el primero.
@@ -1418,6 +1417,11 @@ void BurgleBrosModel::guardMove()
     checkTurns();
 }
 
+void BurgleBrosModel::clearGuardWholePath()
+{
+    gWholePath.first.empty();
+}
+
 void BurgleBrosModel::setGuardWholePath(list<GuardMoveInfo> wholePath)
 {
     this->gWholePath.first = wholePath;
@@ -1488,6 +1492,7 @@ void BurgleBrosModel::endGuardMove()
         std::this_thread::sleep_for(milliseconds);
     }
     setGuardsNewPath(guardFloor, guardMoving->getTargetPosition());//Para que no quede sin un camino  si la próxima vez se ejecuta desde esta cpu.
+    clearGuardWholePath();
 }
 
 void BurgleBrosModel::copyGuardMove()
@@ -1575,6 +1580,7 @@ void BurgleBrosModel::copyGuardMove()
 }
 list<GuardMoveInfo> BurgleBrosModel::generateGuardPath() 
 {
+    gWholePath.first.clear();
     BurgleBrosGuard *guardMoving= new BurgleBrosGuard;
     unsigned int guardFloor = getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;
     *guardMoving = guards[guardFloor];
