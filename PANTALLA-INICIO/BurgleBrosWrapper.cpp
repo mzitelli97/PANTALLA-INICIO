@@ -80,10 +80,10 @@ BurgleBrosWrapper::connect()
         
     if(bbcontroller != nullptr)
             bbcontroller->attachNetworkInterface(&networkInterface);
-        else{ error=true; quit=true; errorMsg+="Error al crear BurgleBrosController \n";}
+    else{ error=true; quit=true; errorMsg+="Error al crear BurgleBrosController \n";}
 
     networkEvent= new NetworkingEG;
-        if(networkEvent == nullptr) {error=true; quit=true; errorMsg+="Error al crear NetworkEvent\n";}
+    if(networkEvent == nullptr) {error=true; quit=true; errorMsg+="Error al crear NetworkEvent\n";}
     
     
     if(initController != nullptr)
