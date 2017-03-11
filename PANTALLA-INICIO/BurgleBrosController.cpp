@@ -655,8 +655,9 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_ACTION && modelPointer->isGuardsTurn())    //Si el jugador gastó todas las acciones y, para casos especiales metió lo que se preguntaba (deadbolt, etc) se procede a mover el guardia.
             {
-                modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
-                networkInterface->sendGMove(guardMovement);     //Se envía esa información.
+              //  modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
+               // networkInterface->sendGMove(guardMovement);     //Se envía esa información.
+                handleGuardMove();
                 resetTimeoutTimer=true;
             }
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
@@ -697,7 +698,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             break;
         case SPENT_OK:case USE_TOKEN: 
-            if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
+            if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION || modelPointer->getModelStatus()== DESPUES_VEMOS_A)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
                 packetToAnalize.push_back(*networkEvent);   //Acá se guarda para tratar el paquete en la función getUsersResponse
                 message=modelPointer->getMsgToShow(); 
@@ -727,7 +728,9 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             break;
         case GUARD_MOVEMENT:
             networkEvent->getGuardMovement(guardMovement);  //Obtengo el movimiento del guardia
-            modelPointer->guardMove(); //Y hago que el modelo lo procese.
+            modelPointer->setGuardWholePath(guardMovement);
+            handleGuardMove();
+            /*modelPointer->guardMove(); //Y hago que el modelo lo procese.
             if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
             {
                 networkInterface->sendPacket(WE_LOST);
@@ -744,7 +747,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
                 unsigned int die=modelPointer->rollDieForLoot(NO_DIE);
                 networkInterface->sendRollDiceForLoot(die);
                 waiting4ack=true;
-            }
+            }*/
             break;
         case INITIAL_G_POS:
             networkEvent->getInitGPos(&guardPosition, &guardDice);
@@ -907,7 +910,7 @@ void BurgleBrosController::handleGuardMove()
             }    
         }
     }    
-    if(modelPointer->getModelStatus() == DESPUES_VEMOS_B || modelPointer->isGuardMoving())
+    if(modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving())
         networkInterface->sendGMove(modelPointer->getWGuardPath());
     /*list<GuardMoveInfo> guardMovement;
     modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
@@ -954,6 +957,10 @@ void BurgleBrosController::analizeIfModelRequiresMoreActions(NetworkED *networkE
             message=modelPointer->getMsgToShow(); //Se obtiene el mensaje que se mostraria si saltar el cartel
             modelPointer->userDecidedTo(getUsersResponse(message));
         }*/
+    }
+    if(modelPointer->getModelStatus()== DESPUES_VEMOS_B && h!=USE_TOKEN)
+    {
+        modelPointer->userDecidedTo(USE_MY_STEALTH_TOKEN_TEXTB);
     }
 }
 
@@ -1090,7 +1097,12 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
         case 2:
             if(networkEvent->getHeader() == ACK)        //El cliente ya sabe el nombre del server
             {
+#ifdef LAVATORY_DEBUGGING
+                auxInitInfo[THIS_PLAYER].playersCharacter=THE_JUICER;
+#else
                 auxInitInfo[THIS_PLAYER].playersCharacter=getRandomCharacter(); //ENtonces se obtiene un character aleatorio
+#endif
+                
                 networkInterface->sendChar(auxInitInfo[THIS_PLAYER].playersCharacter); // se lo manda al client
                 initPacketCount++;
             }
