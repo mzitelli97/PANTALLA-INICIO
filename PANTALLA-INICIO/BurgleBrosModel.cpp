@@ -550,7 +550,6 @@ void BurgleBrosModel::setDice(vector<unsigned int> &currDice)
         iE = KEYPAD_OPENED;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(KEYPAD_OPENED);
         if(movingPlayer->getPosition() == guards[movingPlayer->getPosition().floor].getPosition())
             movingPlayer->decLives();       //si habia un guardia al entrar al keypad, pierde una vida
     }
@@ -636,7 +635,6 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
             iE = STAIRS;
             notifyAllObservers();
             iE = NO_IE;
-            //soundManager->playSoundEffect(STAIRS_STEPS);
         }
         
         //Cambios segun el lugar desde el que me muevo
@@ -704,7 +702,6 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
         //Si quiero entrar a un keypad y no esta abierto tengo que tirar los dados (el numero de dados se corresponde con los intentos en el mismo turno)
         if( newCardType==KEYPAD && !tokens.isThereAKeypadToken(locationToMove) && !specialMotionCase)
         {
-            bool keyCracked=false;
             this->status=WAITING_FOR_DICE;
             this->prevLoc=prevLocation;
         }
@@ -883,7 +880,6 @@ void BurgleBrosModel::crackSafe(PlayerId playerId,vector<unsigned int> &diceThro
             iE = SAFE_CRACKED;
             notifyAllObservers();
             iE = NO_IE;
-            //soundManager->playSoundEffect(SAFE_CRACKED);    //check if this needs to be here or in the controller
         }
         notifyAllObservers();
         checkTurns();
@@ -1057,7 +1053,6 @@ void BurgleBrosModel::escape(PlayerId playerId, CardLocation stairTile)
         iE = STAIRS;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(STAIRS_STEPS);
         notifyAllObservers();
         checkTurns();
         notifyAllObservers();
@@ -1147,7 +1142,6 @@ void BurgleBrosModel::checkIfWonOrLost()
         iE = WON;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(WON);     //check if this needs to be here or in the controller
         myPlayer.setTurn(false);
         otherPlayer.setTurn(false);
     }
@@ -1159,7 +1153,6 @@ void BurgleBrosModel::checkIfWonOrLost()
         iE = LOST;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(LOST);    //check if this needs to be here or in the controller
         myPlayer.setTurn(false);
         otherPlayer.setTurn(false);
     }
@@ -1863,10 +1856,7 @@ void BurgleBrosModel::handleChihuahuaMove(unsigned int die)
             iE = CHIHUAHUA_BARKS;
             notifyAllObservers();
             iE = NO_IE;
-            //soundManager->playSoundEffect(CHIHUAHUA_BARKS);
             triggerAlarm(p->getPosition());
-            //tokens.triggerAlarm(p->getPosition());
-            //setGuardsNewPath(p->getPosition().floor);
         }
         notifyAllObservers();
     }
@@ -1882,7 +1872,6 @@ void BurgleBrosModel::triggerAlarm(CardLocation tile)
         iE = ALARM_TRIGGERED;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(ALARM_TRIGGERED);
     }
 }
 

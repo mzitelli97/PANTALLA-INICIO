@@ -1074,7 +1074,7 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
     unsigned int initSafeNumber = 0;
-    CardLocation guardPos,guardsDiePos, playersPos;
+    CardLocation guardPos,guardsDiePos;
     vector<CardName> tiles;
     switch(initPacketCount)
     {
@@ -1240,7 +1240,7 @@ void BurgleBrosController::secondDecidedRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
     unsigned int initSafeNumber;
-    CardLocation guardPos,guardsDiePos, playersPos;
+    CardLocation guardPos,guardsDiePos;
     vector<CardName> tiles;
     switch(initPacketCount)
     {
@@ -1319,7 +1319,6 @@ void BurgleBrosController::resetGame()
 
 void BurgleBrosController::checkForNonOrderedPackets() 
 {
-    bool retVal=false;
     PerezProtocolHeader header;
     unsigned char buffer[BUFSIZE];
     unsigned int len;

@@ -64,7 +64,6 @@
       <itemPath>LibsInit.h</itemPath>
       <itemPath>Model.h</itemPath>
       <itemPath>Observer.h</itemPath>
-      <itemPath>SoundManager.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -437,8 +436,6 @@
       </item>
       <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="SoundManager.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="TextBox.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="TextBox.h" ex="false" tool="3" flavor2="0">
@@ -657,8 +654,6 @@
       <item path="ProtocolFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ProtocolFunctions.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SoundManager.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TextBox.cpp" ex="false" tool="1" flavor2="0">
       </item>
