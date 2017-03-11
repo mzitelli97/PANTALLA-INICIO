@@ -126,6 +126,7 @@ class BurgleBrosModel : public Model
     private:
 
         void copyGuardMove(); //Faltaría checkear que el move sea correcto.
+        void endGuardMove();
         bool anotherLavatoryInGPath();
         
         void checkTurns();
