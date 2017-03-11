@@ -1090,7 +1090,12 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
         case 2:
             if(networkEvent->getHeader() == ACK)        //El cliente ya sabe el nombre del server
             {
+#ifdef LAVATORY_DEBUGGING
+                auxInitInfo[THIS_PLAYER].playersCharacter=THE_JUICER;
+#else
                 auxInitInfo[THIS_PLAYER].playersCharacter=getRandomCharacter(); //ENtonces se obtiene un character aleatorio
+#endif
+                
                 networkInterface->sendChar(auxInitInfo[THIS_PLAYER].playersCharacter); // se lo manda al client
                 initPacketCount++;
             }
