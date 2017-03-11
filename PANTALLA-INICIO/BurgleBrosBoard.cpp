@@ -210,6 +210,9 @@ bool BurgleBrosBoard::setSafeCracked(unsigned int floor)
 
 void BurgleBrosBoard::sliceVector(std::vector<CardName> &allFloors, std::vector<CardName> *firstFloor, std::vector<CardName> *secondFloor, std::vector<CardName> *thirdFloor)
 {
+#ifdef LAVATORY_DEBUGGING
+       allFloors.insert(allFloors.begin(), LAVATORY);
+#endif
     for (unsigned int j = 0; j < allFloors.size(); j++)
     {
         if (j < (allFloors.size() / 3))
@@ -236,7 +239,9 @@ void BurgleBrosBoard::getEachFloorTiles(vector<CardName> *firstFloor, vector<Car
 		{ KEYPAD, 3 },
 		{ LABORATORY, 2 },
 		{ LASER, 3 },
-		{ LAVATORY, 1 },
+#ifndef LAVATORY_DEBUGGING
+                { LAVATORY, 1 },
+#endif
 		{ MOTION, 3 },
 		{ SCANNER_DETECTOR, 3 },
 		{ SECRET_DOOR, 2 },

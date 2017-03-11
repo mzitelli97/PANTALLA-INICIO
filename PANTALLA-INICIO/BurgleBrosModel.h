@@ -12,6 +12,8 @@
 #define NO_SAFE_NUMBER -1
 
 
+
+
 /*Mensajes para dialog box tienen:  TITULO                  SUBTITULO               TEXTO */
 #define ENTER_FINGERPRINT_TEXT      "Alert",            "Confirm Action", "You have entered a Fingerprint tile, so you will trigger an alarm unless you use a hack token"
 #define LASER_TEXT                  "Alert",            "Confirm Action", "You have entered a Laser tile, you can either spend and extra action or use a hack token to avoid triggering an alarm"
