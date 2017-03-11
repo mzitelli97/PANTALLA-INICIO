@@ -100,7 +100,11 @@ class BurgleBrosModel : public Model
         void offerLoot(PlayerId playerId, Loot loot);
         void escape(PlayerId playerId, CardLocation stairTile);
         string peekGuardsCard(PlayerId playerId, CardLocation **guardCard, unsigned int floor, string prevChoice);
-        void guardMove(list<GuardMoveInfo> &guardMovement);
+        bool isGuardMoving();
+        void guardMove();
+        void setGuardWholePath(list<GuardMoveInfo> wholePath);
+        list<GuardMoveInfo> getWGuardPath();
+        list<GuardMoveInfo> generateGuardPath();//ver si tiene que ir aca o afuera
         /*Prueba para ver si se pueden realizar ciertas acciones*/
         bool isMovePosible(PlayerId playerId,CardLocation tileToMove);  //Pregunta si una movida es posible
         bool isPeekPosible(PlayerId player, CardLocation tile);         //Pregunta si un peek es posible
@@ -117,13 +121,13 @@ class BurgleBrosModel : public Model
         bool moveWillRequireSpecifications(PlayerId playerId, CardLocation locationToMove, int safeNumber); //devuelve true si el model necesitara info extra, por ejemplo si necesita el input de responder el allegro native dialog box o si necesita saber los dados que tiró el otro jugador.
         list<string> getPosibleActionsToTile(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
         list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
-        void setGuardWholePath();
-        list<GuardMoveInfo> generateGuardPath();
+
 	~BurgleBrosModel();
     private:
 
-        void makeGuardMove(list<GuardMoveInfo> &guardMovement);
-        void copyGuardMove(list<GuardMoveInfo> &guardMovement); //Faltaría checkear que el move sea correcto.
+        void copyGuardMove(); //Faltaría checkear que el move sea correcto.
+        bool anotherLavatoryInGPath();
+        
         void checkTurns();
         void checkIfWonOrLost();
         void handlePersianKittyMove(unsigned int die);
@@ -160,7 +164,7 @@ class BurgleBrosModel : public Model
         vector<string> auxMsgsToShow;
         CardLocation spyGuardCard;
         pair<list<GuardMoveInfo>,list<GuardMoveInfo>::iterator> gWholePath;
-        
+        unsigned int nmbrOfPendingQuestions;
 };
 #endif
 

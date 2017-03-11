@@ -655,7 +655,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_ACTION && modelPointer->isGuardsTurn())    //Si el jugador gastó todas las acciones y, para casos especiales metió lo que se preguntaba (deadbolt, etc) se procede a mover el guardia.
             {
-                modelPointer->guardMove(guardMovement);         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
+                modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
                 networkInterface->sendGMove(guardMovement);     //Se envía esa información.
                 resetTimeoutTimer=true;
             }
@@ -664,7 +664,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
                 message=modelPointer->getMsgToShow(); //Se obtiene el mensaje a mostrar,
                 guardHasToMove = modelPointer->userDecidedTo(getUsersResponse(message));//Esta función devuelve lo que elige el jugador en el cartelito. y le pasa la respuesta al modelo.
                 if(guardHasToMove)      //Si se termino una jugada que no mando paquete y termino su turno, se tiene que enviar el paquete del guardia.
-                {   modelPointer->guardMove(guardMovement); networkInterface->sendGMove(guardMovement);}
+                {   modelPointer->guardMove(); networkInterface->sendGMove(guardMovement);}
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_DICE)
             {
@@ -727,7 +727,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             break;
         case GUARD_MOVEMENT:
             networkEvent->getGuardMovement(guardMovement);  //Obtengo el movimiento del guardia
-            modelPointer->guardMove(guardMovement); //Y hago que el modelo lo procese.
+            modelPointer->guardMove(); //Y hago que el modelo lo procese.
             if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
             {
                 networkInterface->sendPacket(WE_LOST);
@@ -891,8 +891,26 @@ void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
 }
 void BurgleBrosController::handleGuardMove()
 {
-    list<GuardMoveInfo> guardMovement;
-    modelPointer->guardMove(guardMovement);         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
+        while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B )
+    {    
+        modelPointer->guardMove();
+        if(modelPointer->getModelStatus() == DESPUES_VEMOS_A);
+        {
+            vector<string> aux= modelPointer->getMsgToShow();
+            string userChoice =view->MessageBox(aux);
+            modelPointer->userDecidedTo(userChoice);
+            this->checkForNonOrderedPackets();
+            if(userChoice==USE_LAVATORY_TOKEN_TEXTB)
+            {    
+                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
+                break;
+            }    
+        }
+    }    
+    if(modelPointer->getModelStatus() == DESPUES_VEMOS_B || modelPointer->isGuardMoving())
+        networkInterface->sendGMove(modelPointer->getWGuardPath());
+    /*list<GuardMoveInfo> guardMovement;
+    modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
     if(modelPointer->getModelStatus() == WAITING_FOR_ACTION)
         networkInterface->sendGMove(guardMovement);     //Se envía esa información.//Que pasa si la lista es
     else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
@@ -919,7 +937,7 @@ void BurgleBrosController::handleGuardMove()
     {
         
     }
-    //resetTimeoutTimer=true;
+    //resetTimeoutTimer=true;*/
 }
 
 
