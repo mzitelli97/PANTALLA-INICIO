@@ -698,7 +698,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             break;
         case SPENT_OK:case USE_TOKEN: 
-            if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION || modelPointer->getModelStatus()== DESPUES_VEMOS_A)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
+            if(modelPointer->getModelStatus()==WAITING_FOR_ACTION || modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION || modelPointer->getModelStatus()== DESPUES_VEMOS_A)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
                 packetToAnalize.push_back(*networkEvent);   //Acá se guarda para tratar el paquete en la función getUsersResponse
                 message=modelPointer->getMsgToShow(); 
@@ -894,9 +894,10 @@ void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
 }
 void BurgleBrosController::handleGuardMove(bool sendPacket)
 {
+    modelPointer->guardMove();
     while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B )
     {    
-        modelPointer->guardMove();
+        //modelPointer->guardMove();
         if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
         {
             vector<string> aux= modelPointer->getMsgToShow();
@@ -906,8 +907,9 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
             if(userChoice==USE_LAVATORY_TOKEN_TEXTB)
             {    
                 networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
-                break;
-            }    
+                //break;
+            }
+            modelPointer->guardMove();
         }
     }    
     if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && sendPacket)

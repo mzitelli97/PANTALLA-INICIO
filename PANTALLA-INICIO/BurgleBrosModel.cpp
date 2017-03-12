@@ -1419,7 +1419,7 @@ void BurgleBrosModel::guardMove()
 
 void BurgleBrosModel::clearGuardWholePath()
 {
-    gWholePath.first.empty();
+    gWholePath.first.clear();
 }
 
 void BurgleBrosModel::setGuardWholePath(list<GuardMoveInfo> wholePath)
@@ -1502,7 +1502,7 @@ void BurgleBrosModel::copyGuardMove()
         if(!(tokens.isThereAStealthToken(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition())))
             status=WAITING_FOR_ACTION;
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() != otherPlayer.getPosition())
-            status = WAITING_FOR_ACTION;
+        {status = WAITING_FOR_ACTION; gWholePath.second++;}
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() == otherPlayer.getPosition())
         {
             if(anotherLavatoryInGPath())
@@ -1535,8 +1535,14 @@ void BurgleBrosModel::copyGuardMove()
             if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
                 tokens.turnOffAlarm(guardMoving->getPosition());
             
-            if(guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
+            if(status == WAITING_FOR_ACTION && guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
+            {
+                notifyAllObservers();
+                vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
+                this->msgsToShow=aux;
                 status=DESPUES_VEMOS_A;
+                break;
+            }
             else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
                 myPlayer.decLives();
             
@@ -1615,7 +1621,11 @@ list<GuardMoveInfo> BurgleBrosModel::generateGuardPath()
         {
             for(auto& alarm : alarmList)
             {
-                if(alarm == guardMoving->getPosition()) alarmList.remove(alarm);
+                if(alarm == guardMoving->getPosition())
+                {
+                    alarmList.remove(alarm);               //si la carta donde llego era una alarm, la saco de la lista auxiliar
+                    break;
+                }
             }
             list<CardLocation> cardsTaken=setGuardsNewPath(alarmList, guardMoving); //Setea un nuevo path y devuelve la lista de cartas que tomó del mazo. ( pueden ser 1 o 2 si tomo una carta que apuntaba a donde estaba parado).
             auxiliarInfoToReport.meaning=GUARD_CARD_PICK;   
