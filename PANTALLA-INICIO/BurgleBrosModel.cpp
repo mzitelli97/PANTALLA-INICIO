@@ -52,6 +52,7 @@ BurgleBrosModel::BurgleBrosModel()
     specialMotionCase=false;
     iE = NO_IE;
     nmbrOfPendingQuestions=0;
+    otherPlayerTokensUsed=0;
 }
 
 bool BurgleBrosModel::isMotionSpecialCase() {
@@ -1546,7 +1547,17 @@ void BurgleBrosModel::copyGuardMove()
             else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
                 myPlayer.decLives();
             
-            if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
+            if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
+            {
+                if(otherPlayerTokensUsed > 0)
+                {
+                    tokens.useLavatoryToken();
+                    otherPlayerTokensUsed--;
+                }
+                else
+                    otherPlayer.decLives();
+            }
+            else if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
             {    
                 if(anotherLavatoryInGPath())    
                     nmbrOfPendingQuestions++;
@@ -1814,6 +1825,11 @@ void BurgleBrosModel::continueGame()        //Si el juego estaba parado por los 
 {
     rollForLootCount=0;
     status=WAITING_FOR_ACTION;
+}
+
+void BurgleBrosModel::incOtherPlayerTokensUsed()
+{
+    otherPlayerTokensUsed++;
 }
 
 unsigned int BurgleBrosModel::rollDieForLoot(unsigned int die)

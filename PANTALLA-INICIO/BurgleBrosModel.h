@@ -125,6 +125,7 @@ class BurgleBrosModel : public Model
         list<string> getPosibleActionsToTile(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
         list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
 
+        void incOtherPlayerTokensUsed();
 	~BurgleBrosModel();
     private:
 
@@ -169,6 +170,7 @@ class BurgleBrosModel : public Model
         CardLocation spyGuardCard;
         pair<list<GuardMoveInfo>,list<GuardMoveInfo>::iterator> gWholePath;
         unsigned int nmbrOfPendingQuestions;
+        unsigned int otherPlayerTokensUsed;
 };
 #endif
 

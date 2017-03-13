@@ -114,12 +114,22 @@ string BurgleBrosController::getUsersResponse(vector<string> &message)
         else
             retVal=handleThisPlayerMotionSpecialCase(message);
     }
-    else                                        //Al otro jugador le pregunta por el paquete recibido en la queue
+    else if(modelPointer->getPlayerOnTurn() == OTHER_PLAYER)                                       //Al otro jugador le pregunta por el paquete recibido en la queue
     {
         if(!modelPointer->isMotionSpecialCase())
             retVal=processOtherPlayerBasicChoice(message);
         else
             retVal=handleOtherPlayerMotionSpecialCase(message);
+    }
+    else if(modelPointer->isGuardsTurn())
+    {
+        if(packetToAnalize.front().getHeader() == USE_TOKEN && modelPointer->isThereACpuRoomOrLavatory(packetToAnalize.front().getTokenPos(), LAVATORY))
+        {
+            if(modelPointer->getModelStatus() != DESPUES_VEMOS_B)
+                modelPointer->incOtherPlayerTokensUsed();
+            else
+                retVal=USE_LAVATORY_TOKEN_TEXTB;
+        }
     }
     packetToAnalize.clear();
     return retVal;
@@ -583,6 +593,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
     vector<string> timeoutMessage({DEFAULT_TIMEOUT_MSG});
     Loot loot;
     bool guardHasToMove;
+    string auxString;
     CardLocation guardPosition, guardDice,auxLoc;
     CardLocation * spyGuardCard = &auxLoc;
     list<GuardMoveInfo> guardMovement;
@@ -698,15 +709,12 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             break;
         case SPENT_OK:case USE_TOKEN: 
-            if(modelPointer->getModelStatus()==WAITING_FOR_ACTION || modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION || modelPointer->getModelStatus()== DESPUES_VEMOS_A)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
-            {
                 packetToAnalize.push_back(*networkEvent);   //Acá se guarda para tratar el paquete en la función getUsersResponse
                 message=modelPointer->getMsgToShow(); 
-                modelPointer->userDecidedTo(getUsersResponse(message));
+                auxString = getUsersResponse(message);
+                if(!auxString.empty())
+                    modelPointer->userDecidedTo(auxString);
                 networkInterface->sendPacket(ACK);
-            }
-            else
-               quit=true;
             break;
         case AGREE: case DISAGREE: case REQUEST_LOOT: case OFFER_LOOT:
             handleLootsExchange(networkEvent);
