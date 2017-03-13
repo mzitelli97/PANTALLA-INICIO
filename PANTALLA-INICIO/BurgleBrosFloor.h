@@ -7,6 +7,8 @@
 #define FLOOR_COLUMNS 4
 #define NUMBER_OF_WALLS 8
 
+
+
 typedef struct{
 	CardLocation FrontCard;	//Siempre se toma la del frente como la de la izquierda o la de arriba
 	CardLocation RearCard;	//Siempre se toma la de atras como la de la derecha o la de abajo.

@@ -20,6 +20,30 @@ void BurgleBrosBoard::initBoard()
     motion=false;
     vector<CardName> firstFloor, secondFloor, thirdFloor;
     getEachFloorTiles(&firstFloor, &secondFloor, &thirdFloor);
+#ifdef LAVATORY_DEBUGGING
+    CardLocation lavatoryLoc= {0,0,0};
+    CardLocation desiredLavPosition = {0,1,0};
+    CardName temp;
+    for(vector<CardName>::iterator it=firstFloor.begin(); it!=firstFloor.end(); it++)
+    {
+        if(*it==LAVATORY)
+            break;
+        if (lavatoryLoc.column == (FLOOR_COLUMNS - 1))
+        {
+                lavatoryLoc.row++;
+                lavatoryLoc.column = 0;
+        }
+        else
+                lavatoryLoc.column++;
+    }
+    vector<CardName>::iterator auxIt=firstFloor.begin();
+    advance(auxIt, desiredLavPosition.row*FLOOR_COLUMNS+desiredLavPosition.column);
+    temp=*auxIt;
+    *auxIt= LAVATORY;
+    auxIt=firstFloor.begin();
+    advance(auxIt, lavatoryLoc.row*FLOOR_COLUMNS+lavatoryLoc.column);
+    *auxIt= temp;
+#endif
     floors[0].initFloor(0, firstFloor);
     floors[1].initFloor(1, secondFloor);
     floors[2].initFloor(2, thirdFloor);
