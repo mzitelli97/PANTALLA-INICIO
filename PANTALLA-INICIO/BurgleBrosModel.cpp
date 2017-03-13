@@ -1551,7 +1551,7 @@ void BurgleBrosModel::copyGuardMove()
                 if(anotherLavatoryInGPath())    
                     nmbrOfPendingQuestions++;
                 else
-                    status=DESPUES_VEMOS_B;
+                {status=DESPUES_VEMOS_B;break;}
             }
             else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
                 otherPlayer.decLives();
