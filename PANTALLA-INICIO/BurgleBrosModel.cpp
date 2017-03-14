@@ -1597,6 +1597,8 @@ void BurgleBrosModel::copyGuardMove()
         }
         else if(gWholePath.second->meaning==GUARD_CARD_PICK)
             guardMoving->drawCardTarget(gWholePath.second->cardLocation);
+        if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
+            guardMoving->decSteps();//si no habia steps la funcion no hace nada
         notifyAllObservers();
         checkIfWonOrLost();
         std::chrono::milliseconds milliseconds(500);
