@@ -1565,6 +1565,7 @@ void BurgleBrosModel::copyGuardMove()
                         nmbrOfPendingQuestions++;
                     else
                     {
+                        nmbrOfPendingQuestions++;
                         vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
                         this->msgsToShow=aux;
                         status=DESPUES_VEMOS_B;
