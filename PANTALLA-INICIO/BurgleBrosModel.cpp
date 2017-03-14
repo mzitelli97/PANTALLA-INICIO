@@ -1564,7 +1564,12 @@ void BurgleBrosModel::copyGuardMove()
                     if(anotherLavatoryInGPath())    
                         nmbrOfPendingQuestions++;
                     else
-                    {status=DESPUES_VEMOS_B;break;}
+                    {
+                        vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
+                        this->msgsToShow=aux;
+                        status=DESPUES_VEMOS_B;
+                        break;
+                    }
                 }
             }
             else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
