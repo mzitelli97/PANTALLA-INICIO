@@ -1547,22 +1547,25 @@ void BurgleBrosModel::copyGuardMove()
             else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
                 myPlayer.decLives();
             
-            if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
-            {
-                if(otherPlayerTokensUsed > 0)
+            if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
+            {    
+                if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
                 {
-                    tokens.useLavatoryToken();
-                    otherPlayerTokensUsed--;
+                    if(otherPlayerTokensUsed > 0)
+                    {
+                        tokens.useLavatoryToken();
+                        otherPlayerTokensUsed--;
+                    }
+                    else
+                        otherPlayer.decLives();
                 }
                 else
-                    otherPlayer.decLives();
-            }
-            else if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
-            {    
-                if(anotherLavatoryInGPath())    
-                    nmbrOfPendingQuestions++;
-                else
-                {status=DESPUES_VEMOS_B;break;}
+                {
+                    if(anotherLavatoryInGPath())    
+                        nmbrOfPendingQuestions++;
+                    else
+                    {status=DESPUES_VEMOS_B;break;}
+                }
             }
             else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
                 otherPlayer.decLives();
