@@ -1547,22 +1547,31 @@ void BurgleBrosModel::copyGuardMove()
             else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
                 myPlayer.decLives();
             
-            if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
-            {
-                if(otherPlayerTokensUsed > 0)
+            if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
+            {    
+                if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
                 {
-                    tokens.useLavatoryToken();
-                    otherPlayerTokensUsed--;
+                    if(otherPlayerTokensUsed > 0)
+                    {
+                        tokens.useLavatoryToken();
+                        otherPlayerTokensUsed--;
+                    }
+                    else
+                        otherPlayer.decLives();
                 }
                 else
-                    otherPlayer.decLives();
-            }
-            else if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
-            {    
-                if(anotherLavatoryInGPath())    
-                    nmbrOfPendingQuestions++;
-                else
-                {status=DESPUES_VEMOS_B;break;}
+                {
+                    if(anotherLavatoryInGPath())    
+                        nmbrOfPendingQuestions++;
+                    else
+                    {
+                        nmbrOfPendingQuestions++;
+                        vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
+                        this->msgsToShow=aux;
+                        status=DESPUES_VEMOS_B;
+                        break;
+                    }
+                }
             }
             else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
                 otherPlayer.decLives();
@@ -1588,6 +1597,8 @@ void BurgleBrosModel::copyGuardMove()
         }
         else if(gWholePath.second->meaning==GUARD_CARD_PICK)
             guardMoving->drawCardTarget(gWholePath.second->cardLocation);
+        if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
+            guardMoving->decSteps();//si no habia steps la funcion no hace nada
         notifyAllObservers();
         checkIfWonOrLost();
         std::chrono::milliseconds milliseconds(500);
