@@ -473,7 +473,8 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             if(nmbrOfPendingQuestions==0)
             {
                 status=WAITING_FOR_ACTION;
-                endGuardMove();
+                if(isGuardMoving())
+                    endGuardMove();
             }    
         }    
     }
@@ -1450,8 +1451,6 @@ void BurgleBrosModel::endGuardMove()
     BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
     if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
         tokens.turnOffAlarm(guardMoving->getPosition());
-    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
-        getP2Player(playerOnTurnBeforeGuardMove)->decLives();
     for(; gWholePath.second != gWholePath.first.end() && !gameFinished; gWholePath.second++)
     {
         if(gWholePath.second->meaning==GUARD_STEP_TO)
@@ -1525,7 +1524,7 @@ void BurgleBrosModel::copyGuardMove()
     BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
     if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
         tokens.turnOffAlarm(guardMoving->getPosition());
-    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
+    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition() && gWholePath.second == gWholePath.first.begin())
         getP2Player(playerOnTurnBeforeGuardMove)->decLives();
     for(; gWholePath.second != gWholePath.first.end() && !gameFinished; gWholePath.second++)
     {
