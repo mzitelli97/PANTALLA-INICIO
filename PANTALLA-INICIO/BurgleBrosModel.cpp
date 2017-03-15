@@ -1911,6 +1911,12 @@ void BurgleBrosModel::handleChihuahuaMove(unsigned int die)
     rollForLootCount++;
 }
 
+PlayerId BurgleBrosModel::getPlayerOnTurnBeforeGuardMove() 
+{
+    return playerOnTurnBeforeGuardMove;
+}
+
+
 void BurgleBrosModel::triggerAlarm(CardLocation tile)
 {
     if(guards[tile.floor].getPosition() != tile)

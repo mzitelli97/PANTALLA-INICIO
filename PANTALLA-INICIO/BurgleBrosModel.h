@@ -80,6 +80,7 @@ class BurgleBrosModel : public Model
         bool isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile);
         ModelStatus getModelStatus();
         vector<string> getMsgToShow();
+        PlayerId getPlayerOnTurnBeforeGuardMove();
         bool userDecidedTo(string decision); // Devuelve si hay que llamar a move guard.
         /*Otras funciones*/
         void setDice(vector<unsigned int> &dice);
