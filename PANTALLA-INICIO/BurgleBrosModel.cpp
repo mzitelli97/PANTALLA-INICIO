@@ -473,6 +473,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             if(nmbrOfPendingQuestions==0)
             {
                 status=WAITING_FOR_ACTION;
+                //gWholePath.second++;
                 endGuardMove();
             }    
         }    
@@ -1503,7 +1504,7 @@ void BurgleBrosModel::copyGuardMove()
         if(!(tokens.isThereAStealthToken(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition())))
             status=WAITING_FOR_ACTION;
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() != otherPlayer.getPosition())
-        {status = WAITING_FOR_ACTION; gWholePath.second++;}
+        {status = WAITING_FOR_ACTION;}// gWholePath.second++;}
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() == otherPlayer.getPosition())
         {
             if(anotherLavatoryInGPath())
@@ -1527,7 +1528,7 @@ void BurgleBrosModel::copyGuardMove()
         tokens.turnOffAlarm(guardMoving->getPosition());
     if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
         getP2Player(playerOnTurnBeforeGuardMove)->decLives();
-    for(; gWholePath.second != gWholePath.first.end() && !gameFinished; gWholePath.second++)
+    for(; gWholePath.second != gWholePath.first.end() && status == WAITING_FOR_ACTION && !gameFinished; gWholePath.second++)
     {
         if(gWholePath.second->meaning==GUARD_STEP_TO)
         {
@@ -1536,18 +1537,7 @@ void BurgleBrosModel::copyGuardMove()
             if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
                 tokens.turnOffAlarm(guardMoving->getPosition());
             
-            if(status == WAITING_FOR_ACTION && guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
-            {
-                notifyAllObservers();
-                vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
-                this->msgsToShow=aux;
-                status=DESPUES_VEMOS_A;
-                break;
-            }
-            else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
-                myPlayer.decLives();
-            
-            if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
+            if(guardMoving->getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
             {    
                 if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
                 {
@@ -1569,12 +1559,24 @@ void BurgleBrosModel::copyGuardMove()
                         vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
                         this->msgsToShow=aux;
                         status=DESPUES_VEMOS_B;
-                        break;
+                        //break;
                     }
                 }
             }
             else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
                 otherPlayer.decLives();
+            
+            if(guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
+            {
+                notifyAllObservers();
+                vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
+                this->msgsToShow=aux;
+                status=DESPUES_VEMOS_A;
+                //break;
+            }
+            else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
+                myPlayer.decLives();
+            
             if(board.isCardVisible(guardMoving->getPosition()))
             {   
                 if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
