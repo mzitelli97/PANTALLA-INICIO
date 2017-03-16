@@ -5,8 +5,6 @@
 
 CardLocation intToCardLocation(unsigned int cardNumber); //si se la llama con 16, devuleve (1,0,0) (piso 1 la primer carta), etc.  0<=i<48
 
-#define LAVATORY_DEBUGGING
-
 #define BOARD_STANDARD_FLOORS 3
 
 class BurgleBrosBoard

@@ -591,6 +591,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
 {
     vector<string> message, quitMsg({DEFAULT_QUIT_MSG}), gameOverMsg({DEFAULT_GAME_OVER_MSG}), spotterDecision({DEFAULT_SPOTTER_MSG});
     vector<string> timeoutMessage({DEFAULT_TIMEOUT_MSG});
+    vector<string> othersErrorMessage({DEFAULT_OTHERS_ERROR_MSG});
     Loot loot;
     bool guardHasToMove;
     string auxString;
@@ -812,7 +813,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             break;
         case ERRORR:
             quit=true;
-            view->MessageBox(timeoutMessage);
+            view->MessageBox(othersErrorMessage);
         default:
             break;
 
@@ -916,6 +917,7 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
             {    
                 networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
                 waiting4ack=true;
+                resetTimeoutTimer=true;
                 break;
             }
             modelPointer->guardMove();
