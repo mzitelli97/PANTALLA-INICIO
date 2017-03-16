@@ -89,6 +89,9 @@ void BurgleBrosModel::reset()
     auxMsgsToShow.clear();
     iE = NO_IE;
     nmbrOfPendingQuestions=0;
+    gWholePath.first.clear();
+    gWholePath.second=gWholePath.first.begin();
+    otherPlayerTokensUsed=0;
 }
 
 bool BurgleBrosModel::moveRequiresToInitGuard(CardLocation locationToMove)
