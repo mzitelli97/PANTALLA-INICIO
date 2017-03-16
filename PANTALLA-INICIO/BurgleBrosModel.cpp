@@ -1604,11 +1604,23 @@ list<GuardMoveInfo> BurgleBrosModel::generateGuardPath()
         if(board.isCardVisible(guardMoving->getPosition()))
         {   
             if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
-                if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
-                    addWithoutRepeating(alarmList, myPlayer.getPosition());
+            {
+                 if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
+                 {
+                     addWithoutRepeating(alarmList, myPlayer.getPosition());
+                     if(myPlayer.getPosition().floor==guardMoving->getPosition().floor)
+                        setGuardsNewPath(alarmList,guardMoving);
+                 }
+            }
             if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(otherPlayer.getPosition()) == CAMERA && board.isCardVisible(otherPlayer.getPosition()))
+            {
                 if(guardMoving->getPosition() != otherPlayer.getPosition())
+                {
                     addWithoutRepeating(alarmList, otherPlayer.getPosition());
+                    if(otherPlayer.getPosition().floor==guardMoving->getPosition().floor)
+                        setGuardsNewPath(alarmList,guardMoving);
+                }
+            }
         }
 
         /*Armo el paquete para informar del movimiento:*/
