@@ -1551,9 +1551,8 @@ void BurgleBrosModel::copyGuardMove()
                 }
                 else
                 {
-                    if(anotherLavatoryInGPath())    
-                        nmbrOfPendingQuestions++;
-                    else
+                    nmbrOfPendingQuestions++;
+                    if(!anotherLavatoryInGPath())       //pregunto al otro jugador cuando llego al ultimo lavatory del path
                     {
                         nmbrOfPendingQuestions++;
                         vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
