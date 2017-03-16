@@ -47,7 +47,6 @@ BurgleBrosModel::BurgleBrosModel()
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;
-    guardFinishedMoving=false;
     rollForLootCount=0;
     specialMotionCase=false;
     iE = NO_IE;
@@ -84,7 +83,6 @@ void BurgleBrosModel::reset()
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;
-    guardFinishedMoving=false;
     rollForLootCount=0;
     specialMotionCase=false;
     finishMsg.clear();
@@ -1086,13 +1084,6 @@ void BurgleBrosModel::checkTurns()
             triggerAlarm(myPlayer.getPosition());
         myPlayer.setTurn(false);
         playerOnTurnBeforeGuardMove=THIS_PLAYER;
-      /*  moveGuard(myPlayer.getPosition().floor); //Se comenta para probar los moves entre las 2 pcs
-        if(!otherPlayer.isOnHelicopter())
-            otherPlayer.setTurn(true);
-        else
-            myPlayer.setTurn(true);
-        handlePersianKittyMove(OTHER_PLAYER);
-        handleChihuahuaMove(OTHER_PLAYER);*/
         playerSpentFreeAction=false;
         board.deActivateMotion();
     }
@@ -1102,13 +1093,6 @@ void BurgleBrosModel::checkTurns()
             triggerAlarm(otherPlayer.getPosition());
         otherPlayer.setTurn(false);
         playerOnTurnBeforeGuardMove=OTHER_PLAYER;
-        //moveGuard(otherPlayer.getPosition().floor);
-      /*  if(!myPlayer.isOnHelicopter())
-            myPlayer.setTurn(true);
-        else
-            otherPlayer.setTurn(true);
-        handlePersianKittyMove(THIS_PLAYER);
-        handleChihuahuaMove(THIS_PLAYER);*/
         playerSpentFreeAction=false;
         board.deActivateMotion();
     }
@@ -1125,9 +1109,6 @@ void BurgleBrosModel::checkTurns()
             nextPlayerOnTurn->decActions();     //SI tenía un mirror pierde 1 acción
         if(nextPlayerOnTurn->hasLoot(CHIHUAHUA) || nextPlayerOnTurn->hasLoot(PERSIAN_KITTY))
             status=WAITING_DICE_FOR_LOOT;
-        // handlePersianKittyMove(nextPlayerOnTurn);
-       // handleChihuahuaMove(nextPlayerOnTurn);
-        guardFinishedMoving=false;
         dice.resetKeypadsDice();
         notifyAllObservers();
     }
@@ -1343,7 +1324,7 @@ bool BurgleBrosModel::isPeekGuardsCardPossible(PlayerId playerId, unsigned int g
         retVal=true;
     return retVal;
 }
-list<string> BurgleBrosModel::getPosibleActionsToTile(PlayerId player, CardLocation tile)
+list<string> BurgleBrosModel::getPosibleActions(PlayerId player, CardLocation tile)
 {
     list<string> aux;
     if(isMovePosible(player, tile))
@@ -1386,13 +1367,6 @@ list<string> BurgleBrosModel::getPosibleActionsToTile(PlayerId player, CardLocat
         aux.push_back("ESCAPE");
     return aux;
 }
-list<string> BurgleBrosModel::getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor)
-{
-    list<string> aux;
-    if(isPeekGuardsCardPossible(player, guardsFloor))
-        aux.push_back("PEEK TOP CARD");
-    return aux;
-}
  
 BurgleBrosPlayer * BurgleBrosModel::getP2Player(PlayerId playerId)
 {
@@ -1415,7 +1389,6 @@ void BurgleBrosModel::guardMove()
         setGuardWholePath(generateGuardPath());
     }
     copyGuardMove();
-    //guardFinishedMoving=true;
     checkTurns();
 }
 
@@ -1497,9 +1470,11 @@ void BurgleBrosModel::endGuardMove()
 
 void BurgleBrosModel::copyGuardMove()
 {
-    if(board.getCardType(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition()) == LAVATORY)
+    unsigned int guardFloor= getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;   //Obtengo la posición del 
+    BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
+    if(board.getCardType(guardMoving->getPosition()) == LAVATORY)
     {    
-        if(!(tokens.isThereAStealthToken(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition())))
+        if(!tokens.isThereAStealthToken(guardMoving->getPosition()))
             status=WAITING_FOR_ACTION;
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() != otherPlayer.getPosition())
             status = WAITING_FOR_ACTION; 
@@ -1519,9 +1494,7 @@ void BurgleBrosModel::copyGuardMove()
                     status=WAITING_FOR_ACTION;
             }
         }
-    }    
-    unsigned int guardFloor= getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;   //Obtengo la posición del 
-    BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
+    }
     if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
         tokens.turnOffAlarm(guardMoving->getPosition());
     if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition() && gWholePath.second == gWholePath.first.begin())
@@ -1552,7 +1525,7 @@ void BurgleBrosModel::copyGuardMove()
                     nmbrOfPendingQuestions++;
                     if(!anotherLavatoryInGPath())       //pregunto al otro jugador cuando llego al ultimo lavatory del path
                     {
-                        nmbrOfPendingQuestions++;
+                        //nmbrOfPendingQuestions++;
                         vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
                         this->msgsToShow=aux;
                         status=DESPUES_VEMOS_B;

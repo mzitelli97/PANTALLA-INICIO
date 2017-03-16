@@ -1,5 +1,3 @@
-#include <vector>
-
 #include "BurgleBrosView.h"
 #include "GraphicEDices.h"
 #include "GraphicGDie.h"
@@ -16,7 +14,7 @@
 #include "GraphicHelp.h"
 #include "LayerItem.h"
 #include <time.h>
-
+#include <vector>
 
 typedef enum {TILES_LIST, BUTTONS_LIST, CHARACTER_CARDS_LIST, LOOT_SHOW_LIST, EXTRA_DICES_LIST, GUARD_CARDS_LIST} FirstLayerLists;
 typedef enum {TOKENS_LIST, GUARD_INFO_LIST, PLAYER_INFO_LIST, STATIC_ITEMS} SecondeLayerLists;
@@ -88,7 +86,6 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                                 al_set_display_icon(display,icon);
                                 //al_destroy_bitmap(icon);
                             }
-                            else cout<<"COMO EL CULO\n";
                             #endif
                             al_set_window_title(display,"EDA Burgle Bros");
                             #ifdef CARDS_CHEAT
@@ -378,10 +375,7 @@ void BurgleBrosView::update()
     updateLoots();
     updateGuards();
     updateExtraDices();
-    
-    //after=clock();
-    //cout << "Update tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC<< " segundos."<<endl; 
-    
+        
     /*Draw all*/
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
     if(!showingHelp)
@@ -392,9 +386,7 @@ void BurgleBrosView::update()
     else
         help.draw();
     
-    al_flip_display();
-    //after=clock();
-    //cout << "Draw tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC << " segundos."<<endl; 
+    al_flip_display(); 
 }
 
 
@@ -481,11 +473,6 @@ BurgleBrosView::updateLoots()
     }
     
 }
-void BurgleBrosView::updateButtons()
-{
-    
-}
-
 
 void BurgleBrosView::updateCharacters() {
     
@@ -638,11 +625,8 @@ string BurgleBrosView::MessageBox(vector<string> &msg)
         for(unsigned int i=3;i<msg.size();++i)
             buttons+=msg[i]+"|";
         buttons.pop_back();
-        //cout<<buttons<<endl;
         while(!(aux=al_show_native_message_box(display, msg[0].c_str(),msg[1].c_str(),msg[2].c_str(),buttons.c_str(), ALLEGRO_MESSAGEBOX_QUESTION)));
     }
-    //cout<<2+aux<<endl;
-    //cout<<msg[2+aux]<<endl;
     return msg[2+aux];
 }
 int BurgleBrosView::yesNoMessageBox(vector<string> &msg)
@@ -728,7 +712,6 @@ void BurgleBrosView::zoomFloor(unsigned int floor, Model * auxModel)
         }
     }
     
-    //Info2DrawPlayer player = model->getInfo2DrawPlayer(model->getPlayerOnTurn());
     it = accessGraphicItems(FIRST_LAYER, BUTTONS_LIST);
     advance(it, floor);                                             //go to the zoom icon of the floor zoomed
     GraphicButton * button = dynamic_cast<GraphicButton *> (*it);

@@ -17,7 +17,6 @@ AllegroEG::AllegroEG() {
     {
         al_register_event_source(EventQueue,al_get_mouse_event_source());
         al_register_event_source(EventQueue,al_get_keyboard_event_source());
-        //al_register_event_source(EventQueue,al_get_display_event_source(al_get_current_display()));
     }
     else { error=true; errorMsg="Error al crear EventQueue";}
     
@@ -120,7 +119,6 @@ AllegroEG::hayEvento() {
             retVal=true;
         }
    }
-    
     return retVal;
 }
 

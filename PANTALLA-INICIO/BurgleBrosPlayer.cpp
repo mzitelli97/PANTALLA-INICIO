@@ -44,7 +44,6 @@ void BurgleBrosPlayer::getToDaChoppa()
 {
     isOnTheHelicopter=true;
     isOnTheBoard=false;
-    //position = {3,4,4}; //this does not work, do something to dont show the player anymore
 }
 
 void BurgleBrosPlayer::setOnBoard()
@@ -167,7 +166,6 @@ void BurgleBrosPlayer::attachLoot(Loot loot)
 }
 BurgleBrosPlayer::BurgleBrosPlayer()
 {
-    //pickRandomPlayer();//Ver si queda adentro, afuera o que....
     currentActions=INIT_NMBR_OF_ACTIONS;
     lives=INIT_NMBR_OF_LIVES;
     isOnTheHelicopter=false;

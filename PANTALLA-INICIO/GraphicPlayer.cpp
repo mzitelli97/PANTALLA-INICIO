@@ -1,15 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   GraphicPlayer.cpp
- * Author: carlos
- * 
- * Created on 30 de diciembre de 2016, 00:40
- */
 #include <allegro5/bitmap.h>
 #include "GraphicPlayer.h"
 

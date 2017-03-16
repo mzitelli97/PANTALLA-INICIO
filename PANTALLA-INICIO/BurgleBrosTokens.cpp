@@ -1,6 +1,7 @@
+#include "BurgleBrosTokens.h"
 #include <map>
 
-#include "BurgleBrosTokens.h"
+#define CARDS_TO_BE_CRACKED 6
 string token2Str(Token token)
 {
     switch (token)
@@ -19,7 +20,6 @@ string token2Str(Token token)
 
 void BurgleBrosTokens::triggerAlarm(CardLocation location)
 {
-    cout<<"ALARM!"<<endl;
     if(!isThereAnAlarmToken(location))                       //Si no habia alarmas
         alarms.push_back(location);                          //Pongo una alarma allí
 }
@@ -200,7 +200,7 @@ bool BurgleBrosTokens::isSafeOpened(unsigned int floor)
         if(card.floor == floor)
             count++;
     }
-    if(count == 6) //Si había 6 cartas crackeadas en el mismo piso significa que el safe de ese piso esta crackeado
+    if(count == CARDS_TO_BE_CRACKED) //Si había 6 cartas crackeadas en el mismo piso significa que el safe de ese piso esta crackeado
         retVal=true;
     return retVal;
 }

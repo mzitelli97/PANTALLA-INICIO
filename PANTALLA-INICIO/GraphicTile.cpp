@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   GraphicTile.cpp
- * Author: carlos
- * 
- * Created on 29 de diciembre de 2016, 20:46
- */
-
 #include "GraphicTile.h"
 
 GraphicTile::GraphicTile(ALLEGRO_BITMAP * front,ALLEGRO_BITMAP * back,CardLocation location,unsigned int width,unsigned int height)

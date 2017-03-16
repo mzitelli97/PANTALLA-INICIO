@@ -55,7 +55,6 @@ private:
     list<GroupItem>::iterator deleteList(Layers layer, unsigned int itemList);
     void setZoom();
     void resetZoom();
-    void updateButtons();
     void updateCharacters();
     void updateCharacterCards();
     void updateTiles();

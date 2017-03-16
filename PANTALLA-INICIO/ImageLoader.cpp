@@ -72,7 +72,7 @@ ALLEGRO_BITMAP *ImageLoader::getImageP(DiceColor color, unsigned int number)
         else
             return whiteDices[number-1];
     }
-    return nullptr;                  //ver bien!!!!
+    return nullptr;
 }
 ALLEGRO_BITMAP * ImageLoader::getImageP(buttonAction _button)
 {

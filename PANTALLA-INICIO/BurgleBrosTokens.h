@@ -45,7 +45,7 @@ public:
     void placeCrowToken(CardLocation location);
     bool isThereAKeypadToken(CardLocation location);
     void putKeyPadToken(CardLocation location);
-    bool isThereAToken(CardLocation location, Token whichToken); //FALTA DESARROLLAR
+    bool isThereAToken(CardLocation location, Token whichToken);
     bool isThereADownstairToken(CardLocation location);
     bool isThereAnAlarmToken(CardLocation location);
     bool isThereAStealthToken(CardLocation location);

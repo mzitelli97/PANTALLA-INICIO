@@ -19,7 +19,7 @@ bool NetworkED::isPacketOk()
     }
     else
     {
-        regex e("");
+        regex e("");        //this always fails, it will be set depend on the recieved packet
         string s((const char*)buffer,(size_t)len);
         switch(header)
         {

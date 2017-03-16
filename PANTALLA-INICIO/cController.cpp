@@ -67,9 +67,7 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
             default:
                 break;
         }
-    }
-    else if( p2MouseData != nullptr && !p2MouseData->isClicked())
-            cout<<"Z coordinate: " <<p2MouseData->getZ()<< endl;    
+    } 
 }
 
 void cController::parseKeyboardEvent(EventData* evData)

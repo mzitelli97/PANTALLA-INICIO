@@ -49,7 +49,6 @@ public:
         bool hasLoot(Loot loot);
         void pickRandomPlayer();
         void pickRandomPlayer(CharacterName exceptThis);
-        //list<Loot> getLootsCarried();
         void attachLoot(Loot loot);
         void deattachLoot(Loot loot);
         void setName(string name);

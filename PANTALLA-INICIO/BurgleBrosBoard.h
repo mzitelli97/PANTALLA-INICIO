@@ -38,8 +38,8 @@ public:
         void activateMotion();          //Activa el sensor de motion 
         void deActivateMotion();        //Desactiva el sensor de motion
         bool isMotionActivated();
-        bool canKittyMove(CardLocation kittyPos);       //FALTA CAMBIAR
-        CardLocation getKittyMovingPos(CardLocation ownerPos);      //FALTA CAMBIAR
+        bool canKittyMove(CardLocation kittyPos);
+        CardLocation getKittyMovingPos(CardLocation ownerPos);
 	~BurgleBrosBoard();
 private:
 	void sliceVector(std::vector<CardName> &allFloors, std::vector<CardName> *firstFloor, std::vector<CardName> *secondFloor, std::vector<CardName> *thirdFloor);

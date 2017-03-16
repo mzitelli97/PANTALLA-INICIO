@@ -1,20 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   TextBox.cpp
- * Author: diego
- * 
- * Created on February 5, 2017, 10:23 AM
- */
-
 #include "TextBox.h"
 #define BACK_COLOR al_map_rgb(255,255,255)
 #define TEXT_COLOR al_map_rgb(0,0,0)
-//#define CLICK_COLOR al_map_rgb
 
 TextBox::TextBox(double width, double height, ALLEGRO_FONT * font, textSelected id)
 {

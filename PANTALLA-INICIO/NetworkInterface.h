@@ -24,7 +24,7 @@ public:
 	se vuelve en servidor y espera que alguien se conecte. Es no bloqueante, devuelve 1 si se pudo establecer una conexion (se tiene que llamar
 	a getcomunicationrole para saber si quedo como server o como cliente.*/
 	bool standardConnectionStart(std::string &ip);	
-	/*Devuelve si se conect� como server o cliente */
+	/*Devuelve si se conecto como server o cliente */
 	CommunicationRole getCommunicationRole();
         bool checkError();
         string getErrorMsg();
@@ -59,7 +59,5 @@ private:
 	CommunicationRole currentRole;
 	Networking *p2networking;
 };
-
-
 
 #endif 

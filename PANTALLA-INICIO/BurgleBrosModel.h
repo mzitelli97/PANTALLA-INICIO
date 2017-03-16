@@ -11,9 +11,6 @@
 #define NUMBER_OF_PLAYERS 2
 #define NO_SAFE_NUMBER -1
 
-
-
-
 /*Mensajes para dialog box tienen:  TITULO                  SUBTITULO               TEXTO */
 #define ENTER_FINGERPRINT_TEXT      "Alert",            "Confirm Action", "You have entered a Fingerprint tile, so you will trigger an alarm unless you use a hack token"
 #define LASER_TEXT                  "Alert",            "Confirm Action", "You have entered a Laser tile, you can either spend and extra action or use a hack token to avoid triggering an alarm"
@@ -122,15 +119,13 @@ class BurgleBrosModel : public Model
         bool isOfferLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isEscapePossible(PlayerId playerId, CardLocation tile);
         bool isPeekGuardsCardPossible(PlayerId playerId, unsigned int guardsFloor);
-        bool moveWillRequireSpecifications(PlayerId playerId, CardLocation locationToMove, int safeNumber); //devuelve true si el model necesitara info extra, por ejemplo si necesita el input de responder el allegro native dialog box o si necesita saber los dados que tiró el otro jugador.
-        list<string> getPosibleActionsToTile(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
-        list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
+        list<string> getPosibleActions(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
 
         void incOtherPlayerTokensUsed();
 	~BurgleBrosModel();
     private:
 
-        void copyGuardMove(); //Faltaría checkear que el move sea correcto.
+        void copyGuardMove();
         void endGuardMove();
         bool anotherLavatoryInGPath();
         
@@ -162,8 +157,7 @@ class BurgleBrosModel : public Model
         ModelStatus status;         //Para las preguntas al usuario
         vector<string> msgsToShow;      //Contiene el texto y sus respuestas.
         CardLocation prevLoc;
-        PlayerId playerOnTurnBeforeGuardMove;   //Este se podría poner dentro del guard después
-        bool guardFinishedMoving;       //Este se podría poner dentro del guard después
+        PlayerId playerOnTurnBeforeGuardMove;
         Loot lootOfferedOrAskedFor;
         unsigned int rollForLootCount;
         bool specialMotionCase;

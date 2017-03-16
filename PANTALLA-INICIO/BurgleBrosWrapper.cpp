@@ -153,8 +153,7 @@ BurgleBrosWrapper::playGame() {
     }
     delete p2Controller;
     delete p2Model;
-    delete p2View; 
-    //cin >> aux;     //Para poder ver si hubo un error.
+    delete p2View;
     
 }
 

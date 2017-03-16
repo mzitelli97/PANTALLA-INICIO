@@ -79,7 +79,7 @@ private:
     BurgleBrosSound *sound;
     bool aMoveActionPending;
     bool iStarted;
-    CardLocation previousMovingToLocation;//tiene pinta de model
+    CardLocation previousMovingToLocation;
     string thisPlayerName;
     bool quit;
     PlayAgainId whichPlayer;

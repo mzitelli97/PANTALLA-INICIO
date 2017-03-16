@@ -1,6 +1,5 @@
 #include "LayerItem.h"
 
-
 LayerItem::LayerItem() {
     
 }
@@ -69,15 +68,12 @@ LayerItem::erese(unsigned int itemList) {
     it_groups->erase();
     
     return it_groups;
-    
 }
 
-void LayerItem::draw() {
-    
+void LayerItem::draw() 
+{    
     for(auto& item : Groups)
-    {
         item.draw();
-    }
 }
 
 LayerItem::~LayerItem() {

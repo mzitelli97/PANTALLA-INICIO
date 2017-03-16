@@ -313,7 +313,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     if(!waiting4ack)
                     {
                         auxLocation = (CardLocation *)temp.info;
-                        view->showMenu(modelPointer->getPosibleActionsToTile(THIS_PLAYER, *auxLocation), aux, *auxLocation);
+                        view->showMenu(modelPointer->getPosibleActions(THIS_PLAYER, *auxLocation), aux, *auxLocation);
                         view->update();
                     }
                     break;
