@@ -23,7 +23,7 @@ bool BurgleBrosModel::isGuardMoving()
     bool retVal=false;
     if(isGuardsTurn())
     {    
-        if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].hasStepsLeft())
+        if(/*guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].hasStepsLeft() &&*/ gWholePath.second!=gWholePath.first.end())
             retVal=true;
     }
     return retVal;
