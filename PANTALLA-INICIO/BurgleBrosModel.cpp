@@ -1435,13 +1435,19 @@ void BurgleBrosModel::setGuardWholePath(list<GuardMoveInfo> wholePath)
 bool BurgleBrosModel::anotherLavatoryInGPath()
 {
     bool retVal = false;
-    list<GuardMoveInfo>::iterator it = gWholePath.second; it++;
-    for(; it != gWholePath.first.end(); it++)
-        if(it->meaning == GUARD_STEP_TO && board.getCardType(it->cardLocation) == LAVATORY)
+    if(gWholePath.second != gWholePath.first.end())
+    {
+        list<GuardMoveInfo>::iterator it = gWholePath.second; 
+        it++;
+        for(; it != gWholePath.first.end(); it++)
         {
-            retVal = true;
-            break;
+            if(it->meaning == GUARD_STEP_TO && board.getCardType(it->cardLocation) == LAVATORY)
+            {
+                retVal = true;
+                break;
+            }
         }
+    }
     return retVal;
 }
 
