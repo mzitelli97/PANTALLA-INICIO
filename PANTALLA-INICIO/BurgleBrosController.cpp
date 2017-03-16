@@ -928,9 +928,9 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
             modelPointer->guardMove();
         }
     }    
-    if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && modelPointer->getPlayerOnTurnBeforeGuardMove()==THIS_PLAYER)
+    if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && modelPointer->getPlayerOnTurnBeforeGuardMove()==THIS_PLAYER && waiting4ack==false)
         networkInterface->sendGMove(modelPointer->getGuardWholePath());
-    if(!modelPointer->isGuardMoving()) modelPointer->clearGuardWholePath();
+    if(!modelPointer->isGuardMoving()&& waiting4ack==false ) modelPointer->clearGuardWholePath();
     /*list<GuardMoveInfo> guardMovement;
     modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
     if(modelPointer->getModelStatus() == WAITING_FOR_ACTION)
