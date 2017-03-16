@@ -1,5 +1,4 @@
 #include "BurgleBrosDices.h"
-#include <map>
 
 #define DIE_MIN_VAL 1
 #define DIE_MAX_VAL 6

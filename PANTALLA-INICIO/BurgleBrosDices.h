@@ -2,6 +2,7 @@
 #define BURGLEBROSDICES_H
 
 #include "BurgleBrosBoard.h"
+#include <map>
 
 #define MAX_NMBR_OF_EXTRA_DICES 6
 #define NO_DIE 0
