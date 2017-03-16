@@ -666,15 +666,17 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_ACTION && modelPointer->isGuardsTurn())    //Si el jugador gastó todas las acciones y, para casos especiales metió lo que se preguntaba (deadbolt, etc) se procede a mover el guardia.
             {
-              //  modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
-               // networkInterface->sendGMove(guardMovement);     //Se envía esa información.
-                handleGuardMove(true);
+                handleGuardMove(true);  //Se hace la movida del guardia, y se envía esa información.
                 resetTimeoutTimer=true;
             }
             else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A )
             {
                 handleGuardMove(THIS_PLAYER == modelPointer->getPlayerOnTurnBeforeGuardMove());
             }
+            /*else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A &&  OTHER_PLAYER == modelPointer->getPlayerOnTurnBeforeGuardMove() )
+            {
+                handleGuardMove(false);
+            }*/
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
                 message=modelPointer->getMsgToShow(); //Se obtiene el mensaje a mostrar,
@@ -907,8 +909,7 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
 {
     modelPointer->guardMove();
     while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B )
-    {    
-        //modelPointer->guardMove();
+    {
         if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
         {
             vector<string> aux= modelPointer->getMsgToShow();
@@ -923,10 +924,10 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
             }
             modelPointer->guardMove();
         }
-    }    
-    if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && modelPointer->getPlayerOnTurnBeforeGuardMove()==THIS_PLAYER)
+    }
+    if(((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && modelPointer->getPlayerOnTurnBeforeGuardMove()==THIS_PLAYER && waiting4ack==false) || modelPointer->hasGameFinished())
         networkInterface->sendGMove(modelPointer->getGuardWholePath());
-    if(!modelPointer->isGuardMoving()) modelPointer->clearGuardWholePath();
+    if(!modelPointer->isGuardMoving()&& waiting4ack==false ) modelPointer->clearGuardWholePath();
     /*list<GuardMoveInfo> guardMovement;
     modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
     if(modelPointer->getModelStatus() == WAITING_FOR_ACTION)
