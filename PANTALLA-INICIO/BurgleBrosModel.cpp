@@ -23,7 +23,7 @@ bool BurgleBrosModel::isGuardMoving()
     bool retVal=false;
     if(isGuardsTurn())
     {    
-        if(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].hasStepsLeft())
+        if(/*guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].hasStepsLeft() &&*/ gWholePath.second!=gWholePath.first.end())
             retVal=true;
     }
     return retVal;
@@ -473,8 +473,8 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             if(nmbrOfPendingQuestions==0)
             {
                 status=WAITING_FOR_ACTION;
-                //gWholePath.second++;
-                endGuardMove();
+                if(isGuardMoving())
+                    endGuardMove();
             }    
         }    
     }
@@ -1451,8 +1451,6 @@ void BurgleBrosModel::endGuardMove()
     BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
     if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
         tokens.turnOffAlarm(guardMoving->getPosition());
-    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
-        getP2Player(playerOnTurnBeforeGuardMove)->decLives();
     for(; gWholePath.second != gWholePath.first.end() && !gameFinished; gWholePath.second++)
     {
         if(gWholePath.second->meaning==GUARD_STEP_TO)
@@ -1504,7 +1502,7 @@ void BurgleBrosModel::copyGuardMove()
         if(!(tokens.isThereAStealthToken(guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].getPosition())))
             status=WAITING_FOR_ACTION;
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() != otherPlayer.getPosition())
-        {status = WAITING_FOR_ACTION;}// gWholePath.second++;}
+            status = WAITING_FOR_ACTION; 
         else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() == otherPlayer.getPosition())
         {
             if(anotherLavatoryInGPath())
@@ -1526,9 +1524,9 @@ void BurgleBrosModel::copyGuardMove()
     BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
     if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
         tokens.turnOffAlarm(guardMoving->getPosition());
-    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
+    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition() && gWholePath.second == gWholePath.first.begin())
         getP2Player(playerOnTurnBeforeGuardMove)->decLives();
-    for(; gWholePath.second != gWholePath.first.end() && status == WAITING_FOR_ACTION && !gameFinished; gWholePath.second++)
+    for(; gWholePath.second != gWholePath.first.end() && !gameFinished && status==WAITING_FOR_ACTION; gWholePath.second++)
     {
         if(gWholePath.second->meaning==GUARD_STEP_TO)
         {
@@ -1564,7 +1562,6 @@ void BurgleBrosModel::copyGuardMove()
             }
             else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
                 otherPlayer.decLives();
-            
             if(guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
             {
                 notifyAllObservers();
@@ -1911,6 +1908,12 @@ void BurgleBrosModel::handleChihuahuaMove(unsigned int die)
     }
     rollForLootCount++;
 }
+
+PlayerId BurgleBrosModel::getPlayerOnTurnBeforeGuardMove() 
+{
+    return playerOnTurnBeforeGuardMove;
+}
+
 
 void BurgleBrosModel::triggerAlarm(CardLocation tile)
 {

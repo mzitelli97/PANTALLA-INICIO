@@ -671,6 +671,10 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
                 handleGuardMove(true);
                 resetTimeoutTimer=true;
             }
+            else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A )
+            {
+                handleGuardMove(THIS_PLAYER == modelPointer->getPlayerOnTurnBeforeGuardMove());
+            }
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
                 message=modelPointer->getMsgToShow(); //Se obtiene el mensaje a mostrar,
@@ -738,7 +742,6 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             networkEvent->getGuardMovement(guardMovement);  //Obtengo el movimiento del guardia
             modelPointer->setGuardWholePath(guardMovement);
             handleGuardMove(false);
-            /*modelPointer->guardMove(); //Y hago que el modelo lo procese.
             if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
             {
                 networkInterface->sendPacket(WE_LOST);
@@ -755,7 +758,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
                 unsigned int die=modelPointer->rollDieForLoot(NO_DIE);
                 networkInterface->sendRollDiceForLoot(die);
                 waiting4ack=true;
-            }*/
+            }
             break;
         case INITIAL_G_POS:
             networkEvent->getInitGPos(&guardPosition, &guardDice);
@@ -915,12 +918,13 @@ void BurgleBrosController::handleGuardMove(bool sendPacket)
             if(userChoice==USE_LAVATORY_TOKEN_TEXTB)
             {    
                 networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
-                //break;
+                waiting4ack=true;
+                break;
             }
             modelPointer->guardMove();
         }
     }    
-    if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && sendPacket)
+    if((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()) && modelPointer->getPlayerOnTurnBeforeGuardMove()==THIS_PLAYER)
         networkInterface->sendGMove(modelPointer->getGuardWholePath());
     if(!modelPointer->isGuardMoving()) modelPointer->clearGuardWholePath();
     /*list<GuardMoveInfo> guardMovement;
