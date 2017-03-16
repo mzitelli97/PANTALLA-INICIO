@@ -675,6 +675,10 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             {
                 handleGuardMove(true);
             }
+            else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A &&  OTHER_PLAYER == modelPointer->getPlayerOnTurnBeforeGuardMove() )
+            {
+                handleGuardMove(false);
+            }
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
                 message=modelPointer->getMsgToShow(); //Se obtiene el mensaje a mostrar,
