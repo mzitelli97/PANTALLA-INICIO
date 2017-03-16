@@ -904,7 +904,7 @@ void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
 void BurgleBrosController::handleGuardMove(bool sendPacket)
 {
     modelPointer->guardMove();
-    while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B )
+    while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B && !modelPointer->hasGameFinished())
     {
         if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
         {
