@@ -16,9 +16,9 @@
 
 class EventData {
 public:
-    EventData();
-    EventData(const EventData& orig);
-    virtual ~EventData();
+    EventData(){};
+    EventData(const EventData& orig){};
+    virtual ~EventData(){};
 private:
 
 };

@@ -15,7 +15,7 @@ typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 
 
 
-//#define FULLSCREEN
+#define FULLSCREEN
 //#define CARDS_CHEAT
 
 class BurgleBrosView : public Observer{

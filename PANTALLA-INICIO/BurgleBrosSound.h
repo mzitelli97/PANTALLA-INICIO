@@ -14,7 +14,6 @@
 #ifndef BURGLEBROSSOUND_H
 #define BURGLEBROSSOUND_H
 
-//#include "SoundManager.h"
 #include "Observer.h"
 #include "BurgleBrosModel.h"
 #include <allegro5/allegro5.h>

@@ -8,7 +8,6 @@
 #include "BurgleBrosDices.h"
 #include "Model.h"
 #include "Controller.h"
-#include "SoundManager.h"
 
 #define NUMBER_OF_PLAYERS 2
 #define NO_SAFE_NUMBER -1
@@ -37,7 +36,7 @@
 #define SPOTTER_BOTTOM      "Bottom"
 #define SPOTTER_NO_PREV_CHOICE "..."
 
-//#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
+#define INMORTAL //Comentar para perder cuando se te terminan las vidas.
 
 typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT} ModelStatus;
 typedef enum {GUARD_STEP_TO, GUARD_CARD_PICK} LocationMeaning;
@@ -122,7 +121,6 @@ class BurgleBrosModel : public Model
         list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
         
         void attachController(Controller * controller);
-        void attachSoundManager(SoundManager * soundManager);
 	~BurgleBrosModel();
     private:
 
@@ -150,7 +148,6 @@ class BurgleBrosModel : public Model
 	BurgleBrosLoots loots;
 	BurgleBrosDices dice;
         Controller * controller;
-        SoundManager * soundManager;
         importantEvents iE;
         bool gameFinished;
         string finishMsg;       //Si el juego terminó indica como termino (por ejemplo WON, LOST o MODEL ERROR:"(errormsg)"

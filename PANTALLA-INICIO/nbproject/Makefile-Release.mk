@@ -51,7 +51,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/BurgleBrosWrapper.o \
 	${OBJECTDIR}/CModel.o \
 	${OBJECTDIR}/CView.o \
-	${OBJECTDIR}/EventData.o \
 	${OBJECTDIR}/EventGenerator.o \
 	${OBJECTDIR}/GUI.o \
 	${OBJECTDIR}/GraphicButton.o \
@@ -189,11 +188,6 @@ ${OBJECTDIR}/CView.o: CView.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CView.o CView.cpp
-
-${OBJECTDIR}/EventData.o: EventData.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EventData.o EventData.cpp
 
 ${OBJECTDIR}/EventGenerator.o: EventGenerator.cpp
 	${MKDIR} -p ${OBJECTDIR}

@@ -27,7 +27,6 @@ BurgleBrosModel::BurgleBrosModel()
     guards[2]= aux3;
     board.initBoard();
     controller=nullptr;
-    soundManager=nullptr;
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;
@@ -79,10 +78,7 @@ void BurgleBrosModel::attachController(Controller * controller)
 {
     this->controller = controller;
 }
-void BurgleBrosModel::attachSoundManager(SoundManager * soundManager)
-{
-    this->soundManager=soundManager;
-}
+
 bool BurgleBrosModel::moveRequiresToInitGuard(CardLocation locationToMove)
 {
     return !guards[locationToMove.floor].checkIfInitialized();
