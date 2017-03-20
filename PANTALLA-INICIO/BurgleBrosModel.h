@@ -7,11 +7,9 @@
 #include "BurgleBrosPlayer.h"
 #include "BurgleBrosDices.h"
 #include "Model.h"
-#include "Controller.h"
 
 #define NUMBER_OF_PLAYERS 2
 #define NO_SAFE_NUMBER -1
-
 
 /*Mensajes para dialog box tienen:  TITULO                  SUBTITULO               TEXTO */
 #define ENTER_FINGERPRINT_TEXT      "Alert",            "Confirm Action", "You have entered a Fingerprint tile, so you will trigger an alarm unless you use a hack token"
@@ -38,7 +36,7 @@
 
 #define INMORTAL //Comentar para perder cuando se te terminan las vidas.
 
-typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT} ModelStatus;
+typedef enum {WAITING_FOR_ACTION, WAITING_FOR_USER_CONFIRMATION, WAITING_FOR_DICE, WAITING_FOR_GUARD_INIT, WAITING_FOR_LOOT, IN_LOOT_EXCHANGE, WAITING_DICE_FOR_LOOT, DESPUES_VEMOS_A, DESPUES_VEMOS_B} ModelStatus;
 typedef enum {GUARD_STEP_TO, GUARD_CARD_PICK} LocationMeaning;
 typedef struct{
     LocationMeaning meaning;
@@ -79,10 +77,10 @@ class BurgleBrosModel : public Model
         bool isThereACpuRoomOrLavatory(CardLocation pos, CardName whichTypeOfTile);
         ModelStatus getModelStatus();
         vector<string> getMsgToShow();
+        PlayerId getPlayerOnTurnBeforeGuardMove();
         bool userDecidedTo(string decision); // Devuelve si hay que llamar a move guard.
         /*Otras funciones*/
         void setDice(vector<unsigned int> &dice);
-        void toggleVol();
         bool dieForLootNeeded();      //Si es necesario tirar un dado para el chihuahua o persian kitty
         void continueGame();        //Si el juego estaba parado por los dados para el loot, se le dice que continúe.
         unsigned int rollDieForLoot(unsigned int die);          //Tira un dado para los loots y devuelve el número que salió. en el caso que tenga chihuahua y persian kitty el player, primero se tira por chihuahua y luego por persian kitty.
@@ -102,7 +100,12 @@ class BurgleBrosModel : public Model
         void offerLoot(PlayerId playerId, Loot loot);
         void escape(PlayerId playerId, CardLocation stairTile);
         string peekGuardsCard(PlayerId playerId, CardLocation **guardCard, unsigned int floor, string prevChoice);
-        void guardMove(list<GuardMoveInfo> &guardMovement);
+        bool isGuardMoving();
+        void guardMove();
+        void setGuardWholePath(list<GuardMoveInfo> wholePath);
+        list<GuardMoveInfo> getGuardWholePath();
+        void clearGuardWholePath();
+        list<GuardMoveInfo> generateGuardPath();//ver si tiene que ir aca o afuera
         /*Prueba para ver si se pueden realizar ciertas acciones*/
         bool isMovePosible(PlayerId playerId,CardLocation tileToMove);  //Pregunta si una movida es posible
         bool isPeekPosible(PlayerId player, CardLocation tile);         //Pregunta si un peek es posible
@@ -116,16 +119,16 @@ class BurgleBrosModel : public Model
         bool isOfferLootPossible(PlayerId playerId, CardLocation tile, Loot loot);
         bool isEscapePossible(PlayerId playerId, CardLocation tile);
         bool isPeekGuardsCardPossible(PlayerId playerId, unsigned int guardsFloor);
-        bool moveWillRequireSpecifications(PlayerId playerId, CardLocation locationToMove, int safeNumber); //devuelve true si el model necesitara info extra, por ejemplo si necesita el input de responder el allegro native dialog box o si necesita saber los dados que tiró el otro jugador.
-        list<string> getPosibleActionsToTile(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
-        list<string> getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor); 
-        
-        void attachController(Controller * controller);
+        list<string> getPosibleActions(PlayerId player, CardLocation tile);   //Devuelve que acciones puede realizar el jugador indicado en esa tile
+
+        void incOtherPlayerTokensUsed();
 	~BurgleBrosModel();
     private:
 
-        void makeGuardMove(list<GuardMoveInfo> &guardMovement);
-        void copyGuardMove(list<GuardMoveInfo> &guardMovement); //Faltaría checkear que el move sea correcto.
+        void copyGuardMove();
+        void endGuardMove();
+        bool anotherLavatoryInGPath();
+        
         void checkTurns();
         void checkIfWonOrLost();
         void handlePersianKittyMove(unsigned int die);
@@ -136,6 +139,7 @@ class BurgleBrosModel : public Model
         bool GuardInCamera();
         list<CardLocation> setGuardsNewPath(unsigned int floor);
         list<CardLocation> setGuardsNewPath(unsigned int floor,CardLocation thisTarget);
+        list<CardLocation> setGuardsNewPath(list<CardLocation> &alarmList, BurgleBrosGuard *p2Guard);
         bool playerSpentFreeAction;
         BurgleBrosPlayer * getP2Player(PlayerId playerId);
         BurgleBrosPlayer * getP2OtherPlayer(PlayerId playerId);
@@ -147,21 +151,21 @@ class BurgleBrosModel : public Model
 	BurgleBrosTokens tokens;
 	BurgleBrosLoots loots;
 	BurgleBrosDices dice;
-        Controller * controller;
         importantEvents iE;
         bool gameFinished;
         string finishMsg;       //Si el juego terminó indica como termino (por ejemplo WON, LOST o MODEL ERROR:"(errormsg)"
         ModelStatus status;         //Para las preguntas al usuario
         vector<string> msgsToShow;      //Contiene el texto y sus respuestas.
         CardLocation prevLoc;
-        PlayerId playerOnTurnBeforeGuardMove;   //Este se podría poner dentro del guard después
-        bool guardFinishedMoving;       //Este se podría poner dentro del guard después
+        PlayerId playerOnTurnBeforeGuardMove;
         Loot lootOfferedOrAskedFor;
         unsigned int rollForLootCount;
         bool specialMotionCase;
         vector<string> auxMsgsToShow;
         CardLocation spyGuardCard;
-        
+        pair<list<GuardMoveInfo>,list<GuardMoveInfo>::iterator> gWholePath;
+        unsigned int nmbrOfPendingQuestions;
+        unsigned int otherPlayerTokensUsed;
 };
 #endif
 

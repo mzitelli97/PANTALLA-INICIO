@@ -1,7 +1,4 @@
 #include "GUI.h"
-#include "NetworkED.h"
-#include "TimerED.h"
-#include "EventGenerator.h"
 
 
 GUI::GUI() {
@@ -26,13 +23,13 @@ bool
 GUI::hayEvento()
 {
     bool retVal=false;
-    list<EventGenerator*>::iterator it_evento;
 
-    for(it_evento=evento.begin(); it_evento != evento.end() && !retVal;it_evento++) //No guardo el iterador xq cuando sale de scope desaloca la memoria
+    for(auto& ev : evento)
     {
-            retVal=(*it_evento)->hayEvento();
-            eventType=(*it_evento)->getType();
-            data=(*it_evento)->getData();
+        retVal=ev->hayEvento();
+        eventType=ev->getType();
+        data=ev->getData();
+        if(retVal == true) break;
     }
     return retVal;
 }
@@ -52,6 +49,8 @@ void GUI::parseEvento(){
             break;
         case GUI_EVENT_TIMER:
             controller->parseTimerEvent(data);
+            break;
+        default:
             break;
     }
     //elimino el event data

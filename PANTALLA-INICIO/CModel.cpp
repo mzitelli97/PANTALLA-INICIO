@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   CModel.cpp
- * Author: maxi
- * 
- * Created on 7 de febrero de 2017, 17:11
- */
-
 #include "CModel.h"
 
 #define MAX_SIZE_IP 15
@@ -78,23 +65,6 @@ bool CModel::isAnEntryEmpty()
     }
     return retVal;
 }
-
-
-/*textSelected operator++(const textSelected& text)
-{
-    textSelected retVal = text;
-    if(text == MY_IP) retVal = OTHER_IP;
-    else if(text == OTHER_IP) retVal = MY_NAME;
-    return retVal;
-}
-
-textSelected operator--(const textSelected& text)
-{
-    textSelected retVal = text;
-    if(text == OTHER_IP) retVal = MY_IP;
-    else if(text == MY_NAME) retVal = OTHER_IP;
-    return retVal;
-}*/
 
 
 

@@ -3,6 +3,7 @@
 #include "KeyboardED.h"
 #include "TimerED.h"
 #include <iostream>
+#include <allegro5/display.h>
 
 AllegroEG::AllegroEG() {
     
@@ -40,9 +41,16 @@ AllegroEG::hayEvento() {
     
     if(al_get_next_event(EventQueue,&rawEvent))
     {
-        if(rawEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+        if(rawEvent.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
         {
-           MouseED *auxData= new MouseED(true,rawEvent.mouse.x,rawEvent.mouse.y);
+            KeyboardED *auxData= new KeyboardED(ESCAPE_KEY);
+            data=(EventData *) auxData;
+            event=GUI_EVENT_KEYBOARD;
+            retVal=true;
+        }
+        else if(rawEvent.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+        {
+            MouseED *auxData= new MouseED(true,rawEvent.mouse.x,rawEvent.mouse.y);
             data=(EventData *) auxData;
             event=GUI_EVENT_MOUSE;
             retVal=true;
@@ -69,12 +77,17 @@ AllegroEG::hayEvento() {
                 retVal=true;
             }
         }
-        else if(rawEvent.type == ALLEGRO_EVENT_KEY_UP)
+        else if(rawEvent.type == ALLEGRO_EVENT_KEY_CHAR)
         {
             KeyboardED *auxData;
             retVal=true;
             if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_A && rawEvent.keyboard.keycode <= ALLEGRO_KEY_Z)
-                auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'A');
+            {
+                if((rawEvent.keyboard.modifiers & ALLEGRO_KEYMOD_SHIFT) || (rawEvent.keyboard.modifiers & ALLEGRO_KEYMOD_CAPSLOCK))
+                    auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'A');
+                else
+                    auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_A+'a');
+            }
             else if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_0 && rawEvent.keyboard.keycode <= ALLEGRO_KEY_9)
                 auxData= new KeyboardED(rawEvent.keyboard.keycode-ALLEGRO_KEY_0+'0');
             else if(rawEvent.keyboard.keycode >= ALLEGRO_KEY_PAD_0 && rawEvent.keyboard.keycode <= ALLEGRO_KEY_PAD_9)
@@ -102,11 +115,9 @@ AllegroEG::hayEvento() {
             TimerED *auxData = new TimerED(TIMEOUT);
             data=(EventData *) auxData;
             event=GUI_EVENT_TIMER;
-            std::cout<< "TIMEOUT"<<std::endl;
             retVal=true;
         }
    }
-    
     return retVal;
 }
 

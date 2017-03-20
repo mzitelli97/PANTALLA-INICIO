@@ -6,9 +6,6 @@
 
 typedef enum {IP_TO_CONNECT, MY_NAME, NONE_SELECTED}textSelected;
 
-/*textSelected operator++(const textSelected &text);
-textSelected operator--(const textSelected &text);*/
-
 #define LOOPBACK
 
 typedef struct

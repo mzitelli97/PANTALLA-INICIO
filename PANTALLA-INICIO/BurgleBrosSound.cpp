@@ -1,18 +1,20 @@
-#include <list>
-
 #include "BurgleBrosSound.h"
-#define MUTE
+//#define MUTE
+#define MUSIC_FOLDER "Music/"
+#define SOUNDS_FOLDER "Sounds/"
+
+#define THEME_1 "Burgle Music"
+
+#define THEMES_EXTENSION ".wav"
 
 using namespace std;
 
 BurgleBrosSound::BurgleBrosSound() {
-    bool test;
     initOK=loadAllSamples();
     al_reserve_samples(3);              //para poder reproducir 3 sonidos a la vez(no va a haber mas)
 #ifndef MUTE
     if(initOK)
-         test=al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
-    //cout<<(unsigned int)test;
+        al_play_sample(samples.front(), 1.0, 0.0, 1.0,ALLEGRO_PLAYMODE_LOOP, NULL);   //musica de fondo
 #endif   
     onMute = false;
 }

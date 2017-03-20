@@ -16,7 +16,7 @@ typedef enum {FIRST_LAYER, SECOND_LAYER, THIRD_LAYER} Layers;
 
 
 #define FULLSCREEN
-//#define CARDS_CHEAT
+#define CARDS_CHEAT
 
 class BurgleBrosView : public Observer{
 public:
@@ -58,7 +58,6 @@ private:
     list<GroupItem>::iterator deleteList(Layers layer, unsigned int itemList);
     void setZoom();
     void resetZoom();
-    void updateButtons();
     void updateCharacters();
     void updateCharacterCards();
     void updateTiles();

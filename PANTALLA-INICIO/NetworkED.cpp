@@ -19,7 +19,7 @@ bool NetworkED::isPacketOk()
     }
     else
     {
-        regex e("");
+        regex e("");        //this always fails, it will be set depend on the recieved packet
         string s((const char*)buffer,(size_t)len);
         switch(header)
         {
@@ -40,7 +40,7 @@ bool NetworkED::isPacketOk()
                 e = "([A-D][1-4]F[1-3]){2}";
                 break;
             case MOVE: case PEEK:
-                e = "^[A-D][1-4]F[1-3][0-6]$";
+                e = "^[A-D][1-4]F[1-4][0-6]$";
                 break;
             case SPENT_OK:
                 e = "^[YN]$";
@@ -162,7 +162,6 @@ CardLocation NetworkED::getTokenPos()
     {
         buffer[len]= '\0';               
         string aux =(char *) buffer;
-       //string aux =(char *) buffer + '\0'; //perro, lo había puesto así porque no hay nada que asegure que venga con terminador el buffer, entonces esta linea podría fallar
         retVal=protocolToCardLocation(aux);
     }
     else
@@ -188,7 +187,6 @@ CardLocation NetworkED::getCreateAlarmPos()
     { 
         buffer[len]= '\0'; 
         string aux =(char *) buffer;
-        //string aux = (char *) buffer + '\0'; //perro, lo había puesto así porque no hay nada que asegure que venga con terminador el buffer, entonces esta linea podría fallar
         retVal=protocolToCardLocation(aux); 
     }
     else

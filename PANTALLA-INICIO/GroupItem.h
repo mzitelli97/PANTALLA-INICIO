@@ -1,4 +1,3 @@
-
 #ifndef GROUPITEM_H
 #define GROUPITEM_H
 

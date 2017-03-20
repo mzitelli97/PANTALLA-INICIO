@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   GraphicWall.cpp
- * Author: ubuntu
- * 
- * Created on January 9, 2017, 9:03 PM
- */
-
 #include "GraphicWall.h"
 #define RADIX (totalWidth/270.0)
 #define BROWN al_map_rgb(166,94,46)

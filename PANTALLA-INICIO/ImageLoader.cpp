@@ -9,7 +9,6 @@ string button2Str(buttonAction _button)
     switch (_button)
     {
         case ZOOM_BUTTON: retVal = "Zoom"; break;
-        //case FULLSCREEN_BUTTON: retVal = "Full screen"; break;
         case MUTE_BUTTON: retVal = "Mute"; break;
         case UNMUTE_BUTTON: retVal = "Unmute"; break;
         case HELP_BUTTON: retVal = "Help"; break;
@@ -53,10 +52,12 @@ ALLEGRO_BITMAP *ImageLoader::getImageP(Token token)
 }
 ALLEGRO_BITMAP *ImageLoader::getImageP(CharacterName character, bool card)
 {
-	if (card == true)
-		return characterCards[character];
-	if (card == false)
-		return this->character[character];
+    ALLEGRO_BITMAP* retVal = nullptr;
+    if (card == true)
+        retVal = characterCards[character];
+    if (card == false)
+        retVal = this->character[character];
+    return retVal;
 }
 ALLEGRO_BITMAP *ImageLoader::getImageP(Loot loot)
 {
@@ -71,7 +72,7 @@ ALLEGRO_BITMAP *ImageLoader::getImageP(DiceColor color, unsigned int number)
         else
             return whiteDices[number-1];
     }
-    return nullptr;                  //ver bien!!!!
+    return nullptr;
 }
 ALLEGRO_BITMAP * ImageLoader::getImageP(buttonAction _button)
 {
@@ -385,9 +386,42 @@ bool ImageLoader::loadRules()
     }
     return retVal;
 }
- 
+
+void ImageLoader::destroyImages() {
+
+    for(auto &tile : tiles)
+            if(tile.second != nullptr ) al_destroy_bitmap(tile.second);
+    for(auto &safeNumber : safeNumbers)
+        if(safeNumber.second != nullptr) al_destroy_bitmap(safeNumber.second);
+    for(auto &guardCard: guardCards)
+        if(guardCard.second != nullptr) al_destroy_bitmap(guardCard.second);
+    for(auto &loot : loots)
+        if(loot.second != nullptr) al_destroy_bitmap(loot.second);
+    for(auto &buton : button)
+        if(buton.second != nullptr) al_destroy_bitmap(buton.second);
+    for(auto &token : tokens)
+        if(token.second != nullptr) al_destroy_bitmap(token.second);
+    for(auto &characterCard : characterCards)
+        if(characterCard.second != nullptr) al_destroy_bitmap(characterCard.second);
+    for(auto &characte : character)
+        if(characte.second != nullptr) al_destroy_bitmap(characte.second);
+    for(auto &rul : rules)
+        if(rul != nullptr) al_destroy_bitmap(rul);
+    
+    if(tileBack != nullptr ) al_destroy_bitmap(tileBack);
+    if(guardBack != nullptr) al_destroy_bitmap(guardBack);
+    if(guard != nullptr ) al_destroy_bitmap(guard);
+    if(lootBack != nullptr) al_destroy_bitmap(lootBack);
+    
+    for(int i =0; i< DICE_MAX_NUMBER; i++)
+    {
+        if(whiteDices[i] != nullptr) al_destroy_bitmap(whiteDices[i]);
+        if(redDices[i] != nullptr) al_destroy_bitmap(redDices[i]);
+    }
+}
 
 
 ImageLoader::~ImageLoader()
 {
+    destroyImages();
 }

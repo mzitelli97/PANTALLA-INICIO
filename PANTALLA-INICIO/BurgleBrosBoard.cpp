@@ -11,8 +11,6 @@ typedef struct{
 }DeckDetails;
 
 
-
-
 BurgleBrosBoard::BurgleBrosBoard()
 {
     //initBoard();
@@ -22,8 +20,30 @@ void BurgleBrosBoard::initBoard()
     motion=false;
     vector<CardName> firstFloor, secondFloor, thirdFloor;
     getEachFloorTiles(&firstFloor, &secondFloor, &thirdFloor);
-    //firstFloor[0]=MOTION;
-    //firstFloor[5]=LASER;
+#ifdef LAVATORY_DEBUGGING
+    CardLocation lavatoryLoc= {0,0,0};
+    CardLocation desiredLavPosition = {0,1,0};
+    CardName temp;
+    for(vector<CardName>::iterator it=firstFloor.begin(); it!=firstFloor.end(); it++)
+    {
+        if(*it==LAVATORY)
+            break;
+        if (lavatoryLoc.column == (FLOOR_COLUMNS - 1))
+        {
+                lavatoryLoc.row++;
+                lavatoryLoc.column = 0;
+        }
+        else
+                lavatoryLoc.column++;
+    }
+    vector<CardName>::iterator auxIt=firstFloor.begin();
+    advance(auxIt, desiredLavPosition.row*FLOOR_COLUMNS+desiredLavPosition.column);
+    temp=*auxIt;
+    *auxIt= LAVATORY;
+    auxIt=firstFloor.begin();
+    advance(auxIt, lavatoryLoc.row*FLOOR_COLUMNS+lavatoryLoc.column);
+    *auxIt= temp;
+#endif
     floors[0].initFloor(0, firstFloor);
     floors[1].initFloor(1, secondFloor);
     floors[2].initFloor(2, thirdFloor);
@@ -162,20 +182,20 @@ list<CardLocation>  BurgleBrosBoard::tilesWithCracked(vector<unsigned int> &dice
     list<CardLocation> retVal;
     CardLocation safePos=floors[safeFloor].getSafeLocation();
     CardLocation aux;
-    for(vector<unsigned int>::iterator it=dice.begin(); it!=dice.end(); it++)   //Para cada dado
+    for(auto d : dice)     //Para cada dado
     {
-        if(*it != 0)            //Si cada dado es distinto de 0
+        if(d != 0)            //Si cada dado es distinto de 0
         {
             aux=safePos;
             for(aux.row=0; aux.row < FLOOR_RAWS; aux.row++) //Recorro toda la fila en la que esta el safe
             {
-                if(floors[safePos.floor].getCardType(aux) != SAFE && isCardVisible(aux) && floors[safePos.floor].getCardSafeNumber(aux) == *it)  //Si hay una carta que tiene el mismo safe number que el dado se pushea
+                if(floors[safePos.floor].getCardType(aux) != SAFE && isCardVisible(aux) && floors[safePos.floor].getCardSafeNumber(aux) == d)  //Si hay una carta que tiene el mismo safe number que el dado se pushea
                     retVal.push_back(aux);
             }
             aux.row=safePos.row;
             for(aux.column=0; aux.column < FLOOR_COLUMNS; aux.column++)//Recorro toda la columna en la que esta el safe
             {
-                if(floors[safePos.floor].getCardType(aux) != SAFE && isCardVisible(aux) && floors[safePos.floor].getCardSafeNumber(aux) == *it) //Si hay una carta que tiene el mismo safe number que el dado se pushea
+                if(floors[safePos.floor].getCardType(aux) != SAFE && isCardVisible(aux) && floors[safePos.floor].getCardSafeNumber(aux) == d) //Si hay una carta que tiene el mismo safe number que el dado se pushea
                     retVal.push_back(aux);
             }
         }
@@ -188,21 +208,6 @@ bool BurgleBrosBoard::canSafeBeCracked(unsigned int safeFloor)
     CardLocation safePos=floors[safeFloor].getSafeLocation();
     CardLocation aux;
     aux=safePos;
-    /*
-    bool retVal=true;
-    if(!floors[safePos.floor].isCardVisible(safePos))   //Si no esta visible la safe tampoco se puede crackear
-        retVal=false;
-    for(aux.row=0; aux.row < FLOOR_RAWS; aux.row++) //Recorro toda la fila en la que esta el safe
-    {
-        if(floors[safePos.floor].getCardType(aux) != SAFE && (!floors[safePos.floor].isCardVisible(aux)))  
-            retVal=false;
-    }
-    aux.row=safePos.row;
-    for(aux.column=0; aux.column < FLOOR_COLUMNS; aux.column++)//Recorro toda la columna en la que esta el safe
-    {
-        if(floors[safePos.floor].getCardType(aux) != SAFE && (!floors[safePos.floor].isCardVisible(aux)))  
-            retVal=false;
-    }*/
     for(aux.row=0; aux.row < FLOOR_RAWS; aux.row++) //Recorro toda la fila en la que esta el safe
     {
         if(floors[safePos.floor].getCardType(aux) != SAFE && floors[safePos.floor].isCardVisible(aux))  
@@ -222,32 +227,25 @@ bool BurgleBrosBoard::isSafeCracked(unsigned int floor)
 {
     return floors[floor].isSafeCracked();
 }
-bool BurgleBrosBoard::setSafeCracked(unsigned int floor)
+void BurgleBrosBoard::setSafeCracked(unsigned int floor)
 {
     floors[floor].crackSafe();
 }
 
-
-
-
-
-
-
-
-
-
-
 void BurgleBrosBoard::sliceVector(std::vector<CardName> &allFloors, std::vector<CardName> *firstFloor, std::vector<CardName> *secondFloor, std::vector<CardName> *thirdFloor)
 {
-	for (unsigned int j = 0; j < allFloors.size(); j++)
-	{
-		if (j < (allFloors.size() / 3))
-			firstFloor->push_back(allFloors[j]);
-		else if (j<((2 * allFloors.size()) / 3))
-			secondFloor->push_back(allFloors[j]);
-		else
-			thirdFloor->push_back(allFloors[j]);
-	}
+#ifdef LAVATORY_DEBUGGING
+       allFloors.insert(allFloors.begin(), LAVATORY);
+#endif
+    for (unsigned int j = 0; j < allFloors.size(); j++)
+    {
+        if (j < (allFloors.size() / 3))
+            firstFloor->push_back(allFloors[j]);
+        else if (j<((2 * allFloors.size()) / 3))
+            secondFloor->push_back(allFloors[j]);
+        else
+                thirdFloor->push_back(allFloors[j]);
+    }
 }
 
 
@@ -265,7 +263,9 @@ void BurgleBrosBoard::getEachFloorTiles(vector<CardName> *firstFloor, vector<Car
 		{ KEYPAD, 3 },
 		{ LABORATORY, 2 },
 		{ LASER, 3 },
-		{ LAVATORY, 1 },
+#ifndef LAVATORY_DEBUGGING
+                { LAVATORY, 1 },
+#endif
 		{ MOTION, 3 },
 		{ SCANNER_DETECTOR, 3 },
 		{ SECRET_DOOR, 2 },
@@ -304,11 +304,11 @@ BurgleBrosBoard::~BurgleBrosBoard()
 
 CardLocation intToCardLocation(unsigned int cardNumber)
 {
-	CardLocation retVal;
-	retVal.floor = cardNumber / (FLOOR_COLUMNS*FLOOR_COLUMNS);
-	retVal.column = cardNumber % FLOOR_COLUMNS;
-	retVal.row = (cardNumber % (FLOOR_COLUMNS*FLOOR_COLUMNS)) / FLOOR_COLUMNS;
-	return retVal;
+    CardLocation retVal;
+    retVal.floor = cardNumber / (FLOOR_COLUMNS*FLOOR_COLUMNS);
+    retVal.column = cardNumber % FLOOR_COLUMNS;
+    retVal.row = (cardNumber % (FLOOR_COLUMNS*FLOOR_COLUMNS)) / FLOOR_COLUMNS;
+    return retVal;
 }
 
 bool BurgleBrosBoard:: isCardUpstairs(CardLocation source, CardLocation destination)

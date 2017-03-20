@@ -24,7 +24,7 @@ bool NetworkingEG::hayEvento() {
     if(NetworkEV && networkingInterface->recievePacket(&header,auxBuffer,&len))  //si no se attacheo un networkingIterface no permite desreferenciarlo
     {
         NetworkED *auxData=new NetworkED(header,auxBuffer,len);
-        if(auxData->isPacketOk()) //implementacion de rrores de paquete
+        if(auxData->isPacketOk()) //implementacion de errores de paquete
         {
             data= (EventData *) auxData;
             event=GUI_EVENT_NETWORKING;

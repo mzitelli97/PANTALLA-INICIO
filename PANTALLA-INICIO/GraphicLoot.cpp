@@ -1,24 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   GraphicLoot.cpp
- * Author: javier
- * 
- * Created on December 30, 2016, 3:52 PM
- */
-
 #include "GraphicLoot.h"
 
 #define CARD_WIDTH (totalWidth/9.0)
 #define CARD_HEIGHT (totalHeight/5.4)
 #define SPACE_X (totalWidth/40.0)
 #define SPACE_Y (totalHeight/20.0)
-
-
 
 GraphicLoot::GraphicLoot(PlayerId owner, ALLEGRO_BITMAP * image, bool isAGoldBar) 
 {

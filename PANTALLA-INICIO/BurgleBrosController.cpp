@@ -114,12 +114,22 @@ string BurgleBrosController::getUsersResponse(vector<string> &message)
         else
             retVal=handleThisPlayerMotionSpecialCase(message);
     }
-    else                                        //Al otro jugador le pregunta por el paquete recibido en la queue
+    else if(modelPointer->getPlayerOnTurn() == OTHER_PLAYER)                                       //Al otro jugador le pregunta por el paquete recibido en la queue
     {
         if(!modelPointer->isMotionSpecialCase())
             retVal=processOtherPlayerBasicChoice(message);
         else
             retVal=handleOtherPlayerMotionSpecialCase(message);
+    }
+    else if(modelPointer->isGuardsTurn())
+    {
+        if(packetToAnalize.front().getHeader() == USE_TOKEN && modelPointer->isThereACpuRoomOrLavatory(packetToAnalize.front().getTokenPos(), LAVATORY))
+        {
+            if(modelPointer->getModelStatus() != DESPUES_VEMOS_B)
+                modelPointer->incOtherPlayerTokensUsed();
+            else
+                retVal=USE_LAVATORY_TOKEN_TEXTB;
+        }
     }
     packetToAnalize.clear();
     return retVal;
@@ -282,7 +292,6 @@ string BurgleBrosController::processOtherPlayerBasicChoice(vector<string> &messa
 }
 void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
 {
-    
     if(mouseEvent!=nullptr && status!=INITIALIZING)
     {
         MouseED *p2MouseData = dynamic_cast<MouseED *> (mouseEvent);
@@ -304,7 +313,7 @@ void BurgleBrosController::parseMouseEvent(EventData *mouseEvent)
                     if(!waiting4ack)
                     {
                         auxLocation = (CardLocation *)temp.info;
-                        view->showMenu(modelPointer->getPosibleActionsToTile(THIS_PLAYER, *auxLocation), aux, *auxLocation);
+                        view->showMenu(modelPointer->getPosibleActions(THIS_PLAYER, *auxLocation), aux, *auxLocation);
                         view->update();
                     }
                     break;
@@ -582,8 +591,10 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
 {
     vector<string> message, quitMsg({DEFAULT_QUIT_MSG}), gameOverMsg({DEFAULT_GAME_OVER_MSG}), spotterDecision({DEFAULT_SPOTTER_MSG});
     vector<string> timeoutMessage({DEFAULT_TIMEOUT_MSG});
+    vector<string> othersErrorMessage({DEFAULT_OTHERS_ERROR_MSG});
     Loot loot;
     bool guardHasToMove;
+    string auxString;
     CardLocation guardPosition, guardDice,auxLoc;
     CardLocation * spyGuardCard = &auxLoc;
     list<GuardMoveInfo> guardMovement;
@@ -656,16 +667,19 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_ACTION && modelPointer->isGuardsTurn())    //Si el jugador gastó todas las acciones y, para casos especiales metió lo que se preguntaba (deadbolt, etc) se procede a mover el guardia.
             {
-                modelPointer->guardMove(guardMovement);         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
-                networkInterface->sendGMove(guardMovement);     //Se envía esa información.
+                handleGuardMove(true);  //Se hace la movida del guardia, y se envía esa información.
                 resetTimeoutTimer=true;
+            }
+            else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A )
+            {
+                handleGuardMove(THIS_PLAYER == modelPointer->getPlayerOnTurnBeforeGuardMove());
             }
             else if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
             {
                 message=modelPointer->getMsgToShow(); //Se obtiene el mensaje a mostrar,
                 guardHasToMove = modelPointer->userDecidedTo(getUsersResponse(message));//Esta función devuelve lo que elige el jugador en el cartelito. y le pasa la respuesta al modelo.
                 if(guardHasToMove)      //Si se termino una jugada que no mando paquete y termino su turno, se tiene que enviar el paquete del guardia.
-                {   modelPointer->guardMove(guardMovement); networkInterface->sendGMove(guardMovement);}
+                {   modelPointer->guardMove(); networkInterface->sendGMove(guardMovement);}
             }
             else if(modelPointer->getModelStatus()== WAITING_FOR_DICE)
             {
@@ -698,15 +712,12 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             }
             break;
         case SPENT_OK:case USE_TOKEN: 
-            if(modelPointer->getModelStatus()==WAITING_FOR_USER_CONFIRMATION)   //Si se esperaba la confirmación del usuario para una accion propia del jugador de esta cpu:
-            {
                 packetToAnalize.push_back(*networkEvent);   //Acá se guarda para tratar el paquete en la función getUsersResponse
                 message=modelPointer->getMsgToShow(); 
-                modelPointer->userDecidedTo(getUsersResponse(message));
+                auxString = getUsersResponse(message);
+                if(!auxString.empty())
+                    modelPointer->userDecidedTo(auxString);
                 networkInterface->sendPacket(ACK);
-            }
-            else
-               quit=true;
             break;
         case AGREE: case DISAGREE: case REQUEST_LOOT: case OFFER_LOOT:
             handleLootsExchange(networkEvent);
@@ -728,7 +739,8 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             break;
         case GUARD_MOVEMENT:
             networkEvent->getGuardMovement(guardMovement);  //Obtengo el movimiento del guardia
-            modelPointer->guardMove(guardMovement); //Y hago que el modelo lo procese.
+            modelPointer->setGuardWholePath(guardMovement);
+            handleGuardMove(false);
             if(modelPointer->hasGameFinished() && modelPointer->getFinishMsg()== "LOST")
             {
                 networkInterface->sendPacket(WE_LOST);
@@ -801,7 +813,7 @@ void BurgleBrosController::interpretNetworkAction(NetworkED *networkEvent)
             break;
         case ERRORR:
             quit=true;
-            view->MessageBox(timeoutMessage);
+            view->MessageBox(othersErrorMessage);
         default:
             break;
 
@@ -890,7 +902,60 @@ void BurgleBrosController::handleWonOrLost(PerezProtocolHeader msg)
     }
     
 }
-
+void BurgleBrosController::handleGuardMove(bool sendPacket)
+{
+    modelPointer->guardMove();
+    while( ( modelPointer->getModelStatus()==DESPUES_VEMOS_A ||  modelPointer->isGuardMoving() ) && modelPointer->getModelStatus()!=DESPUES_VEMOS_B && !modelPointer->hasGameFinished())
+    {
+        if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
+        {
+            vector<string> aux= modelPointer->getMsgToShow();
+            string userChoice =view->MessageBox(aux);
+            modelPointer->userDecidedTo(userChoice);
+            this->checkForNonOrderedPackets();
+            if(userChoice==USE_LAVATORY_TOKEN_TEXTB)
+            {    
+                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
+                waiting4ack=true;
+                resetTimeoutTimer=true;
+                break;
+            }
+            modelPointer->guardMove();
+        }
+    }
+    if(((modelPointer->getModelStatus() == DESPUES_VEMOS_B || !modelPointer->isGuardMoving()|| modelPointer->hasGameFinished()) && modelPointer->getPlayerOnTurnBeforeGuardMove()==THIS_PLAYER && waiting4ack==false) )
+        networkInterface->sendGMove(modelPointer->getGuardWholePath());
+    if(!modelPointer->isGuardMoving()&& waiting4ack==false ) modelPointer->clearGuardWholePath();
+    /*list<GuardMoveInfo> guardMovement;
+    modelPointer->guardMove();         //Se hace la movida del guardia, y se guarda por referencia en guardMovement 
+    if(modelPointer->getModelStatus() == WAITING_FOR_ACTION)
+        networkInterface->sendGMove(guardMovement);     //Se envía esa información.//Que pasa si la lista es
+    else if(modelPointer->getModelStatus() == DESPUES_VEMOS_A)
+    {
+        vector<string> aux= modelPointer->getMsgToShow();
+        string userChoice =view->MessageBox(aux);
+        modelPointer->userDecidedTo(userChoice);
+        this->checkForNonOrderedPackets();
+        if(!quit)
+        {
+            if(userChoice == USE_LAVATORY_TOKEN_TEXTB)
+            {
+                networkInterface->sendUseToken(modelPointer->locationOfComputerRoomOrLavatory(LAVATORY));
+                resetTimeoutTimer = true;
+            }
+            else
+            {
+                
+            }   
+        }  
+        
+    }
+    else if(modelPointer->getModelStatus() == DESPUES_VEMOS_B)
+    {
+        
+    }
+    //resetTimeoutTimer=true;*/
+}
 
 
 void BurgleBrosController::analizeIfModelRequiresMoreActions(NetworkED *networkEvent)
@@ -906,6 +971,10 @@ void BurgleBrosController::analizeIfModelRequiresMoreActions(NetworkED *networkE
             message=modelPointer->getMsgToShow(); //Se obtiene el mensaje que se mostraria si saltar el cartel
             modelPointer->userDecidedTo(getUsersResponse(message));
         }*/
+    }
+    if(modelPointer->getModelStatus()== DESPUES_VEMOS_B && h!=USE_TOKEN)
+    {
+        modelPointer->userDecidedTo(USE_MY_STEALTH_TOKEN_TEXTB);
     }
 }
 
@@ -1019,7 +1088,7 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
     unsigned int initSafeNumber = 0;
-    CardLocation guardPos,guardsDiePos, playersPos;
+    CardLocation guardPos,guardsDiePos;
     vector<CardName> tiles;
     switch(initPacketCount)
     {
@@ -1042,7 +1111,12 @@ void BurgleBrosController::serverInitRoutine(NetworkED *networkEvent)
         case 2:
             if(networkEvent->getHeader() == ACK)        //El cliente ya sabe el nombre del server
             {
+#ifdef LAVATORY_DEBUGGING
+                auxInitInfo[THIS_PLAYER].playersCharacter=THE_JUICER;
+#else
                 auxInitInfo[THIS_PLAYER].playersCharacter=getRandomCharacter(); //ENtonces se obtiene un character aleatorio
+#endif
+                
                 networkInterface->sendChar(auxInitInfo[THIS_PLAYER].playersCharacter); // se lo manda al client
                 initPacketCount++;
             }
@@ -1180,7 +1254,7 @@ void BurgleBrosController::secondDecidedRoutine(NetworkED *networkEvent)
 {
     unsigned int packetCountCopy=initPacketCount;   //Saco una copia del número de paquete de inicialización
     unsigned int initSafeNumber;
-    CardLocation guardPos,guardsDiePos, playersPos;
+    CardLocation guardPos,guardsDiePos;
     vector<CardName> tiles;
     switch(initPacketCount)
     {
@@ -1259,7 +1333,6 @@ void BurgleBrosController::resetGame()
 
 void BurgleBrosController::checkForNonOrderedPackets() 
 {
-    bool retVal=false;
     PerezProtocolHeader header;
     unsigned char buffer[BUFSIZE];
     unsigned int len;

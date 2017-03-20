@@ -44,7 +44,6 @@ void BurgleBrosPlayer::getToDaChoppa()
 {
     isOnTheHelicopter=true;
     isOnTheBoard=false;
-    //position = {3,4,4}; //this does not work, do something to dont show the player anymore
 }
 
 void BurgleBrosPlayer::setOnBoard()
@@ -133,9 +132,9 @@ void BurgleBrosPlayer::deattachLoot(Loot loot)
 bool BurgleBrosPlayer::hasLoot(Loot loot)
 {
     bool retVal=false;
-    for(list<Loot>::iterator it=lootCarried.begin(); it != lootCarried.end(); it++)
+    for(auto& l : lootCarried)
     {
-        if(*it == loot)
+        if(l == loot)
         {
             retVal=true;
             break;
@@ -167,7 +166,6 @@ void BurgleBrosPlayer::attachLoot(Loot loot)
 }
 BurgleBrosPlayer::BurgleBrosPlayer()
 {
-    //pickRandomPlayer();//Ver si queda adentro, afuera o que....
     currentActions=INIT_NMBR_OF_ACTIONS;
     lives=INIT_NMBR_OF_LIVES;
     isOnTheHelicopter=false;

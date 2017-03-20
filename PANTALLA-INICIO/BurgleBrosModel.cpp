@@ -6,16 +6,34 @@
 #include <thread>
 
 #define KEYPAD_CRACK_NUMBER 6
+void addWithoutRepeating(list<CardLocation> &alarmList, CardLocation item);
 typedef struct
 {
     CardLocation target;
     unsigned int length;
 }AuxStruct;
 
-bool sortAuxStruct(AuxStruct &item1, AuxStruct &item2)      //se podria hacer con sobrecarga de operadores
+bool sortAuxStruct(AuxStruct &item1, AuxStruct &item2)
 {
     return item1.length<item2.length;
 }
+
+bool BurgleBrosModel::isGuardMoving() 
+{
+    bool retVal=false;
+    if(isGuardsTurn())
+    {    
+        if(/*guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].hasStepsLeft() &&*/ gWholePath.second!=gWholePath.first.end())
+            retVal=true;
+    }
+    return retVal;
+}
+
+list<GuardMoveInfo> BurgleBrosModel::getGuardWholePath() 
+{
+    return gWholePath.first; 
+}
+
 
 BurgleBrosModel::BurgleBrosModel()
 {
@@ -26,14 +44,14 @@ BurgleBrosModel::BurgleBrosModel()
     guards[1]= aux2;
     guards[2]= aux3;
     board.initBoard();
-    controller=nullptr;
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;
-    guardFinishedMoving=false;
     rollForLootCount=0;
     specialMotionCase=false;
     iE = NO_IE;
+    nmbrOfPendingQuestions=0;
+    otherPlayerTokensUsed=0;
 }
 
 bool BurgleBrosModel::isMotionSpecialCase() {
@@ -65,18 +83,15 @@ void BurgleBrosModel::reset()
     gameFinished=false;
     playerSpentFreeAction=false;
     status=WAITING_FOR_ACTION;
-    guardFinishedMoving=false;
     rollForLootCount=0;
     specialMotionCase=false;
     finishMsg.clear();
     auxMsgsToShow.clear();
-    //soundManager->reset();
     iE = NO_IE;
-}
-
-void BurgleBrosModel::attachController(Controller * controller)
-{
-    this->controller = controller;
+    nmbrOfPendingQuestions=0;
+    gWholePath.first.clear();
+    gWholePath.second=gWholePath.first.begin();
+    otherPlayerTokensUsed=0;
 }
 
 bool BurgleBrosModel::moveRequiresToInitGuard(CardLocation locationToMove)
@@ -196,7 +211,6 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
     list<CardLocation> auxList = tokens.getAlarmsList();
     vector<CardLocation> downstairsTokens = tokens.getDownstairs();
     unsigned int aux= tokens.howManyTokensOnCPURoom((CardName)COMPUTER_ROOM_FINGERPRINT);
-    unsigned int  i,j;
     Info2DrawTokens toPush;
     
     if(tokens.getCrowToken().first)
@@ -213,24 +227,24 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
         retVal.push_back(toPush);
     }
     toPush.token=DOWNSTAIRS_TOKEN;
-    for(vector<CardLocation>::iterator it=downstairsTokens.begin(); it!=downstairsTokens.end(); it++)
+    for(auto& token : downstairsTokens)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
     
     toPush.token=ALARM_TOKEN;
-    for(list<CardLocation>::iterator it=auxList.begin(); it!=auxList.end(); it++)
+    for(auto& token : auxList)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
     
     auxList = tokens.getCrackedCards();
     toPush.token= SAFE_TOKEN;
-    for(list<CardLocation>::iterator it=auxList.begin(); it!=auxList.end(); it++)
+    for(auto& token : auxList)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
     pair<CardLocation, unsigned int> temp = tokens.getStealthTokensOnFloor();
@@ -244,28 +258,28 @@ list<Info2DrawTokens> BurgleBrosModel::getInfo2DrawTokens()
     //keypad tokens
     auxList= tokens.getKeypadTokens();
     toPush.token= KEYPAD_TOKEN;
-    for(list<CardLocation>::iterator it=auxList.begin(); it!=auxList.end(); ++it)    
+    for(auto& token : auxList)
     {
-        toPush.position=*it;
+        toPush.position=token;
         retVal.push_back(toPush);
     }
 
     
-    for(i=0; i < aux; i++)
+    for(unsigned int i=0; i < aux; i++)
     {
         toPush.position = board.getComputerRoomLocation(COMPUTER_ROOM_FINGERPRINT);
         toPush.token= HACK_TOKEN;
         retVal.push_back(toPush);
     }
     aux= tokens.howManyTokensOnCPURoom(COMPUTER_ROOM_LASER);
-    for(i= 0; i <  aux; i++)
+    for(unsigned int i= 0; i <  aux; i++)
     {
         toPush.position= board.getComputerRoomLocation(COMPUTER_ROOM_LASER);
         toPush.token= HACK_TOKEN;
         retVal.push_back(toPush);
     }
     aux= tokens.howManyTokensOnCPURoom(COMPUTER_ROOM_MOTION);
-    for(i= 0; i <  aux; i++)
+    for(unsigned int i= 0; i <  aux; i++)
     {
         toPush.position= board.getComputerRoomLocation(COMPUTER_ROOM_MOTION);
         toPush.token= HACK_TOKEN;
@@ -287,7 +301,7 @@ list<Info2DrawLoot> BurgleBrosModel::getInfo2DrawLoot()
 
 Info2DrawGuard BurgleBrosModel::getInfo2DrawGuard(unsigned int floor)
 {
-    Info2DrawGuard info;//CONTROLAR ERROR
+    Info2DrawGuard info;
     if(floor<=2)
     { 
         info.dieNumber=guards[floor].getDiceNumber();
@@ -431,14 +445,39 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
     }
     else if(msgsToShow[2]==lavatory[2])
     {
-        if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+        if(status==WAITING_FOR_USER_CONFIRMATION)
         {
-            movingPlayer->decLives();
-            if(movingPlayer->getcurrentActions() == 0 && getPlayerOnTurn() == THIS_PLAYER) //SI es de este player justo cuando termina su turno, se tiene que enviar el paquete del guardia.
-                    guardHasToMove=true;
+            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+            {
+                movingPlayer->decLives();
+                if(movingPlayer->getcurrentActions() == 0 && getPlayerOnTurn() == THIS_PLAYER) //SI es de este player justo cuando termina su turno, se tiene que enviar el paquete del guardia.
+                        guardHasToMove=true;
+            }
+            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
+                tokens.useLavatoryToken();
+            status=WAITING_FOR_ACTION;
         }
-        else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
-            tokens.useLavatoryToken();
+        else if(status==DESPUES_VEMOS_A)
+        {
+            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+                myPlayer.decLives();
+            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
+                tokens.useLavatoryToken();
+        }
+        else if(status==DESPUES_VEMOS_B)
+        {
+            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
+                otherPlayer.decLives();
+            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
+                tokens.useLavatoryToken();
+            nmbrOfPendingQuestions--; 
+            if(nmbrOfPendingQuestions==0)
+            {
+                status=WAITING_FOR_ACTION;
+                if(isGuardMoving())
+                    endGuardMove();
+            }    
+        }    
     }
     else if(msgsToShow[0]==askForLoot[0])       //Si se estaba esperando por la respuesta a un ask for loot
     {
@@ -450,7 +489,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             loots.setNewLootOwner(lootOfferedOrAskedFor,playerOnTurn);
         }
     }
-    else if(msgsToShow[0]== offerLoot[0])
+    else if(msgsToShow[0] == offerLoot[0])
     {
         if(userChoice==ACCEPT_TEXTB)
         {    
@@ -483,7 +522,7 @@ bool BurgleBrosModel::userDecidedTo(string userChoice)
             status=WAITING_FOR_DICE;
         specialMotionCase=false;
     }   
-    else
+    else if(msgsToShow[2]!=lavatory[2])
         status=WAITING_FOR_ACTION;
     notifyAllObservers();
     checkTurns();
@@ -514,7 +553,6 @@ void BurgleBrosModel::setDice(vector<unsigned int> &currDice)
         iE = KEYPAD_OPENED;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(KEYPAD_OPENED);
         if(movingPlayer->getPosition() == guards[movingPlayer->getPosition().floor].getPosition())
             movingPlayer->decLives();       //si habia un guardia al entrar al keypad, pierde una vida
     }
@@ -600,7 +638,6 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
             iE = STAIRS;
             notifyAllObservers();
             iE = NO_IE;
-            //soundManager->playSoundEffect(STAIRS_STEPS);
         }
         
         //Cambios segun el lugar desde el que me muevo
@@ -668,7 +705,6 @@ unsigned int BurgleBrosModel::move(PlayerId playerId, CardLocation locationToMov
         //Si quiero entrar a un keypad y no esta abierto tengo que tirar los dados (el numero de dados se corresponde con los intentos en el mismo turno)
         if( newCardType==KEYPAD && !tokens.isThereAKeypadToken(locationToMove) && !specialMotionCase)
         {
-            bool keyCracked=false;
             this->status=WAITING_FOR_DICE;
             this->prevLoc=prevLocation;
         }
@@ -847,7 +883,6 @@ void BurgleBrosModel::crackSafe(PlayerId playerId,vector<unsigned int> &diceThro
             iE = SAFE_CRACKED;
             notifyAllObservers();
             iE = NO_IE;
-            //soundManager->playSoundEffect(SAFE_CRACKED);    //check if this needs to be here or in the controller
         }
         notifyAllObservers();
         checkTurns();
@@ -1021,7 +1056,6 @@ void BurgleBrosModel::escape(PlayerId playerId, CardLocation stairTile)
         iE = STAIRS;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(STAIRS_STEPS);
         notifyAllObservers();
         checkTurns();
         notifyAllObservers();
@@ -1053,13 +1087,6 @@ void BurgleBrosModel::checkTurns()
             triggerAlarm(myPlayer.getPosition());
         myPlayer.setTurn(false);
         playerOnTurnBeforeGuardMove=THIS_PLAYER;
-      /*  moveGuard(myPlayer.getPosition().floor); //Se comenta para probar los moves entre las 2 pcs
-        if(!otherPlayer.isOnHelicopter())
-            otherPlayer.setTurn(true);
-        else
-            myPlayer.setTurn(true);
-        handlePersianKittyMove(OTHER_PLAYER);
-        handleChihuahuaMove(OTHER_PLAYER);*/
         playerSpentFreeAction=false;
         board.deActivateMotion();
     }
@@ -1069,17 +1096,10 @@ void BurgleBrosModel::checkTurns()
             triggerAlarm(otherPlayer.getPosition());
         otherPlayer.setTurn(false);
         playerOnTurnBeforeGuardMove=OTHER_PLAYER;
-        //moveGuard(otherPlayer.getPosition().floor);
-      /*  if(!myPlayer.isOnHelicopter())
-            myPlayer.setTurn(true);
-        else
-            otherPlayer.setTurn(true);
-        handlePersianKittyMove(THIS_PLAYER);
-        handleChihuahuaMove(THIS_PLAYER);*/
         playerSpentFreeAction=false;
         board.deActivateMotion();
     }
-    else if(isGuardsTurn() && guardFinishedMoving==true)
+    else if(isGuardsTurn() && !isGuardMoving())
     {
         BurgleBrosPlayer *nextPlayerOnTurn=getP2OtherPlayer(playerOnTurnBeforeGuardMove); //El jugador que termina ahora el turno va a ser el que no terminó antes que el guardia
         if(nextPlayerOnTurn->isOnHelicopter())
@@ -1092,9 +1112,6 @@ void BurgleBrosModel::checkTurns()
             nextPlayerOnTurn->decActions();     //SI tenía un mirror pierde 1 acción
         if(nextPlayerOnTurn->hasLoot(CHIHUAHUA) || nextPlayerOnTurn->hasLoot(PERSIAN_KITTY))
             status=WAITING_DICE_FOR_LOOT;
-        // handlePersianKittyMove(nextPlayerOnTurn);
-       // handleChihuahuaMove(nextPlayerOnTurn);
-        guardFinishedMoving=false;
         dice.resetKeypadsDice();
         notifyAllObservers();
     }
@@ -1111,7 +1128,6 @@ void BurgleBrosModel::checkIfWonOrLost()
         iE = WON;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(WON);     //check if this needs to be here or in the controller
         myPlayer.setTurn(false);
         otherPlayer.setTurn(false);
     }
@@ -1123,7 +1139,6 @@ void BurgleBrosModel::checkIfWonOrLost()
         iE = LOST;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(LOST);    //check if this needs to be here or in the controller
         myPlayer.setTurn(false);
         otherPlayer.setTurn(false);
     }
@@ -1144,7 +1159,7 @@ bool BurgleBrosModel::isMovePosible(PlayerId playerId,CardLocation tileToMove)
         {
             if(board.getCardType(playerMovingPos) == STAIR  && board.isCardUpstairs(playerMovingPos, tileToMove))
                retVal=true;
-            if(board.isCardVisible(tileToMove) && board.getCardType(playerMovingPos) == WALKAWAY  &&  board.isCardDownstairs(playerMovingPos, tileToMove))
+            if(board.getCardType(playerMovingPos) == WALKAWAY  &&  board.isCardDownstairs(playerMovingPos, tileToMove))
                retVal=true;
             if(board.isCardVisible(tileToMove) && board.getCardType(playerMovingPos) == SERVICE_DUCT && (board.getOtherServiceDuctPos(playerMovingPos)== tileToMove))
                retVal=true;
@@ -1159,7 +1174,6 @@ bool BurgleBrosModel::isMovePosible(PlayerId playerId,CardLocation tileToMove)
             retVal=false;
         if(board.getCardType(tileToMove) == SECRET_DOOR && board.isAWallBetween(playerMovingPos,tileToMove) && playerMoving->hasLoot(PAINTING))
             retVal=false;
-         //Falta la del persian kitty o chihuahua
         if(playerMoving->getcurrentActions() == 1 && playerMoving->hasLoot(GEMSTONE) && (getP2OtherPlayer(playerId)->getPosition() == tileToMove))
            retVal=false;
     }
@@ -1312,7 +1326,7 @@ bool BurgleBrosModel::isPeekGuardsCardPossible(PlayerId playerId, unsigned int g
         retVal=true;
     return retVal;
 }
-list<string> BurgleBrosModel::getPosibleActionsToTile(PlayerId player, CardLocation tile)
+list<string> BurgleBrosModel::getPosibleActions(PlayerId player, CardLocation tile)
 {
     list<string> aux;
     if(isMovePosible(player, tile))
@@ -1355,13 +1369,6 @@ list<string> BurgleBrosModel::getPosibleActionsToTile(PlayerId player, CardLocat
         aux.push_back("ESCAPE");
     return aux;
 }
-list<string> BurgleBrosModel::getPosibleActionsToGuard(PlayerId player, unsigned int guardsFloor)
-{
-    list<string> aux;
-    if(isPeekGuardsCardPossible(player, guardsFloor))
-        aux.push_back("PEEK TOP CARD");
-    return aux;
-}
  
 BurgleBrosPlayer * BurgleBrosModel::getP2Player(PlayerId playerId)
 {
@@ -1376,143 +1383,67 @@ BurgleBrosPlayer * BurgleBrosModel::getP2OtherPlayer(PlayerId playerId)
         return &otherPlayer;
     else
         return &myPlayer;
-}
-void BurgleBrosModel::guardMove(list<GuardMoveInfo> &guardMovement)
+}    
+void BurgleBrosModel::guardMove()
 {
-    if(guardMovement.empty())//Si se mandó una lista vacía, se hace el movimiento del guardia 
-        makeGuardMove(guardMovement);
-    else
-        copyGuardMove(guardMovement);
-    guardFinishedMoving=true;
+    if(gWholePath.first.empty())    //Si se mandó una lista vacía, se hace el movimiento del guardia
+    {
+        setGuardWholePath(generateGuardPath());
+    }
+    copyGuardMove();
     checkTurns();
 }
-void BurgleBrosModel::makeGuardMove(list<GuardMoveInfo> &guardMovement)
+
+void BurgleBrosModel::clearGuardWholePath()
 {
-    GuardMoveInfo auxiliarInfoToReport;
-    unsigned int guardFloor= getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;   //Obtengo la posición del 
-    BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
-    unsigned int stepsToMove= tokens.howManyAlarmsOnFloor(guardFloor) + guardMoving->getDiceNumber(); //El guardia se mueve en su turno los pasos de sus dados + la cantidad de alarmas en su piso
-    bool targetReached=false;
-    if(stepsToMove>6)
-        stepsToMove=6;
-    if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
+    gWholePath.first.clear();
+}
+
+void BurgleBrosModel::setGuardWholePath(list<GuardMoveInfo> wholePath)
+{
+    this->gWholePath.first = wholePath;
+    this->gWholePath.second=gWholePath.first.begin();
+    BurgleBrosGuard *guardMoving=&guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor];
+    guardMoving->setSteps(tokens.howManyAlarmsOnFloor(guardMoving->getPosition().floor) + guardMoving->getDiceNumber());
+}
+
+bool BurgleBrosModel::anotherLavatoryInGPath()
+{
+    bool retVal = false;
+    if(gWholePath.second != gWholePath.first.end())
     {
-        tokens.turnOffAlarm(guardMoving->getPosition());
-        setGuardsNewPath(guardFloor);
-    }
-    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
-        getP2Player(playerOnTurnBeforeGuardMove)->decLives();
-    while(stepsToMove!=0 && !gameFinished)
-    {
-        stepsToMove--;
-        targetReached = guardMoving->step();
-        
-        /*if(guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
+        list<GuardMoveInfo>::iterator it = gWholePath.second; 
+        it++;
+        for(; it != gWholePath.first.end(); it++)
         {
-            vector<string>msgToShow({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
-            string userChoice = controller->askForSpentOK(msgToShow);
-            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
-                myPlayer.decLives();
-            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
-                tokens.useLavatoryToken();
-        }
-         else*/ if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player y no se encuentra en el helicoptero, el mismo pierde una vida.
-            myPlayer.decLives();
-        /*if(guards[floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
-        {
-            vector<string>msgToShow({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
-            string userChoice = controller->askForSpentOK(msgToShow);
-            if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
-                otherPlayer.decLives();
-            else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
-                tokens.useLavatoryToken();
-        }
-         else*/ if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
-            otherPlayer.decLives();
-        if(board.isCardVisible(guardMoving->getPosition()))
-        {   
-            if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
-                if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
-                    triggerAlarm(myPlayer.getPosition());   //Triggerea una alarma en el piso que se encuentra 
-            if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(otherPlayer.getPosition()) == CAMERA && board.isCardVisible(otherPlayer.getPosition()))
-                if(guardMoving->getPosition() != otherPlayer.getPosition())
-                    triggerAlarm(otherPlayer.getPosition());
-        }
-        /*Si un player esta sobre un atrium dado vuelta, y el guardia pasa un piso arriba o abajo de ese player, este pierde una vida*/
-        if(board.getCardType(myPlayer.getPosition()) == ATRIUM && board.isCardVisible(myPlayer.getPosition()) && (board.isCardDownstairs(myPlayer.getPosition(), guardMoving->getPosition()) || board.isCardUpstairs(myPlayer.getPosition(), guardMoving->getPosition())))
-            myPlayer.decLives();
-        if(board.getCardType(otherPlayer.getPosition()) == ATRIUM && board.isCardVisible(otherPlayer.getPosition()) && (board.isCardDownstairs(otherPlayer.getPosition(), guardMoving->getPosition()) || board.isCardUpstairs(otherPlayer.getPosition(), guardMoving->getPosition())))
-            otherPlayer.decLives();
-        /*Si un player esta sobre un Foyer dado vuelta, y el guardia se encuentra en un tile adyacente, este pierde una vida*/
-        if(board.getCardType(myPlayer.getPosition()) == FOYER && board.isCardVisible(myPlayer.getPosition()) && board.adjacentCards(myPlayer.getPosition(), guardMoving->getPosition()))
-            myPlayer.decLives();
-        if(board.getCardType(otherPlayer.getPosition()) == FOYER && board.isCardVisible(otherPlayer.getPosition()) && board.adjacentCards(otherPlayer.getPosition(), guardMoving->getPosition()))
-            otherPlayer.decLives();
-        /*Armo el paquete para informar del movimiento:*/
-        auxiliarInfoToReport.meaning=GUARD_STEP_TO;        //Se hizo un movimiento de guardia
-        auxiliarInfoToReport.cardLocation=guardMoving->getPosition();   //A la posición que está ahora
-        guardMovement.push_back(auxiliarInfoToReport);  //pusheo
-        /*Si el guardia llegó a la posición objetivo, busca un nuevo objetivo*/
-        if(targetReached)
-        {
-            if(tokens.isThereAToken(guardMoving->getPosition(), ALARM_TOKEN))
-                tokens.turnOffAlarm(guardMoving->getPosition());
-            list<CardLocation> cardsTaken=setGuardsNewPath(guardFloor); //Setea un nuevo path y devuelve la lista de cartas que tomó del mazo. ( pueden ser 1 o 2 si tomo una carta que apuntaba a donde estaba parado).
-            auxiliarInfoToReport.meaning=GUARD_CARD_PICK;   
-            for(list<CardLocation>::iterator it=cardsTaken.begin(); it!=cardsTaken.end();it++)
+            if(it->meaning == GUARD_STEP_TO && board.getCardType(it->cardLocation) == LAVATORY)
             {
-                auxiliarInfoToReport.cardLocation=*it;
-                guardMovement.push_back(auxiliarInfoToReport);  //Guardo que cartas se tomaron del mazo.
+                retVal = true;
+                break;
             }
         }
-        /*Si había un crow token en el tile donde se encuentra*/
-        if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN) && stepsToMove > 0)
-            stepsToMove--;
-        notifyAllObservers();
-        checkIfWonOrLost();
-        std::chrono::milliseconds milliseconds(500);
-       std::this_thread::sleep_for(milliseconds);
     }
-    
+    return retVal;
 }
-void BurgleBrosModel::copyGuardMove(list<GuardMoveInfo> &guardMovement)
+
+void BurgleBrosModel::endGuardMove() 
 {
-    GuardMoveInfo auxiliarInfoToReport;
     unsigned int guardFloor= getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;   //Obtengo la posición del 
     BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
     if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
         tokens.turnOffAlarm(guardMoving->getPosition());
-    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition())
-        getP2Player(playerOnTurnBeforeGuardMove)->decLives();
-    for(list<GuardMoveInfo>::iterator it=guardMovement.begin(); it!=guardMovement.end() && !gameFinished; it++)
+    for(; gWholePath.second != gWholePath.first.end() && !gameFinished; gWholePath.second++)
     {
-        if(it->meaning==GUARD_STEP_TO)
+        if(gWholePath.second->meaning==GUARD_STEP_TO)
         {
-            guardMoving->setPosition(it->cardLocation);
+            guardMoving->decSteps();
+            guardMoving->setPosition(gWholePath.second->cardLocation);
             if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
                 tokens.turnOffAlarm(guardMoving->getPosition());
-            //Se comentó porque hay que ver que pasa con los paquetes.
-            /*if(guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
-            {
-                vector<string>msgToShow({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
-                string userChoice = controller->askForSpentOK(msgToShow);
-                if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
-                    myPlayer.decLives();
-                else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
-                    tokens.useLavatoryToken();
-            }
-            else*/ if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
+            
+            if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
                 myPlayer.decLives();
-            /*if(guards[floor].getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
-            {
-                vector<string>msgToShow({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
-                string userChoice = controller->askForSpentOK(msgToShow);
-                if(userChoice ==USE_MY_STEALTH_TOKEN_TEXTB)
-                    otherPlayer.decLives();
-                else if(userChoice ==USE_LAVATORY_TOKEN_TEXTB)
-                    tokens.useLavatoryToken();
-            }
-             else*/ if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
+            if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
                 otherPlayer.decLives();
             if(board.isCardVisible(guardMoving->getPosition()))
             {   
@@ -1532,10 +1463,124 @@ void BurgleBrosModel::copyGuardMove(list<GuardMoveInfo> &guardMovement)
             if(board.getCardType(myPlayer.getPosition()) == FOYER && board.isCardVisible(myPlayer.getPosition()) && board.adjacentCards(myPlayer.getPosition(), guardMoving->getPosition()))
                 myPlayer.decLives();
             if(board.getCardType(otherPlayer.getPosition()) == FOYER && board.isCardVisible(otherPlayer.getPosition()) && board.adjacentCards(otherPlayer.getPosition(), guardMoving->getPosition()))
+                otherPlayer.decLives();  
+        }
+        else if(gWholePath.second->meaning==GUARD_CARD_PICK)
+            guardMoving->drawCardTarget(gWholePath.second->cardLocation);
+        notifyAllObservers();
+        checkIfWonOrLost();
+        std::chrono::milliseconds milliseconds(500);
+        std::this_thread::sleep_for(milliseconds);
+    }
+    setGuardsNewPath(guardFloor, guardMoving->getTargetPosition());//Para que no quede sin un camino  si la próxima vez se ejecuta desde esta cpu.
+    clearGuardWholePath();
+}
+
+void BurgleBrosModel::copyGuardMove()
+{
+    unsigned int guardFloor= getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;   //Obtengo la posición del 
+    BurgleBrosGuard *guardMoving = &(guards[guardFloor]);
+    if(board.getCardType(guardMoving->getPosition()) == LAVATORY)
+    {    
+        if(!tokens.isThereAStealthToken(guardMoving->getPosition()))
+            status=WAITING_FOR_ACTION;
+        else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() != otherPlayer.getPosition())
+            status = WAITING_FOR_ACTION; 
+        else if(status == DESPUES_VEMOS_A && myPlayer.getPosition() == otherPlayer.getPosition())
+        {
+            if(anotherLavatoryInGPath())
+            {
+                status=WAITING_FOR_ACTION;
+                if(playerOnTurnBeforeGuardMove == THIS_PLAYER)      //i am sending the guard movement
+                    nmbrOfPendingQuestions++;
+            }
+            else
+            {
+                if(playerOnTurnBeforeGuardMove == THIS_PLAYER)      //i am sending the guard movement
+                    status=DESPUES_VEMOS_B;
+                else
+                    status=WAITING_FOR_ACTION;
+            }
+        }
+    }
+    if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
+        tokens.turnOffAlarm(guardMoving->getPosition());
+    if(getP2Player(playerOnTurnBeforeGuardMove)->getCharacter() == THE_ACROBAT && getP2Player(playerOnTurnBeforeGuardMove)->getPosition() == guardMoving->getPosition() && gWholePath.second == gWholePath.first.begin())
+        getP2Player(playerOnTurnBeforeGuardMove)->decLives();
+    for(; gWholePath.second != gWholePath.first.end() && !gameFinished && status==WAITING_FOR_ACTION; gWholePath.second++)
+    {
+        if(gWholePath.second->meaning==GUARD_STEP_TO)
+        {
+            guardMoving->decSteps();
+            guardMoving->setPosition(gWholePath.second->cardLocation);
+            if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
+            {
+                tokens.turnOffAlarm(guardMoving->getPosition());
+                if(tokens.howManyAlarmsOnFloor(guardFloor))
+                    setGuardsNewPath(guardFloor);
+            }
+            if(guardMoving->getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
+            {    
+                if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)
+                {
+                    if(otherPlayerTokensUsed > 0)
+                    {
+                        tokens.useLavatoryToken();
+                        otherPlayerTokensUsed--;
+                    }
+                    else
+                        otherPlayer.decLives();
+                }
+                else
+                {
+                    nmbrOfPendingQuestions++;
+                    if(!anotherLavatoryInGPath())       //pregunto al otro jugador cuando llego al ultimo lavatory del path
+                    {
+                        //nmbrOfPendingQuestions++;
+                        vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
+                        this->msgsToShow=aux;
+                        status=DESPUES_VEMOS_B;
+                        //break;
+                    }
+                }
+            }
+            else if(guardMoving->getPosition() == otherPlayer.getPosition() && otherPlayer.isOnBoard())
+                otherPlayer.decLives();
+            if(guardMoving->getPosition() == myPlayer.getPosition() && board.getCardType(myPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(myPlayer.getPosition()))
+            {
+                notifyAllObservers();
+                vector<string> aux({LAVATORY_TEXT,USE_LAVATORY_TOKEN_TEXTB,USE_MY_STEALTH_TOKEN_TEXTB});
+                this->msgsToShow=aux;
+                status=DESPUES_VEMOS_A;
+                //break;
+            }
+            else if(guardMoving->getPosition() == myPlayer.getPosition() && myPlayer.isOnBoard())   //Si el guardia entra al tile del player, el mismo pierde una vida.
+                myPlayer.decLives();
+            
+            if(board.isCardVisible(guardMoving->getPosition()))
+            {   
+                if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
+                    if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
+                        triggerAlarm(myPlayer.getPosition());   //Triggerea una alarma en el piso que se encuentra 
+                if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(otherPlayer.getPosition()) == CAMERA && board.isCardVisible(otherPlayer.getPosition()))
+                    if(guardMoving->getPosition() != otherPlayer.getPosition())
+                        triggerAlarm(otherPlayer.getPosition());
+            }
+            /*Si un player esta sobre un atrium dado vuelta, y el guardia pasa un piso arriba o abajo de ese player, este pierde una vida*/
+            if(board.getCardType(myPlayer.getPosition()) == ATRIUM && board.isCardVisible(myPlayer.getPosition()) && (board.isCardDownstairs(myPlayer.getPosition(), guardMoving->getPosition()) || board.isCardUpstairs(myPlayer.getPosition(), guardMoving->getPosition())))
+                myPlayer.decLives();
+            if(board.getCardType(otherPlayer.getPosition()) == ATRIUM && board.isCardVisible(otherPlayer.getPosition()) && (board.isCardDownstairs(otherPlayer.getPosition(), guardMoving->getPosition()) || board.isCardUpstairs(otherPlayer.getPosition(), guardMoving->getPosition())))
+                otherPlayer.decLives();
+            /*Si un player esta sobre un Foyer dado vuelta, y el guardia se encuentra en un tile adyacente, este pierde una vida*/
+            if(board.getCardType(myPlayer.getPosition()) == FOYER && board.isCardVisible(myPlayer.getPosition()) && board.adjacentCards(myPlayer.getPosition(), guardMoving->getPosition()) && myPlayer.isOnBoard())
+                myPlayer.decLives();
+            if(board.getCardType(otherPlayer.getPosition()) == FOYER && board.isCardVisible(otherPlayer.getPosition()) && board.adjacentCards(otherPlayer.getPosition(), guardMoving->getPosition()) && otherPlayer.isOnBoard())
                 otherPlayer.decLives();   
         }
-        else if(it->meaning==GUARD_CARD_PICK)
-            guardMoving->drawCardTarget(it->cardLocation);
+        else if(gWholePath.second->meaning==GUARD_CARD_PICK)
+            guardMoving->drawCardTarget(gWholePath.second->cardLocation);
+        if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
+            guardMoving->decSteps();//si no habia steps la funcion no hace nada
         notifyAllObservers();
         checkIfWonOrLost();
         std::chrono::milliseconds milliseconds(500);
@@ -1543,6 +1588,137 @@ void BurgleBrosModel::copyGuardMove(list<GuardMoveInfo> &guardMovement)
     }
     setGuardsNewPath(guardFloor, guardMoving->getTargetPosition());//Para que no quede sin un camino  si la próxima vez se ejecuta desde esta cpu.
 }
+list<GuardMoveInfo> BurgleBrosModel::generateGuardPath() 
+{
+    gWholePath.first.clear();
+    BurgleBrosGuard *guardMoving= new BurgleBrosGuard;
+    unsigned int guardFloor = getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor;
+    *guardMoving = guards[guardFloor];
+    list<CardLocation> alarmList = tokens.getAlarmsList();
+    GuardMoveInfo auxiliarInfoToReport;
+    list<GuardMoveInfo> retVal;
+    //unsigned int stepsToMove= tokens.howManyAlarmsOnFloor(guardFloor) + guardMoving->getDiceNumber(); //El guardia se mueve en su turno los pasos de sus dados + la cantidad de alarmas en su piso
+    if(status==WAITING_FOR_ACTION)
+        guardMoving->setSteps(tokens.howManyAlarmsOnFloor(guardFloor) + guardMoving->getDiceNumber());
+    
+    bool targetReached=false;
+    while(guardMoving->hasStepsLeft() && !gameFinished)
+    {
+        targetReached = guardMoving->step();//step ya decrementa los steps left
+  
+        if(board.isCardVisible(guardMoving->getPosition()))
+        {   
+            if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(myPlayer.getPosition()) == CAMERA && board.isCardVisible(myPlayer.getPosition()))   //Si un guardia se mueve a una camara y hay un player en una camara
+            {
+                 if(guardMoving->getPosition() != myPlayer.getPosition())      //Y ese player no está en la misma camara que el guardia
+                 {
+                     addWithoutRepeating(alarmList, myPlayer.getPosition());
+                     if(myPlayer.getPosition().floor==guardMoving->getPosition().floor)
+                        setGuardsNewPath(alarmList,guardMoving);
+                 }
+            }
+            if(board.getCardType(guardMoving->getPosition()) == CAMERA && board.getCardType(otherPlayer.getPosition()) == CAMERA && board.isCardVisible(otherPlayer.getPosition()))
+            {
+                if(guardMoving->getPosition() != otherPlayer.getPosition())
+                {
+                    addWithoutRepeating(alarmList, otherPlayer.getPosition());
+                    if(otherPlayer.getPosition().floor==guardMoving->getPosition().floor)
+                        setGuardsNewPath(alarmList,guardMoving);
+                }
+            }
+        }
+
+        /*Armo el paquete para informar del movimiento:*/
+        auxiliarInfoToReport.meaning=GUARD_STEP_TO;        //Se hizo un movimiento de guardia
+        auxiliarInfoToReport.cardLocation=guardMoving->getPosition();   //A la posición que está ahora
+        retVal.push_back(auxiliarInfoToReport);  //pusheo
+        /*Si el guardia llegó a la posición objetivo, busca un nuevo objetivo*/
+        if(targetReached)
+        {
+            for(auto& alarm : alarmList)
+            {
+                if(alarm == guardMoving->getPosition())
+                {
+                    alarmList.remove(alarm);               //si la carta donde llego era una alarm, la saco de la lista auxiliar
+                    break;
+                }
+            }
+            list<CardLocation> cardsTaken=setGuardsNewPath(alarmList, guardMoving); //Setea un nuevo path y devuelve la lista de cartas que tomó del mazo. ( pueden ser 1 o 2 si tomo una carta que apuntaba a donde estaba parado).
+            auxiliarInfoToReport.meaning=GUARD_CARD_PICK;   
+            for(auto& card : cardsTaken)
+            {
+                auxiliarInfoToReport.cardLocation=card;
+                retVal.push_back(auxiliarInfoToReport);  //Guardo que cartas se tomaron del mazo.
+            }
+        }
+        /*Si había un crow token en el tile donde se encuentra*/
+        if(tokens.isThereAToken(guardMoving->getPosition(), CROW_TOKEN))
+            guardMoving->decSteps();//si no habia steps la funcion no hace nada
+    }
+    return retVal;
+}
+void addWithoutRepeating(list<CardLocation> &alarmList, CardLocation item)
+{
+    bool isRepeated = false;
+    for(auto& alarm : alarmList)
+    {
+        if(alarm == item)
+        {
+            isRepeated = true;
+            break;
+        }
+    }
+    if(!isRepeated) alarmList.push_back(item);
+}
+
+list<CardLocation> BurgleBrosModel::setGuardsNewPath(list<CardLocation> &alarmList, BurgleBrosGuard *p2Guard)
+{
+    list<CardLocation> retVal;
+    list<AuxStruct> alarmsOnSameFloor;
+    CardLocation newTargetLocation;
+    unsigned int aux=0;
+    for(auto& alarm : alarmList)
+    {
+        AuxStruct aux;
+        if(alarm.floor == p2Guard->getPosition().floor)
+        {
+             aux.target=alarm;
+             alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
+        }
+    }
+    if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
+    {
+        for(auto& alarm : alarmsOnSameFloor)
+            alarm.length=board.getShortestPathLength(p2Guard->getPosition(), alarm.target);    //obtengo el largo de cada camino.
+        alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
+        for(auto& alarm : alarmsOnSameFloor)
+        {
+            if(alarm.length == alarmsOnSameFloor.front().length)
+                aux++;  //Cuento cuantas alarmas estan a la misma distancia.
+        }
+        if(aux==1)  //Si hay una que este a la minima distancia
+            newTargetLocation=alarmsOnSameFloor.front().target; //Esa va a ser el nuevo objetivo
+        else
+        {
+            int temp = rand() % aux;            //Sino, se elige random entre las que tienen el mismo largo de camino
+            list<AuxStruct>::iterator it = alarmsOnSameFloor.begin();
+            advance(it, temp);
+            newTargetLocation = it->target;
+        }
+    }
+    else        //Si no había alarmas, se toma una carta  que no sea en la que esté parado
+    {
+        do{
+            newTargetLocation = p2Guard->drawCardTarget();     //Toma una nueva carta objetivo
+            retVal.push_back(newTargetLocation);                //la guarda en el retval
+        }while(newTargetLocation == p2Guard->getPosition());      //si era la misma posición que la del guardia, saca otra carta del mazo.
+    }
+    p2Guard->setNewTarget(newTargetLocation);
+    list<CardLocation> temp = board.getShortestPath(p2Guard->getPosition(), newTargetLocation);
+    p2Guard->setNewPathToTarget(temp);
+    return retVal;
+}
+
 list<CardLocation> BurgleBrosModel::setGuardsNewPath(unsigned int floor)
 {
     list<CardLocation> retVal;
@@ -1550,23 +1726,23 @@ list<CardLocation> BurgleBrosModel::setGuardsNewPath(unsigned int floor)
     list<AuxStruct> alarmsOnSameFloor;
     CardLocation newTargetLocation;
     unsigned int aux=0;
-    for(list<CardLocation>::iterator it=alarmList.begin(); it !=alarmList.end(); it++)
+    for(auto& alarm : alarmList)
     {
         AuxStruct aux;
-        if(it->floor == floor)
+        if(alarm.floor == floor)
         {
-             aux.target=*it;
+             aux.target=alarm;
              alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
         }
     }
     if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
     {
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++)
-            it->length=board.getShortestPathLength(guards[floor].getPosition(), it->target);    //obtengo el largo de cada camino.
+        for(auto& alarm : alarmsOnSameFloor)
+            alarm.length=board.getShortestPathLength(guards[floor].getPosition(), alarm.target);    //obtengo el largo de cada camino.
         alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++) 
+        for(auto& alarm : alarmsOnSameFloor)
         {
-            if(it->length == alarmsOnSameFloor.front().length)
+            if(alarm.length == alarmsOnSameFloor.front().length)
                 aux++;  //Cuento cuantas alarmas estan a la misma distancia.
         }
         if(aux==1)  //Si hay una que este a la minima distancia
@@ -1598,23 +1774,23 @@ list<CardLocation> BurgleBrosModel::setGuardsNewPath(unsigned int floor, CardLoc
     list<AuxStruct> alarmsOnSameFloor;
     CardLocation newTargetLocation;
     unsigned int aux=0;
-    for(list<CardLocation>::iterator it=alarmList.begin(); it !=alarmList.end(); it++)
+    for(auto& alarm : alarmList)
     {
         AuxStruct aux;
-        if(it->floor == floor)
+        if(alarm.floor == floor)
         {
-             aux.target=*it;
+             aux.target=alarm;
              alarmsOnSameFloor.push_back(aux);       //Obtengo las alarmas que están en el mismo piso  
         }
     }
     if(!alarmsOnSameFloor.empty())          //Si hay alarmas en su piso
     {
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++)
-            it->length=board.getShortestPathLength(guards[floor].getPosition(), it->target);    //obtengo el largo de cada camino.
+        for(auto& alarm : alarmsOnSameFloor)
+            alarm.length=board.getShortestPathLength(guards[floor].getPosition(), alarm.target);    //obtengo el largo de cada camino.
         alarmsOnSameFloor.sort(sortAuxStruct);  //las ordeno por el camino mas corto
-        for(list<AuxStruct>::iterator it=alarmsOnSameFloor.begin(); it !=alarmsOnSameFloor.end(); it++) 
+        for(auto& alarm : alarmsOnSameFloor)
         {
-            if(it->length == alarmsOnSameFloor.front().length)
+            if(alarm.length == alarmsOnSameFloor.front().length)
                 aux++;  //Cuento cuantas alarmas estan a la misma distancia.
         }
         if(aux==1)  //Si hay una que este a la minima distancia
@@ -1654,6 +1830,11 @@ void BurgleBrosModel::continueGame()        //Si el juego estaba parado por los 
 {
     rollForLootCount=0;
     status=WAITING_FOR_ACTION;
+}
+
+void BurgleBrosModel::incOtherPlayerTokensUsed()
+{
+    otherPlayerTokensUsed++;
 }
 
 unsigned int BurgleBrosModel::rollDieForLoot(unsigned int die)
@@ -1717,15 +1898,18 @@ void BurgleBrosModel::handleChihuahuaMove(unsigned int die)
             iE = CHIHUAHUA_BARKS;
             notifyAllObservers();
             iE = NO_IE;
-            //soundManager->playSoundEffect(CHIHUAHUA_BARKS);
             triggerAlarm(p->getPosition());
-            //tokens.triggerAlarm(p->getPosition());
-            //setGuardsNewPath(p->getPosition().floor);
         }
         notifyAllObservers();
     }
     rollForLootCount++;
 }
+
+PlayerId BurgleBrosModel::getPlayerOnTurnBeforeGuardMove() 
+{
+    return playerOnTurnBeforeGuardMove;
+}
+
 
 void BurgleBrosModel::triggerAlarm(CardLocation tile)
 {
@@ -1736,15 +1920,8 @@ void BurgleBrosModel::triggerAlarm(CardLocation tile)
         iE = ALARM_TRIGGERED;
         notifyAllObservers();
         iE = NO_IE;
-        //soundManager->playSoundEffect(ALARM_TRIGGERED);
     }
 }
-
-void BurgleBrosModel::toggleVol()
-{
-    //soundManager->toggleMute();
-}
-
 
 BurgleBrosModel::~BurgleBrosModel()
 {

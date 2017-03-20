@@ -81,10 +81,10 @@ BurgleBrosWrapper::connect()
         
     if(bbcontroller != nullptr)
             bbcontroller->attachNetworkInterface(&networkInterface);
-        else{ error=true; quit=true; errorMsg+="Error al crear BurgleBrosController \n";}
+    else{ error=true; quit=true; errorMsg+="Error al crear BurgleBrosController \n";}
 
     networkEvent= new NetworkingEG;
-        if(networkEvent == nullptr) {error=true; quit=true; errorMsg+="Error al crear NetworkEvent\n";}
+    if(networkEvent == nullptr) {error=true; quit=true; errorMsg+="Error al crear NetworkEvent\n";}
     
     
     if(initController != nullptr)
@@ -113,7 +113,6 @@ BurgleBrosWrapper::connect()
             {
                 newModel->attach(newView);
                 newModel->attach(&sound);
-                newModel->attachController(bbcontroller);
                 sound.attachModel(newModel);
                 bbcontroller->attachSound(&sound);
                 bbcontroller->attachModel(newModel);
@@ -144,11 +143,11 @@ BurgleBrosWrapper::playGame() {
             {
                 gui.parseEvento();
                 if(controller->hasToResetTimeoutTimer())
-                    {allegroEvent->resetTimer(); cout<<"Resetie timer"<<endl;}
+                    allegroEvent->resetTimer();
                 if(controller->isWaiting4ack() && !prev)
-                    {allegroEvent->playTimer();cout<<"Playie timer"<<endl;}
+                    allegroEvent->playTimer();
                 else if (!controller->isWaiting4ack())
-                    {allegroEvent->stopTimer(); cout<<"apague timer"<<endl;}
+                    allegroEvent->stopTimer();
                 if(controller->resetZMouse())
                     allegroEvent->resetZMouse();
             }
@@ -156,8 +155,7 @@ BurgleBrosWrapper::playGame() {
     }
     delete p2Controller;
     delete p2Model;
-    delete p2View; 
-    //cin >> aux;     //Para poder ver si hubo un error.
+    delete p2View;
     
 }
 

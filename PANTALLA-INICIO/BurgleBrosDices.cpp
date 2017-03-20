@@ -1,20 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   BurgleBrosDices.cpp
- * Author: javier
- * 
- * Created on January 10, 2017, 12:50 PM
- */
-
-#include <map>
-
 #include "BurgleBrosDices.h"
-
 
 #define DIE_MIN_VAL 1
 #define DIE_MAX_VAL 6
@@ -72,7 +56,7 @@ void BurgleBrosDices::addDieToSafe(unsigned int safeFloor)
     if(diceForSafe[safeFloor] < MAX_NMBR_OF_EXTRA_DICES)
     {   
         diceForSafe[safeFloor]++;
-        for(int i = 0; i < diceForSafe[safeFloor]; i++)
+        for(unsigned int i = 0; i < diceForSafe[safeFloor]; i++)
             dice[i]= DIE_MIN_VAL;       //Para que aparezca en la pantalla
         for(unsigned int i=diceForSafe[safeFloor]; i<MAX_NMBR_OF_EXTRA_DICES  ; i++)
             dice[i]=NO_DIE;
@@ -80,8 +64,8 @@ void BurgleBrosDices::addDieToSafe(unsigned int safeFloor)
 }
 void BurgleBrosDices::resetKeypadsDice()
 {
-    for(map<CardLocation,unsigned int>::iterator it = diceForKeypad.begin(); it != diceForKeypad.end(); it++)
-        it->second=INIT_KEYPAD_DICE_COUNT;
+    for(auto& item : diceForKeypad)
+        item.second=INIT_KEYPAD_DICE_COUNT;
     for(unsigned int i=0; i<MAX_NMBR_OF_EXTRA_DICES  ; i++)
         dice[i]=NO_DIE;
 }

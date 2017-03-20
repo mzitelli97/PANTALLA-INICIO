@@ -64,10 +64,10 @@ void cController::parseMouseEvent(EventData* mouseEvent) {
             case EXIT_BUTTON_CLICK:
                 quit = true;
                 break;
+            default:
+                break;
         }
-    }
-    else if( p2MouseData != nullptr && !p2MouseData->isClicked())
-            cout<<"Z coordinate: " <<p2MouseData->getZ()<< endl;    
+    } 
 }
 
 void cController::parseKeyboardEvent(EventData* evData)
@@ -101,6 +101,8 @@ void cController::parseKeyboardEvent(EventData* evData)
                 break;
                 case ESCAPE_KEY:
                     quit = true;
+                    break;
+                default:
                     break;
             }
         }

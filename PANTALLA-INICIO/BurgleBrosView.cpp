@@ -1,5 +1,3 @@
-#include <vector>
-
 #include "BurgleBrosView.h"
 #include "GraphicEDices.h"
 #include "GraphicGDie.h"
@@ -16,7 +14,7 @@
 #include "GraphicHelp.h"
 #include "LayerItem.h"
 #include <time.h>
-
+#include <vector>
 
 typedef enum {TILES_LIST, BUTTONS_LIST, CHARACTER_CARDS_LIST, LOOT_SHOW_LIST, EXTRA_DICES_LIST, GUARD_CARDS_LIST} FirstLayerLists;
 typedef enum {TOKENS_LIST, GUARD_INFO_LIST, PLAYER_INFO_LIST, STATIC_ITEMS} SecondeLayerLists;
@@ -88,12 +86,8 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                                 al_set_display_icon(display,icon);
                                 //al_destroy_bitmap(icon);
                             }
-                            else cout<<"COMO EL CULO\n";
                             #endif
                             al_set_window_title(display,"EDA Burgle Bros");
-                            #ifdef CARDS_CHEAT
-                            cheatCards();
-                            #endif
                             al_flip_display();
                         }else
                         {
@@ -160,10 +154,8 @@ BurgleBrosView::~BurgleBrosView()
 
 void BurgleBrosView::reset()
 {
-    list<LayerItem>::iterator it_layers;
-    
-    for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-        it_layers->erase();
+    for(auto& layer : graphics)
+        layer.erase();
     graphics.clear();
     
     resetZoom();
@@ -176,11 +168,10 @@ void BurgleBrosView::reset()
 
 void BurgleBrosView::resetZoom() {
 
-    list<LayerItem>::iterator it_layers;
     onZoom=false;
     
-    for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-        it_layers->resetZoom();
+    for(auto& layer : graphics)
+        layer.resetZoom();
 }
 
 
@@ -191,9 +182,7 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     Info2DrawGuard infoGuard[3];
     
     for(int i = 0; i < BOARD_STANDARD_FLOORS; i++)
-    {
         infoGuard[i] = model->getInfo2DrawGuard(i);
-    }
     list<Info2DrawLoot> infoLoot= model-> getInfo2DrawLoot();
     Info2DrawPlayer infoThisPlayer= model->getInfo2DrawPlayer(THIS_PLAYER);
     Info2DrawPlayer infoOtherPlayer= model->getInfo2DrawPlayer(OTHER_PLAYER);
@@ -219,7 +208,7 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
 
     GroupItem auxTiles_item;
     
-    for(int i=0; i<info_tiles.size();i++)
+    for(unsigned int i=0; i<info_tiles.size();i++)
     {
          GraphicTile *auxTile_element=new GraphicTile(imageLoader.getImageP(info_tiles[i].type),imageLoader.getImageBackP(info_tiles[i].type),info_tiles[i].location,al_get_display_width(display),al_get_display_height(display));
          auxTiles_item.atachGraphicsItem((GraphicItem *) auxTile_element);
@@ -356,7 +345,9 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     //**********push sobre la tercer capa 
     it_layer->atachGroupItem(&auxMenuItem_item);
       
-    
+    #ifdef CARDS_CHEAT
+        cheatCards();
+    #endif
 }
 
 bool BurgleBrosView::isShowingHelp() {
@@ -383,26 +374,18 @@ void BurgleBrosView::update()
     updateLoots();
     updateGuards();
     updateExtraDices();
-    
-    
-    //after=clock();
-    //cout << "Update tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC<< " segundos."<<endl; 
-    
-    
+        
     /*Draw all*/
     al_draw_scaled_bitmap(backScreen,0,0,al_get_bitmap_width(backScreen),al_get_bitmap_height(backScreen),0,0,al_get_display_width(display),al_get_display_height(display),0);
-    list<LayerItem>::iterator it_layers;
     if(!showingHelp)
     {
-       for( it_layers = graphics.begin(); it_layers != graphics.end(); it_layers++)
-            it_layers->draw();
+       for(auto& layer : graphics)
+            layer.draw();
     }
     else
         help.draw();
     
-    al_flip_display();
-    //after=clock();
-    //cout << "Draw tardó: "<< ((double)(after-before))/(double)CLOCKS_PER_SEC << " segundos."<<endl; 
+    al_flip_display(); 
 }
 
 
@@ -446,14 +429,13 @@ BurgleBrosView::updateTokens()
     
     map<CardLocation, unsigned int> tokensCount;
     
-    list<Info2DrawTokens>::iterator it;
-    for( it = info_tokens.begin(); it != info_tokens.end(); it++)
+    for(auto& info : info_tokens)
     {
-        GraphicToken * token = new GraphicToken(imageLoader.getImageP(it->token));
+        GraphicToken * token = new GraphicToken(imageLoader.getImageP(info.token));
         token->setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
-        if(onZoom && it->position.floor == floorZoomed)
+        if(onZoom && info.position.floor == floorZoomed)
             token->setZoom(true);
-        token->setPosition(it->position, tokensCount[it->position]++);
+        token->setPosition(info.position, tokensCount[info.position]++);
         it_itemType->atachGraphicsItem(token);
     }
 }
@@ -490,11 +472,6 @@ BurgleBrosView::updateLoots()
     }
     
 }
-void BurgleBrosView::updateButtons()
-{
-    
-}
-
 
 void BurgleBrosView::updateCharacters() {
     
@@ -610,7 +587,7 @@ void BurgleBrosView::updateExtraDices()
     list<GroupItem>::iterator it_itemType;
     it_itemType = deleteList(FIRST_LAYER, EXTRA_DICES_LIST);
        
-    for( int i = 0; i < info_dices.size(); i++)
+    for(unsigned int i = 0; i < info_dices.size(); i++)
     {
         if(info_dices[i] != 0)      //if its 0 it means there is no such extra die
         {
@@ -626,12 +603,10 @@ void BurgleBrosView::updateExtraDices()
 
 list<GraphicItem *>::iterator BurgleBrosView::accessGraphicItems(Layers layer, unsigned int itemType)
 {
-    
     list<LayerItem>::iterator it_layers= graphics.begin();
     advance(it_layers,layer);
     return it_layers->accessGraphicItems(itemType);
 }
-
 
 list<GroupItem>::iterator BurgleBrosView::deleteList(Layers layer, unsigned int itemList)
 {
@@ -649,11 +624,8 @@ string BurgleBrosView::MessageBox(vector<string> &msg)
         for(unsigned int i=3;i<msg.size();++i)
             buttons+=msg[i]+"|";
         buttons.pop_back();
-        //cout<<buttons<<endl;
         while(!(aux=al_show_native_message_box(display, msg[0].c_str(),msg[1].c_str(),msg[2].c_str(),buttons.c_str(), ALLEGRO_MESSAGEBOX_QUESTION)));
     }
-    //cout<<2+aux<<endl;
-    //cout<<msg[2+aux]<<endl;
     return msg[2+aux];
 }
 int BurgleBrosView::yesNoMessageBox(vector<string> &msg)
@@ -666,12 +638,11 @@ void BurgleBrosView::showMenu(list<string> options, Point click, CardLocation ti
     list<GroupItem>::iterator menu_items;
     menu_items = deleteList(THIRD_LAYER,(unsigned int) MENU_ITEM_LIST);
     
-    list<string>::iterator it;
     int i = 0;
-    for( it = options.begin(); it != options.end(); i++, it++)
+    for(auto op : options)
     {
-        GraphicMenuItem * option_i = new GraphicMenuItem(click, tile, i);
-        option_i->setOption(*it);
+        GraphicMenuItem * option_i = new GraphicMenuItem(click, tile, i++);
+        option_i->setOption(op);
         option_i->setScreenDimentions(al_get_display_width(display),al_get_display_height(display));
         if(onZoom) option_i->toggleZoom();
         menu_items->atachGraphicsItem((GraphicItem *) option_i);
@@ -704,10 +675,8 @@ void BurgleBrosView::eraseMenu()
 void BurgleBrosView::setZoom() {
     
     onZoom ^= true;
-    list<LayerItem>::iterator it_layer;
-    
-    for(it_layer=graphics.begin();it_layer != graphics.end();it_layer++)
-        it_layer->setZoom();
+    for(auto& layer : graphics)
+        layer.setZoom();
        
 }
 
@@ -742,7 +711,6 @@ void BurgleBrosView::zoomFloor(unsigned int floor, Model * auxModel)
         }
     }
     
-    //Info2DrawPlayer player = model->getInfo2DrawPlayer(model->getPlayerOnTurn());
     it = accessGraphicItems(FIRST_LAYER, BUTTONS_LIST);
     advance(it, floor);                                             //go to the zoom icon of the floor zoomed
     GraphicButton * button = dynamic_cast<GraphicButton *> (*it);

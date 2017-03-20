@@ -1,18 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   GraphicEDices.cpp
- * Author: carlos
- * 
- * Created on 30 de diciembre de 2016, 17:02
- */
-
 #include "GraphicEDices.h"
-#include "BurgleBrosView.h"
 
 #define SPACE_BETWEEN_DICES (FLOOR_HEIGHT/35.0)
 #define DICE_WIDTH (totalWidth/30.0)

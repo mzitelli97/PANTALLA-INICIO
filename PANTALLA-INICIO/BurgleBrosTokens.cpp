@@ -1,6 +1,7 @@
+#include "BurgleBrosTokens.h"
 #include <map>
 
-#include "BurgleBrosTokens.h"
+#define CARDS_TO_BE_CRACKED 6
 string token2Str(Token token)
 {
     switch (token)
@@ -19,14 +20,7 @@ string token2Str(Token token)
 
 void BurgleBrosTokens::triggerAlarm(CardLocation location)
 {
-    cout<<"ALARM!"<<endl;
-    list<CardLocation>::iterator it;
-    for(it=alarms.begin(); it != alarms.end(); it ++)       //Recorro la lista 
-    {
-        if( *it ==location )                                //Si ya había una alarma en esa locación corto el for
-            break;
-    }
-    if(it==alarms.end())                                    //Si nunca se salio del for, o sea no había ninguna alarma en la location que pasaron
+    if(!isThereAnAlarmToken(location))                       //Si no habia alarmas
         alarms.push_back(location);                          //Pongo una alarma allí
 }
 void BurgleBrosTokens::turnOffAlarm(CardLocation location)
@@ -85,9 +79,9 @@ list<CardLocation> BurgleBrosTokens::getKeypadTokens()
 unsigned int BurgleBrosTokens::howManyAlarmsOnFloor(unsigned int floor)
 {
     unsigned int count=0;
-    for(list<CardLocation>::iterator it=alarms.begin(); it != alarms.end(); it ++)       //Recorro la lista de alarmas
+    for(auto& alarm : alarms)   //Recorro la lista de alarmas
     {
-        if( it->floor == floor)   //Si la alarma esta en el piso que pasaron.                            
+        if( alarm.floor == floor)   //Si la alarma esta en el piso que pasaron.                            
             count++;
     }
     return count;
@@ -96,9 +90,9 @@ unsigned int BurgleBrosTokens::howManyAlarmsOnFloor(unsigned int floor)
 bool BurgleBrosTokens::isThereAKeypadToken(CardLocation location)
 {
     bool retVal=false;
-    for(list<CardLocation>:: iterator it=keypadTokens.begin(); it != keypadTokens.end(); it ++)       //Recorro la lista de keypadTokens
+    for(auto& keypad : keypadTokens)       //Recorro la lista de keypadTokens
     {
-        if( *it == location)                            
+        if( keypad == location)                            
             retVal=true;
     }
     return retVal;
@@ -124,15 +118,17 @@ bool BurgleBrosTokens::isThereAToken(CardLocation location, Token whichToken)
         case CROW_TOKEN:
             retVal=isThereACrowToken(location);
             break;
+        default:
+            break;
     }
     return retVal;
 }
 bool BurgleBrosTokens::isThereAnAlarmToken(CardLocation location)
 {
     bool retVal=false;
-    for(list<CardLocation>::iterator it=alarms.begin(); it != alarms.end(); it ++)       //Recorro la lista de alarmas
+    for(auto& alarm : alarms)       //Recorro la lista de alarmas
     {
-        if( *it == location)                            
+        if(alarm == location)                            
             retVal=true;
     }
     return retVal;
@@ -182,9 +178,9 @@ void BurgleBrosTokens::removeOneHackTokenOf(CardName computerRoom)
 void BurgleBrosTokens::addCrackTokenOn(CardLocation location)
 {
     bool alreadyCracked=false;
-    for(list<CardLocation>::iterator it=crackedCards.begin(); it != crackedCards.end(); it++)
+    for(auto& card : crackedCards)
     {
-        if(*it == location)
+        if(card == location)
             alreadyCracked=true;
     }
     if(!alreadyCracked)
@@ -192,19 +188,19 @@ void BurgleBrosTokens::addCrackTokenOn(CardLocation location)
 }
 void BurgleBrosTokens::addCrackTokenOn(list<CardLocation> &location)
 {
-    for(list<CardLocation>::iterator it=location.begin(); it != location.end(); it++)
-        addCrackTokenOn(*it);
+    for(auto& card : location)
+        addCrackTokenOn(card);
 }
 bool BurgleBrosTokens::isSafeOpened(unsigned int floor)
 {
     bool retVal=false;
     unsigned int count=0;
-    for(list<CardLocation>::iterator it= crackedCards.begin(); it!=crackedCards.end(); it++)
+    for(auto& card : crackedCards)
     {
-        if(it->floor == floor)
+        if(card.floor == floor)
             count++;
     }
-    if(count == 6) //Si había 6 cartas crackeadas en el mismo piso significa que el safe de ese piso esta crackeado
+    if(count == CARDS_TO_BE_CRACKED) //Si había 6 cartas crackeadas en el mismo piso significa que el safe de ese piso esta crackeado
         retVal=true;
     return retVal;
 }

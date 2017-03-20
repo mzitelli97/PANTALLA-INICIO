@@ -50,7 +50,7 @@ bool NetworkInterface::standardConnectionStart(string &ip)
                 time = (double)DIFF_TIME_CLOCK(currClock, prevClock);
 		if (!error && p2networking->tryToConnect() == true) //El que no haya error es por si en prepare to connect hubo un error.
 			connected = true;
-		else if (time > 0.1)//timeToBecomeServer )          //ESTO LO PUSE EN 0 PORQUE EN LA CAGADA DE NETBEANS NO FUNCABA SINO.
+		else if (time > 0.1)//timeToBecomeServer )
 		{
 			currentRole = SERVER;
 			p2networking->abortConnecting();
@@ -224,9 +224,6 @@ bool NetworkInterface::sendSafeOpened(Loot loot)
     buffer[0]=(char) loot;
     return p2networking->sendPacket(SAFE_OPENED, buffer, 1);
 }
-
-
-
 
 bool NetworkInterface::sendGMove(list<GuardMoveInfo> guardMovement)
 {
