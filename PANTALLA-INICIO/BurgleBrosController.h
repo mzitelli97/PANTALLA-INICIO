@@ -27,7 +27,7 @@ typedef struct
 #define DEFAULT_GAME_OVER_MSG "Game over", "The game will close", " The other player decided not to play again, so this game will close itself", "OK"
 #define DEFAULT_SPOTTER_MSG "Hability used", "The Spotter","The other player uses The Spotter hability and choose to put the card at the ","Ok"
 #define DEFAULT_TIMEOUT_MSG "Error", "A timeout has ocurred (60 secs without a response)", "After 60 secs of not recieving a confirmation of your action in the other cpu, the game closes itself", "OK"
-#define DEFAULT_OTHERS_ERROR_MSG "Error", "An error ocurred", "The other player detected an error, so the game will close", "ok"
+#define DEFAULT_OTHERS_ERROR_MSG "Error", "An error ocurred", "A communication error has ocurred", "ok"
 
 class BurgleBrosController:public Controller {
 public:

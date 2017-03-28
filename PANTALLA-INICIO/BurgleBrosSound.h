@@ -8,13 +8,6 @@
 #include <iostream>
 #include <vector>
 
-#define MUSIC_FOLDER "Music/"
-#define SOUNDS_FOLDER "Sounds/"
-
-#define THEME_1 "Burgle Music"
-
-#define THEMES_EXTENSION ".wav"
-
 using namespace std;
 
 class BurgleBrosSound:public Observer {

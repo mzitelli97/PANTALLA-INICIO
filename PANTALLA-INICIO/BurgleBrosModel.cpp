@@ -23,7 +23,7 @@ bool BurgleBrosModel::isGuardMoving()
     bool retVal=false;
     if(isGuardsTurn())
     {    
-        if(/*guards[getP2Player(playerOnTurnBeforeGuardMove)->getPosition().floor].hasStepsLeft() &&*/ gWholePath.second!=gWholePath.first.end())
+        if(gWholePath.second!=gWholePath.first.end())
             retVal=true;
     }
     return retVal;
@@ -1515,8 +1515,11 @@ void BurgleBrosModel::copyGuardMove()
             guardMoving->decSteps();
             guardMoving->setPosition(gWholePath.second->cardLocation);
             if(tokens.isThereAnAlarmToken(guardMoving->getPosition()))     //Si hay una alarma en su posición ya la desactiva y busca un nuevo camino.
+            {
                 tokens.turnOffAlarm(guardMoving->getPosition());
-            
+                if(tokens.howManyAlarmsOnFloor(guardFloor))
+                    setGuardsNewPath(guardFloor);
+            }
             if(guardMoving->getPosition() == otherPlayer.getPosition() && board.getCardType(otherPlayer.getPosition())==LAVATORY && tokens.isThereAStealthToken(otherPlayer.getPosition()))
             {    
                 if(playerOnTurnBeforeGuardMove == OTHER_PLAYER)

@@ -70,11 +70,8 @@ CView::CView(CModel * model)
                             auxButton = new GraphicButton(imageLoader.getImageP(CONNECT_BUTTON), imageLoader.getImageP(CONNECTING_BUTTON), CONNECT_BUTTON, al_get_display_width(display), al_get_display_height(display));
                             gList.push_back(auxButton);
                             /*Los demas botones*/
-                            for(int i = (int)HELP_BUTTON; i <= (int)QUIT_BUTTON; i++)
-                            {
-                                auxButton = new GraphicButton(imageLoader.getImageP((buttonAction)i), nullptr, (buttonAction)i, al_get_display_width(display), al_get_display_height(display));
-                                gList.push_back(auxButton);
-                            }
+                            auxButton = new GraphicButton(imageLoader.getImageP(QUIT_BUTTON), nullptr, QUIT_BUTTON, al_get_display_width(display), al_get_display_height(display));
+                            gList.push_back(auxButton);
                         }else 
                         {   
                             //error al crear la fuente

@@ -115,7 +115,6 @@ AllegroEG::hayEvento() {
             TimerED *auxData = new TimerED(TIMEOUT);
             data=(EventData *) auxData;
             event=GUI_EVENT_TIMER;
-            std::cout<< "TIMEOUT"<<std::endl;
             retVal=true;
         }
    }

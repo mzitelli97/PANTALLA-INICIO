@@ -111,6 +111,7 @@ BurgleBrosWrapper::connect()
             if(!error)    //y no ocurrio un error
             {
                 newModel->attach(newView);
+                newModel->attach(&sound);
                 sound.attachModel(newModel);
                 bbcontroller->attachSound(&sound);
                 bbcontroller->attachModel(newModel);
@@ -141,11 +142,11 @@ BurgleBrosWrapper::playGame() {
             {
                 gui.parseEvento();
                 if(controller->hasToResetTimeoutTimer())
-                    {allegroEvent->resetTimer(); cout<<"Resetie timer"<<endl;}
+                    allegroEvent->resetTimer();
                 if(controller->isWaiting4ack() && !prev)
-                    {allegroEvent->playTimer();cout<<"Playie timer"<<endl;}
+                    allegroEvent->playTimer();
                 else if (!controller->isWaiting4ack())
-                    {allegroEvent->stopTimer(); cout<<"apague timer"<<endl;}
+                    allegroEvent->stopTimer();
                 if(controller->resetZMouse())
                     allegroEvent->resetZMouse();
             }
