@@ -1,3 +1,7 @@
+/*
+ * Created on February 19, 2017, 5:59 PM
+ */
+
 #include "GraphicHelp.h"
 #include "GUI.h"
 #include "ImageLoader.h"

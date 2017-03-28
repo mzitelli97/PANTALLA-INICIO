@@ -88,9 +88,6 @@ BurgleBrosView::BurgleBrosView(BurgleBrosModel * model) {
                             }
                             #endif
                             al_set_window_title(display,"EDA Burgle Bros");
-                            #ifdef CARDS_CHEAT
-                            cheatCards();
-                            #endif
                             al_flip_display();
                         }else
                         {
@@ -348,7 +345,9 @@ void BurgleBrosView::ViewInit(BurgleBrosModel* model)
     //**********push sobre la tercer capa 
     it_layer->atachGroupItem(&auxMenuItem_item);
       
-    
+    #ifdef CARDS_CHEAT
+        cheatCards();
+    #endif
 }
 
 bool BurgleBrosView::isShowingHelp() {

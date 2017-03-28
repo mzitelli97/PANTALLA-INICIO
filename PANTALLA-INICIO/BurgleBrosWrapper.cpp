@@ -5,6 +5,7 @@
 
 
 BurgleBrosWrapper::BurgleBrosWrapper() {
+   
     srand(time(NULL));
     
     quit=false;

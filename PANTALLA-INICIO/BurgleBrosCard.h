@@ -38,7 +38,7 @@ typedef struct{
 
 
 
-class BurgleBrosCard		//IMPORTANTE SEEDEAR EL RANDOM PARA EL SAFE_CRACKED!!!!!
+class BurgleBrosCard		
 {
 public:
 	typedef BurgleBrosCard * CardPointer;

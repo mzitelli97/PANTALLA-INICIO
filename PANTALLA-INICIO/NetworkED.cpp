@@ -40,7 +40,7 @@ bool NetworkED::isPacketOk()
                 e = "([A-D][1-4]F[1-3]){2}";
                 break;
             case MOVE: case PEEK:
-                e = "^[A-D][1-4]F[1-3][0-6]$";
+                e = "^[A-D][1-4]F[1-4][0-6]$";
                 break;
             case SPENT_OK:
                 e = "^[YN]$";
@@ -58,7 +58,7 @@ bool NetworkED::isPacketOk()
                 e = "^[A-D][1-4]F[1-3][TB]$";
                 break;
             case ROLL_DICE_FOR_LOOT:
-                e = "^[1-6]$";
+                e = "^[\x01-\x06]$";
                 break;
             case GUARD_MOVEMENT:
                 if(s[0] >= 1)
